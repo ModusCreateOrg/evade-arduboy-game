@@ -1,6 +1,8 @@
 # Arduboy Game
 
-Arduboy Game for Client Gifts
+Arduboy Game for Client Gifts, 2016 Holidays.
+
+![Arduboy](arduboy.gif)
 
 ## Resources
 
