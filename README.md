@@ -11,7 +11,7 @@ environment is refered to as a Sketch.
 
 The IDE can be downloaded here:
 
-[Arduino IDE] https://www.arduino.cc/en/Main/Software
+[Arduino IDE](https://www.arduino.cc/en/Main/Software)
 
 Once you have it installed follow the steps under Resources to install
 the Arduboy library.
