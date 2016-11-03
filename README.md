@@ -36,3 +36,4 @@ the device.
 * Start learning with the [Arduboy Quick Start](http://community.arduboy.com/t/arduboy-quick-start-guide/725)
 * [Arduboy Library](https://github.com/Arduboy/Arduboy/tree/master/src) - not much for documentation but reading the source shows what it does
  * [Image Encoding Utility](http://www.andrewlowndes.co.uk/blog/graphics/arduboy-image-converter)
+* [Reset Procedure if you brick device](https://www.youtube.com/watch?v=l1ifTSq0VK4)
