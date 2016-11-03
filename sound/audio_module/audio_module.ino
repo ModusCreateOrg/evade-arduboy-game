@@ -10,7 +10,7 @@ void setup()
   arduboy.begin();
   arduboy.setTextSize(1);
   arduboy.setCursor(0,0);
-  arduboy.print("Journey To Silius\nStage 1");
+  arduboy.print(" ");
   arduboy.display();
 }
 
@@ -29,11 +29,14 @@ void loop ()
 
   if (arduboy.pressed(UP_BUTTON)) {
     y-=1;
-  } else if (arduboy.pressed(DOWN_BUTTON)) {
+  } 
+  else if (arduboy.pressed(DOWN_BUTTON)) {
     y+=1;
-  } else if (arduboy.pressed(LEFT_BUTTON)) {
+  } 
+  else if (arduboy.pressed(LEFT_BUTTON)) {
     x-=1;
-  } else if (arduboy.pressed(RIGHT_BUTTON)) {
+  } 
+  else if (arduboy.pressed(RIGHT_BUTTON)) {
     x+=1;
   }
 
