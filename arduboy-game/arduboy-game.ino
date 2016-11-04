@@ -1,106 +1,183 @@
 /*
-Buttons example
-June 11, 2015
-Copyright (C) 2015 David Martinez
-All rights reserved.
-This code is the most basic barebones code for showing how to use buttons in
-Arduboy.
-
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
+ * arduboy-game, Modus Create 2016
 */
 
 #include "Arduboy.h"
 
-// Make an instance of arduboy used for many functions
+// Define limits that ship movement is bounded by
+#define MIN_SHIP_X 2
+#define MAX_SHIP_X 75
+#define MIN_SHIP_Y 10
+#define MAX_SHIP_Y 57
+
+
+// Time before title screen flips to high score screen
+#define ATTRACT_MODE_TIMEOUT 10000
+
+// Title screen outcomes
+#define TITLE_CREDITS 0
+#define TITLE_PLAY_GAME 1
+#define TITLE_TIMEOUT 2
+
+// Global variables
 Arduboy arduboy;
+// TODO highScore should be replaced with table in EEPROM
+unsigned int score, highScore = 0;
+byte livesRemaining = 4;
 
-// Variables for your game go here.
-char text[] = "Press Buttons!";
-byte x;
-byte y;
+// General purpose text buffer for string concatenations etc
+char textBuf[15];
 
-// Width of each charcter including inter-character space
-#define CHAR_WIDTH 6
+void printText(char *message, int x, int y, int textSize) {
+  arduboy.setCursor(x, y);
+  arduboy.setTextSize(textSize);
+  arduboy.print(message); 
+}
 
-// Height of each charater
-#define CHAR_HEIGHT 8
+void introScreen() {
+  arduboy.clear();
+  printText("INTRO", 10, 20, 2);
+  arduboy.display();
+  delay(3000);
+}
 
-// To get the number of characters, we subtract 1 from the length of
-// the array because there will be a NULL terminator at the end.
-#define NUM_CHARS (sizeof(text) - 1)
-
-// This is the highest value that x can be without the end of the text
-// going farther than the right side of the screen. We add one because
-// there will be a 1 pixel space at the end of the last character.
-// WIDTH and HEIGHT are defined in the Arduboy library.
-#define X_MAX (WIDTH - (NUM_CHARS * CHAR_WIDTH) + 1)
-
-// This is the highest value that y can be without the text going below
-// the bottom of the screen.
-#define Y_MAX (HEIGHT - CHAR_HEIGHT)
-
-
-// This function runs once in your game.
-// use it for anything that needs to be set only once in your game.
-void setup() {
-  //initiate arduboy instance
-  arduboy.begin();
-
-  // here we set the framerate to 30, we do not need to run at default 60 and
-  // it saves us battery life.
-  arduboy.setFrameRate(30);
+byte titleScreen() {
+  byte result = TITLE_PLAY_GAME;
+  unsigned short totalDelay = 0;
   
-  // set x and y to the middle of the screen
-  x = (WIDTH / 2) - (NUM_CHARS * CHAR_WIDTH / 2);
-  y = (HEIGHT / 2) - (CHAR_HEIGHT / 2);
+  arduboy.clear();
+  printText("TITLE", 25, 20, 2);
+  arduboy.drawRect(2, 47, 31, 13, 1);
+  printText("PLAY", 5, 50, 1);
+  printText("CREDITS", 45, 50, 1);
+  arduboy.display();
+
+  while(totalDelay < ATTRACT_MODE_TIMEOUT) {
+    if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
+      break;
+    } else if (arduboy.pressed(LEFT_BUTTON)) {
+      // Highlight play option
+      result = TITLE_PLAY_GAME;
+      arduboy.drawRect(42, 47, 48, 13, 0);
+      arduboy.drawRect(2, 47, 31, 13, 1);
+      arduboy.display();
+    } else if (arduboy.pressed(RIGHT_BUTTON)) {
+      // Highlight credits option
+      result = TITLE_CREDITS;
+      arduboy.drawRect(2, 47, 31, 13, 0);
+      arduboy.drawRect(42, 47, 48, 13, 1);
+      arduboy.display();
+    }
+
+    delay(15);
+    totalDelay += 15;
+  }
+
+  if (totalDelay >= ATTRACT_MODE_TIMEOUT) {
+    // User didn't press a button so title screen just timed out
+    result = TITLE_TIMEOUT;
+  }
+
+  return(result);
+}
+
+void highScoreScreen() {
+  // TODO, this is placeholder
+  arduboy.clear();
+  printText("HI SCORES", 3, 15, 2);
+  arduboy.display();
+  delay(3000);
+}
+
+void creditsScreen() {
+  // TODO, this is placeholder
+  arduboy.clear();
+  printText("CREDITS", 20, 25, 2);
+  arduboy.display();
+  delay(5000);
+}
+
+void playGame() {
+  // TODO, this is placeholder, should also use livesRemaining
+  // to count down user lives
+  unsigned short shipX = 2, shipY = 32;
+  score = 0;
+
+  // Random test to set score 
+  unsigned int randomScore = random(4000, 15000);
+
+  // Loop to simulate a game that ends with score being 
+  // close to value of randomScore
+  while (score < randomScore) {
+    arduboy.clear();
+    arduboy.fillRect(shipX, shipY, 6, 4, 1);
+    sprintf(textBuf, "SCORE %u", score);
+    printText(textBuf, 0, 0, 1);
+    score += random(0, 50);
+    arduboy.display();
+
+    if (arduboy.pressed(UP_BUTTON) && shipY > MIN_SHIP_Y) {
+      shipY--;
+    } else if (arduboy.pressed(DOWN_BUTTON) && shipY < MAX_SHIP_Y) {
+      shipY++;
+    } else if (arduboy.pressed(LEFT_BUTTON) && shipX > MIN_SHIP_X) {
+      shipX--;
+    } else if (arduboy.pressed(RIGHT_BUTTON) && shipX < MAX_SHIP_X) {
+      shipX++;
+    }
+  }
+}
+
+void gameOverScreen() {
+  // TODO, this is placeholder
+  arduboy.clear();
+  printText("GAME OVER", 15, 30, 2);
+  arduboy.display();
+  delay(3000);
+}
+
+void newHighScoreScreen() {
+  // TODO, this is placeholder
+  arduboy.clear();
+  printText("NEW HI", 4, 25, 2);
+  arduboy.display();
+  delay(3000);
+}
+
+// Initialization runs once only
+void setup() {
+  arduboy.beginNoLogo();
+  introScreen();
 }
 
 
-// our main game loop, this runs once every cycle/frame.
-// this is where our game logic goes.
+// Main program loop
 void loop() {
-  // pause render until it's time for the next frame
-  if (!(arduboy.nextFrame()))
-    return;
+  byte result;
+  
+  // TODO alternate between titleScreen and highScoreScreen on a timer
+  // until user pressed a button
+  result = titleScreen();
 
-  // the next couple of lines will deal with checking if the D-pad buttons
-  // are pressed and move our text accordingly.
-  // We check to make sure that x and y stay within a range that keeps the
-  // text on the screen.
-
-  // if the right button is pressed move 1 pixel to the right every frame
-  if(arduboy.pressed(RIGHT_BUTTON) && (x < X_MAX)) {
-    x++;
+  switch(result) {
+    case TITLE_CREDITS:
+      creditsScreen();
+      break;
+    case TITLE_PLAY_GAME:
+      playGame();
+      gameOverScreen();
+      // TODO high score should be checked against a set of high scores
+      // in the EEPROM
+      if (score > highScore) {
+        newHighScoreScreen();
+        highScore = score;
+      }
+  
+      highScoreScreen();
+      break;
+    case TITLE_TIMEOUT:
+      // No button pressed on title, alternate with high score  
+      highScoreScreen();
+      break; 
   }
-
-  // if the left button is pressed move 1 pixel to the left every frame
-  if(arduboy.pressed(LEFT_BUTTON) && (x > 0)) {
-    x--;
-  }
-
-  // if the up button or B button is pressed move 1 pixel up every frame
-  if((arduboy.pressed(UP_BUTTON) || arduboy.pressed(B_BUTTON)) && (y > 0)) {
-    y--;
-  }
-
-  // if the down button or A button is pressed move 1 pixel down every frame
-  if((arduboy.pressed(DOWN_BUTTON) || arduboy.pressed(A_BUTTON)) && (y < Y_MAX)) {
-    y++;
-  }
-
-
-  // we clear our screen to black
-  arduboy.clear();
-
-  // we set our cursor x pixels to the right and y down from the top
-  arduboy.setCursor(x, y);
-
-  // then we print to screen what is stored in our text variable we declared earlier
-  arduboy.print(text);
-
-  // then we finaly we tell the arduboy to display what we just wrote to the display.
-  arduboy.display();
 }
