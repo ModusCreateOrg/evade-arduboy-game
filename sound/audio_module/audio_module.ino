@@ -29,14 +29,19 @@ void loop ()
 
   if (arduboy.pressed(UP_BUTTON)) {
     y-=1;
+    playTone1();
   } 
   else if (arduboy.pressed(DOWN_BUTTON)) {
+    playTone2();
+
     y+=1;
   } 
   else if (arduboy.pressed(LEFT_BUTTON)) {
+    playTone3();
     x-=1;
   } 
   else if (arduboy.pressed(RIGHT_BUTTON)) {
+    playTone4();
     x+=1;
   }
 

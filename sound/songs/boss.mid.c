@@ -1,11 +1,6 @@
-#include "Arduboy.h"
-#include "MusicPlayer.h"
-
-// Playtune bytestream for file "boss.mid.mid" created by MIDITONES V1.14 on Fri Nov  4 11:42:50 2016
-// command line: miditones boss.mid 
 // Playtune bytestream for file "boss.mid.mid" created by MIDITONES V1.14 on Fri Nov  4 12:12:25 2016
 // command line: miditones boss.mid 
-const unsigned char PROGMEM stage1Music [] = {
+const unsigned char PROGMEM score [] = {
 // Transport
 0x90,48, 0,83, 0x90,56, 0,83, 0x90,48, 0,83, 0x90,56, 0,83, 0x90,48, 0,83, 0x90,56, 0,83, 0x90,48, 
 0,83, 0x90,56, 0,83, 0x90,48, 0,83, 0x90,56, 0,83, 0x90,48, 0,83, 0x90,56, 0,83, 0x90,48, 0,83, 
@@ -87,56 +82,3 @@ const unsigned char PROGMEM stage1Music [] = {
 0,20, 0x90,73, 0,62, 0x80, 0,20, 0x90,72, 0,62, 0x80, 0,20, 0x90,67, 0,62, 0x80, 0,20, 0x90,60, 0,62, 
 0x80, 0xf0};
 // This score contains 2047 bytes, and 1 tone generator is used.
-
-
-void playMusic() {
-    Arduboy ab;
-
-
-    
-    if (!ab.tunes.playing()) {
-        ab.tunes.playScore(stage1Music);
-    }
-    
-}
-
-void stopMusic() {
-    Arduboy ab;
-
-    if (ab.tunes.playing()) {
-        ab.tunes.stopScore();
-    }
-}
-
-void playTone1() {
-  Arduboy ab;
-  ab.tunes.tone(987, 120);
-  delay(120); 
-  ab.tunes.tone(1318, 400);
-}
-
-void playTone2() {
-  Arduboy ab;
-
-  ab.tunes.tone(1318, 120);
-  delay(120); 
-  ab.tunes.tone(987, 400);
-
-}
-
-
-void playTone3() {
-  Arduboy ab;
-  ab.tunes.tone(1500, 120);
-}
-
-void playTone4() {
-  Arduboy ab;
-  ab.tunes.tone(900, 120);
-}
-
-void playTone5() {
-  Arduboy ab;
-  ab.tunes.tone(987, 120);
-}
-

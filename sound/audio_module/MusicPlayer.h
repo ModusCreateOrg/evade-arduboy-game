@@ -9,6 +9,11 @@
 extern void playMusic();
 extern void stopMusic();
 
-extern void playTone();
+extern void playTone1();
+extern void playTone2();
+extern void playTone3();
+extern void playTone4();
+extern void playTone5();
+
 
 #endif

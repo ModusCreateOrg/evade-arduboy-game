@@ -1,4 +1,5 @@
 
+
 /*********************************************************************************************
 *
 *  MIDITONES: Convert a MIDI file into a simple bytestream of notes
@@ -453,7 +454,7 @@ void SayUsage (char *programName) {
       "Convert MIDI files to an Arduino PLAYTUNE bytestream",
       "",
       "Use:  miditones <options> <basefilename>",
-      "   input file will be <basefilename>.mid",
+      "   input file will be <basefilename>",
       "   output file will be <basefilename>.bin or .c",
       "   log file will be <basefilename>.log",
       "",
@@ -613,10 +614,10 @@ does not start with a dash or a slash*/
 
 void print_command_line (int argc, char *argv[]) {
    int i;
-   fprintf (outfile, "// command line: ");
+   fprintf(outfile, "// command line: ");
    for (i = 0; i < argc; i++)
-      fprintf (outfile, "%s ", argv[i]);
-   fprintf (outfile, "\n");
+      fprintf(outfile, "%s ", argv[i]);
+   fprintf(outfile, "\n");
 }
 
 
@@ -727,7 +728,7 @@ void outfile_items (int n) {
    outfile_bytecount += n;
    outfile_itemcount += n;
    if (!binaryoutput && outfile_itemcount >= outfile_maxitems) {
-      fprintf (outfile, "\n");
+      fprintf(outfile, "\n");
       outfile_itemcount = 0;
    }
 }
@@ -855,12 +856,12 @@ void find_note (int tracknum) {
             if (tracknum == 0 && !parseonly && !binaryoutput) {
                /* Incredibly, MIDI has no standard for recording the name of the piece!
                   Track 0's "trackname" is often used for that so we output it to the C file as documentation. */
-               fprintf (outfile, "// ");
+               fprintf(outfile, "// ");
                for (i = 0; i < meta_length; ++i) {
                   int ch = t->trkptr[i];
-                  fprintf (outfile, "%c", isprint (ch) ? ch : '?');
+                  fprintf(outfile, "%c", isprint (ch) ? ch : '?');
                }
-               fprintf (outfile, "\n");
+               fprintf(outfile, "\n");
             }
             goto show_text;
          case 0x04:
@@ -920,7 +921,7 @@ void find_note (int tracknum) {
             tag = "???";
           show_hex:
             if (logparse) {
-               fprintf (logfile, "meta cmd %02X, length %d, %s: ", meta_cmd, meta_length, tag);
+               fprintf(logfile, "meta cmd %02X, length %d, %s: ", meta_cmd, meta_length, tag);
                for (i = 0; i < meta_length; ++i)
                   fprintf (logfile, "%02X ", t->trkptr[i]);
                fprintf (logfile, "\n");
@@ -1003,6 +1004,10 @@ void find_note (int tracknum) {
          }
       }
    }
+
+   // printf("NOTE %d\n", note);
+   // fflush(stdout);
+
    t->cmd = CMD_TRACKDONE;      /* no more notes to process */
    ++tracks_done;
 }
@@ -1019,7 +1024,7 @@ void gen_stopnotes(void) {
                 putc (CMD_STOPNOTE | tgnum, outfile);
                 outfile_bytecount += 1;
              } else {
-                fprintf (outfile, "0x%02X, ", CMD_STOPNOTE | tgnum);
+                fprintf(outfile, "0x%02X, ", CMD_STOPNOTE | tgnum);
                 outfile_items (1);
             }
             tg->stopnote_pending = false;
@@ -1058,9 +1063,11 @@ int main (int argc, char *argv[]) {
 /* Open the log file */
 
    if (logparse || loggen) {
-      miditones_strlcpy (filename, filebasename, MAXPATH);
-      miditones_strlcat (filename, ".log", MAXPATH);
+      miditones_strlcpy(filename, filebasename, MAXPATH);
+      miditones_strlcat(filename, ".log", MAXPATH);
+      
       logfile = fopen (filename, "w");
+      
       if (!logfile) {
          fprintf (stderr, "Unable to open log file %s\n", filename);
          return 1;
@@ -1070,7 +1077,7 @@ int main (int argc, char *argv[]) {
 
 /* Open the input file */
 
-   miditones_strlcpy (filename, filebasename, MAXPATH);
+   miditones_strlcpy(filename, filebasename, MAXPATH);
    // miditones_strlcat (filename, ".mid", MAXPATH);
    infile = fopen (filename, "rb");
    if (!infile) {
@@ -1089,6 +1096,7 @@ int main (int argc, char *argv[]) {
       return 1;
    }
    fread (buffer, buflen, 1, infile);
+
    fclose (infile);
    if (logparse)
       fprintf (logfile, "Processing %s, %ld bytes\n", filename, buflen);
@@ -1096,13 +1104,15 @@ int main (int argc, char *argv[]) {
 /* Create the output file */
 
    if (!parseonly) {
-      miditones_strlcpy (filename, filebasename, MAXPATH);
+      miditones_strlcpy(filename, filebasename, MAXPATH);
+      
       if (binaryoutput) {
-         miditones_strlcat (filename, ".bin", MAXPATH);
-         outfile = fopen (filename, "wb");
+
+         miditones_strlcat(filename, ".bin", MAXPATH);
+         outfile = fopen(filename, "wb");
       } else {
-         miditones_strlcat (filename, ".c", MAXPATH);
-         outfile = fopen (filename, "w");
+         miditones_strlcat(filename, ".c", MAXPATH);
+         outfile = fopen(filename, "w");
       }
       if (!outfile) {
          fprintf (stderr, "Unable to open output file %s\n", filename);
@@ -1112,30 +1122,31 @@ int main (int argc, char *argv[]) {
          | (instrumentoutput ? HDR_F1_INSTRUMENTS_PRESENT : 0)
          | (percussion_translate ? HDR_F1_PERCUSSION_PRESENT : 0);
       file_header.num_tgens = num_tonegens;
+
       if (!binaryoutput) {      /* create header of C file that initializes score data */
          time_t rawtime;
          time (&rawtime);
-         fprintf (outfile, "// Playtune bytestream for file \"%s.mid\" ", filebasename);
-         fprintf (outfile, "created by MIDITONES V%s on %s", VERSION,
+         fprintf(outfile, "// Playtune bytestream for file \"%s.mid\" ", filebasename);
+         fprintf(outfile, "created by MIDITONES V%s on %s", VERSION,
                   asctime (localtime (&rawtime)));
          print_command_line (argc, argv);
          if (channel_mask != 0xffff)
-            fprintf (outfile, "//   Only the masked channels were processed: %04X\n", channel_mask);
+            fprintf(outfile, "//   Only the masked channels were processed: %04X\n", channel_mask);
          if (keyshift != 0)
-            fprintf (outfile, "//   Keyshift was %d chromatic notes\n", keyshift);
+            fprintf(outfile, "//   Keyshift was %d chromatic notes\n", keyshift);
          if (define_progmem) {
-            fprintf (outfile, "#ifdef __AVR__\n");
-            fprintf (outfile, "#include <avr/pgmspace.h>\n");
-            fprintf (outfile, "#else\n");
-            fprintf (outfile, "#define PROGMEM\n");
-            fprintf (outfile, "#endif\n");
+            fprintf(outfile, "#ifdef __AVR__\n");
+            fprintf(outfile, "#include <avr/pgmspace.h>\n");
+            fprintf(outfile, "#else\n");
+            fprintf(outfile, "#define PROGMEM\n");
+            fprintf(outfile, "#endif\n");
          }
-         fprintf (outfile, "const unsigned char PROGMEM score [] = {\n");
+         fprintf(outfile, "const unsigned char PROGMEM score [] = {\n");
          if (do_header) {       // write the C initialization for the file header
-            fprintf (outfile, "'P','t', 6, 0x%02X, 0x%02X, ", file_header.f1, file_header.f2);
+            fprintf(outfile, "'P','t', 6, 0x%02X, 0x%02X, ", file_header.f1, file_header.f2);
             fflush (outfile);
             file_header_num_tgens_position = ftell (outfile);   // remember where the number of tone generators is
-            fprintf (outfile, "%2d, // (Playtune file header)\n", file_header.num_tgens);
+            fprintf(outfile, "%2d, // (Playtune file header)\n", file_header.num_tgens);
             outfile_bytecount += 6;
          }
       } else if (do_header) {   // write the binary file header
@@ -1235,7 +1246,7 @@ This is not unlike multiway merging used for tape sorting algoritms in the 50's!
                putc ((unsigned char) (delta_msec & 0xff), outfile);
                outfile_bytecount += 2;
             } else {
-               fprintf (outfile, "%ld,%ld, ", delta_msec >> 8, delta_msec & 0xff);
+               fprintf(outfile, "%ld,%ld, ", delta_msec >> 8, delta_msec & 0xff);
                outfile_items (2);
             }
          }
@@ -1310,13 +1321,16 @@ This is not unlike multiway merging used for tape sorting algoritms in the 50's!
                   int shifted_note;
                   if (tgnum + 1 > num_tonegens_used)
                      num_tonegens_used = tgnum + 1;
+
                   tg->playing = true;
                   tg->track = tracknum;
                   tg->note = trk->note;
                   tg->stopnote_pending = false;
                   trk->tonegens[tgnum] = true;
                   trk->preferred_tonegen = tgnum;
+                 
                   ++note_on_commands;
+                 
                   if (tg->instrument != midi_chan_instrument[trk->chan]) {      /* new instrument for this generator */
                      tg->instrument = midi_chan_instrument[trk->chan];
                      ++instrument_changes;
@@ -1328,8 +1342,11 @@ This is not unlike multiway merging used for tape sorting algoritms in the 50's!
                            putc (CMD_INSTRUMENT | tgnum, outfile);
                            putc (tg->instrument, outfile);
                         } else {
-                           fprintf (outfile, "0x%02X,%d, ", CMD_INSTRUMENT | tgnum, tg->instrument);
-                           outfile_items (2);
+                           fprintf(outfile, "0x%02X,%d, ", CMD_INSTRUMENT | tgnum, tg->instrument);
+                          printf("NOTE %d\n", tgnum);
+                          fflush(stdout);
+
+                           outfile_items(2);
                         }
                      }
                   }
@@ -1337,33 +1354,39 @@ This is not unlike multiway merging used for tape sorting algoritms in the 50's!
                      fprintf (logfile,
                               "->Start note %d, generator %d, instrument %d, track %d\n",
                               trk->note, tgnum, tg->instrument, tracknum);
+                  
                   if (percussion_translate && trk->chan == PERCUSSION_TRACK) {  /* if requested, */
                      shifted_note = trk->note + 128;    // shift percussion notes up to 128..255
-                  } else {      /* shift notes as requested */
+                  }
+                  else {      /* shift notes as requested */
                      shifted_note = trk->note + keyshift;
                      if (shifted_note < 0)
                         shifted_note = 0;
                      if (shifted_note > 127)
                         shifted_note = 127;
                   }
+                  
                   if (binaryoutput) {
-                     putc (CMD_PLAYNOTE | tgnum, outfile);
-                     putc (shifted_note, outfile);
+                     putc(CMD_PLAYNOTE | tgnum, outfile);
+                     putc(shifted_note, outfile);
                      outfile_bytecount += 2;
                      if (velocityoutput) {
-                        putc (trk->velocity, outfile);
+                        putc(trk->velocity, outfile);
                         outfile_bytecount++;
                      }
-                  } else {
+                  } 
+                  else {
                      if (velocityoutput == 0) {
-                        fprintf (outfile, "0x%02X,%d, ", CMD_PLAYNOTE | tgnum, shifted_note);
+                        fprintf(outfile, "0x%02X,%d, ", CMD_PLAYNOTE | tgnum, shifted_note);
+
                         outfile_items (2);
                      } else {
-                        fprintf (outfile, "0x%02X,%d,%d, ",
+                        fprintf(outfile, "0x%02X,%d,%d, ",
                                  CMD_PLAYNOTE | tgnum, shifted_note, trk->velocity);
                         outfile_items (3);
                      }
                   }
+
                } else {
                   if (loggen)
                      fprintf (logfile,
@@ -1381,15 +1404,19 @@ This is not unlike multiway merging used for tape sorting algoritms in the 50's!
       // generate the end-of-score command and some commentary
       gen_stopnotes(); /* flush out any pending "stop note" commands */
       outfile_bytecount++;
+
+
+
       if (binaryoutput)
          putc (gen_restart ? CMD_RESTART : CMD_STOP, outfile);
       else {
-         fprintf (outfile,
+         fprintf(outfile,
                   "0x%02x};\n// This score contains %ld bytes, and %d tone generator%s used.\n",
                   gen_restart ? CMD_RESTART : CMD_STOP, outfile_bytecount, num_tonegens_used,
                   num_tonegens_used == 1 ? " is" : "s are");
+
          if (notes_skipped)
-            fprintf (outfile, "// %d notes had to be skipped.\n", notes_skipped);
+            fprintf(outfile, "// %d notes had to be skipped.\n", notes_skipped);
       }
       printf ("  %s %d tone generators were used.\n",
               num_tonegens_used < num_tonegens ? "Only" : "All", num_tonegens_used);
@@ -1408,9 +1435,13 @@ This is not unlike multiway merging used for tape sorting algoritms in the 50's!
             if (binaryoutput)
                putc (num_tonegens_used, outfile);
             else
-               fprintf (outfile, "%2d", num_tonegens_used);
+               fprintf(outfile, "%2d", num_tonegens_used);
          }
       }
+ 
+      fprintf(outfile, "const int PROGMEM numScoreElements = %ld;\n", outfile_bytecount);
+
+
       fclose (outfile);
    } /* if (!parseonly) */
 

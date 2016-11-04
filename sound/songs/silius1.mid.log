@@ -1,0 +1,1307 @@
+MIDITONES V1.14 log file
+Processing ../midi songs/silius1.mid, 1783 bytes
+Header size 6
+Format type 1
+Number of tracks 2
+Time division 3C00
+Ticks/beat = 15360
+
+Track 0 length 65
+trk 0                  meta cmd 03, length 9, track name: "Transport"
+trk 0                  meta cmd 04, length 21, instrument name: "Hardware Interface II"
+trk 0                  meta cmd 21, length 1, ???: 00 
+trk 0                  set tempo 327870 usec/qnote
+
+Track 1 length 1688
+trk 1                  meta cmd 03, length 7, track name: "default"
+trk 1                  meta cmd 04, length 7, instrument name: "default"
+trk 1                  meta cmd 21, length 1, ???: 02 
+trk 1                  note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 0
+->Start note 55, generator 0, instrument 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 0, time 0
+Tempo changed to 327870 usec/qnote
+trk 0                  time signature 04021808
+trk 0 delta time 6144000, end of track
+Earliest time is trk 1, time 0
+->Start note 60, generator 1, instrument 0, track 1
+trk 1 delta time 30720, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 30720
+->Delay 655 msec (30720 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 60 off, chan 0, velocity 0
+->Stop note 60, generator 1, track 1
+trk 1                  note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 30720
+->Start note 58, generator 0, instrument 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 30720
+->Start note 63, generator 1, instrument 0, track 1
+trk 1 delta time 7680, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 38400
+->Delay 163 msec (7680 ticks)
+->Stop note 58, generator 0, track 1
+trk 1                  note 63 off, chan 0, velocity 0
+->Stop note 63, generator 1, track 1
+trk 1 delta time 7680, note 56 on, chan 0, velocity 100
+Earliest time is trk 1, time 46080
+->Delay 163 msec (7680 ticks)
+->Start note 56, generator 0, instrument 0, track 1
+trk 1                  note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 46080
+->Start note 62, generator 1, instrument 0, track 1
+trk 1 delta time 3840, note 56 off, chan 0, velocity 0
+Earliest time is trk 1, time 49920
+->Delay 81 msec (3840 ticks)
+->Stop note 56, generator 0, track 1
+trk 1                  note 62 off, chan 0, velocity 0
+->Stop note 62, generator 1, track 1
+trk 1 delta time 3840, note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 53760
+->Delay 81 msec (3840 ticks)
+->Start note 55, generator 0, instrument 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 53760
+->Start note 60, generator 1, instrument 0, track 1
+trk 1 delta time 23040, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 76800
+->Delay 491 msec (23040 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 60 off, chan 0, velocity 0
+->Stop note 60, generator 1, track 1
+trk 1                  note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 76800
+->Start note 55, generator 0, instrument 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 76800
+->Start note 60, generator 1, instrument 0, track 1
+trk 1 delta time 7680, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 84480
+->Delay 163 msec (7680 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 60 off, chan 0, velocity 0
+->Stop note 60, generator 1, track 1
+trk 1 delta time 7680, note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 92160
+->Delay 163 msec (7680 ticks)
+->Start note 58, generator 0, instrument 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 92160
+->Start note 63, generator 1, instrument 0, track 1
+trk 1 delta time 7680, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 99840
+->Delay 163 msec (7680 ticks)
+->Stop note 58, generator 0, track 1
+trk 1                  note 63 off, chan 0, velocity 0
+->Stop note 63, generator 1, track 1
+trk 1 delta time 7680, note 56 on, chan 0, velocity 100
+Earliest time is trk 1, time 107520
+->Delay 163 msec (7680 ticks)
+->Start note 56, generator 0, instrument 0, track 1
+trk 1                  note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 107520
+->Start note 62, generator 1, instrument 0, track 1
+trk 1 delta time 3840, note 56 off, chan 0, velocity 0
+Earliest time is trk 1, time 111360
+->Delay 81 msec (3840 ticks)
+->Stop note 56, generator 0, track 1
+trk 1                  note 62 off, chan 0, velocity 0
+->Stop note 62, generator 1, track 1
+trk 1 delta time 3840, note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 115200
+->Delay 81 msec (3840 ticks)
+->Start note 55, generator 0, instrument 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 115200
+->Start note 60, generator 1, instrument 0, track 1
+trk 1 delta time 23040, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 138240
+->Delay 491 msec (23040 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 60 off, chan 0, velocity 0
+->Stop note 60, generator 1, track 1
+trk 1                  note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 138240
+->Start note 55, generator 0, instrument 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 138240
+->Start note 60, generator 1, instrument 0, track 1
+trk 1 delta time 7680, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 145920
+->Delay 163 msec (7680 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 60 off, chan 0, velocity 0
+->Stop note 60, generator 1, track 1
+trk 1 delta time 7680, note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 153600
+->Delay 163 msec (7680 ticks)
+->Start note 58, generator 0, instrument 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 153600
+->Start note 63, generator 1, instrument 0, track 1
+trk 1 delta time 7680, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 161280
+->Delay 163 msec (7680 ticks)
+->Stop note 58, generator 0, track 1
+trk 1                  note 63 off, chan 0, velocity 0
+->Stop note 63, generator 1, track 1
+trk 1 delta time 7680, note 56 on, chan 0, velocity 100
+Earliest time is trk 1, time 168960
+->Delay 163 msec (7680 ticks)
+->Start note 56, generator 0, instrument 0, track 1
+trk 1                  note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 168960
+->Start note 62, generator 1, instrument 0, track 1
+trk 1 delta time 3840, note 56 off, chan 0, velocity 0
+Earliest time is trk 1, time 172800
+->Delay 81 msec (3840 ticks)
+->Stop note 56, generator 0, track 1
+trk 1                  note 62 off, chan 0, velocity 0
+->Stop note 62, generator 1, track 1
+trk 1 delta time 3840, note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 176640
+->Delay 81 msec (3840 ticks)
+->Start note 55, generator 0, instrument 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 176640
+->Start note 60, generator 1, instrument 0, track 1
+trk 1 delta time 23040, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 199680
+->Delay 491 msec (23040 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 60 off, chan 0, velocity 0
+->Stop note 60, generator 1, track 1
+trk 1                  note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 199680
+->Start note 55, generator 0, instrument 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 199680
+->Start note 60, generator 1, instrument 0, track 1
+trk 1 delta time 7680, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 207360
+->Delay 163 msec (7680 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 60 off, chan 0, velocity 0
+->Stop note 60, generator 1, track 1
+trk 1 delta time 7680, note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 215040
+->Delay 163 msec (7680 ticks)
+->Start note 58, generator 0, instrument 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 215040
+->Start note 63, generator 1, instrument 0, track 1
+trk 1 delta time 3840, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 218880
+->Delay 81 msec (3840 ticks)
+->Stop note 58, generator 0, track 1
+trk 1                  note 63 off, chan 0, velocity 0
+->Stop note 63, generator 1, track 1
+trk 1 delta time 3840, note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 222720
+->Delay 81 msec (3840 ticks)
+->Start note 60, generator 0, instrument 0, track 1
+trk 1                  note 65 on, chan 0, velocity 100
+Earliest time is trk 1, time 222720
+->Start note 65, generator 1, instrument 0, track 1
+trk 1 delta time 15360, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 238080
+->Delay 327 msec (15360 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 65 off, chan 0, velocity 0
+->Stop note 65, generator 1, track 1
+trk 1 delta time 7680, note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 245760
+->Delay 163 msec (7680 ticks)
+->Start note 55, generator 0, instrument 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 245760
+->Start note 60, generator 1, instrument 0, track 1
+trk 1 delta time 30720, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 276480
+->Delay 655 msec (30720 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 60 off, chan 0, velocity 0
+->Stop note 60, generator 1, track 1
+trk 1                  note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 276480
+->Start note 58, generator 0, instrument 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 276480
+->Start note 63, generator 1, instrument 0, track 1
+trk 1 delta time 7680, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 284160
+->Delay 163 msec (7680 ticks)
+->Stop note 58, generator 0, track 1
+trk 1                  note 63 off, chan 0, velocity 0
+->Stop note 63, generator 1, track 1
+trk 1 delta time 7680, note 56 on, chan 0, velocity 100
+Earliest time is trk 1, time 291840
+->Delay 163 msec (7680 ticks)
+->Start note 56, generator 0, instrument 0, track 1
+trk 1                  note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 291840
+->Start note 62, generator 1, instrument 0, track 1
+trk 1 delta time 3840, note 56 off, chan 0, velocity 0
+Earliest time is trk 1, time 295680
+->Delay 81 msec (3840 ticks)
+->Stop note 56, generator 0, track 1
+trk 1                  note 62 off, chan 0, velocity 0
+->Stop note 62, generator 1, track 1
+trk 1 delta time 3840, note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 299520
+->Delay 81 msec (3840 ticks)
+->Start note 55, generator 0, instrument 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 299520
+->Start note 60, generator 1, instrument 0, track 1
+trk 1 delta time 23040, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 322560
+->Delay 491 msec (23040 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 60 off, chan 0, velocity 0
+->Stop note 60, generator 1, track 1
+trk 1                  note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 322560
+->Start note 55, generator 0, instrument 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 322560
+->Start note 60, generator 1, instrument 0, track 1
+trk 1 delta time 7680, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 330240
+->Delay 163 msec (7680 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 60 off, chan 0, velocity 0
+->Stop note 60, generator 1, track 1
+trk 1 delta time 7680, note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 337920
+->Delay 163 msec (7680 ticks)
+->Start note 58, generator 0, instrument 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 337920
+->Start note 63, generator 1, instrument 0, track 1
+trk 1 delta time 7680, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 345600
+->Delay 163 msec (7680 ticks)
+->Stop note 58, generator 0, track 1
+trk 1                  note 63 off, chan 0, velocity 0
+->Stop note 63, generator 1, track 1
+trk 1 delta time 7680, note 56 on, chan 0, velocity 100
+Earliest time is trk 1, time 353280
+->Delay 163 msec (7680 ticks)
+->Start note 56, generator 0, instrument 0, track 1
+trk 1                  note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 353280
+->Start note 62, generator 1, instrument 0, track 1
+trk 1 delta time 3840, note 56 off, chan 0, velocity 0
+Earliest time is trk 1, time 357120
+->Delay 81 msec (3840 ticks)
+->Stop note 56, generator 0, track 1
+trk 1                  note 62 off, chan 0, velocity 0
+->Stop note 62, generator 1, track 1
+trk 1 delta time 3840, note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 360960
+->Delay 81 msec (3840 ticks)
+->Start note 55, generator 0, instrument 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 360960
+->Start note 60, generator 1, instrument 0, track 1
+trk 1 delta time 23040, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 384000
+->Delay 491 msec (23040 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 60 off, chan 0, velocity 0
+->Stop note 60, generator 1, track 1
+trk 1                  note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 384000
+->Start note 55, generator 0, instrument 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 384000
+->Start note 60, generator 1, instrument 0, track 1
+trk 1 delta time 7680, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 391680
+->Delay 163 msec (7680 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 60 off, chan 0, velocity 0
+->Stop note 60, generator 1, track 1
+trk 1 delta time 7680, note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 399360
+->Delay 163 msec (7680 ticks)
+->Start note 58, generator 0, instrument 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 399360
+->Start note 63, generator 1, instrument 0, track 1
+trk 1 delta time 7680, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 407040
+->Delay 163 msec (7680 ticks)
+->Stop note 58, generator 0, track 1
+trk 1                  note 63 off, chan 0, velocity 0
+->Stop note 63, generator 1, track 1
+trk 1 delta time 7680, note 56 on, chan 0, velocity 100
+Earliest time is trk 1, time 414720
+->Delay 163 msec (7680 ticks)
+->Start note 56, generator 0, instrument 0, track 1
+trk 1                  note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 414720
+->Start note 62, generator 1, instrument 0, track 1
+trk 1 delta time 3840, note 56 off, chan 0, velocity 0
+Earliest time is trk 1, time 418560
+->Delay 81 msec (3840 ticks)
+->Stop note 56, generator 0, track 1
+trk 1                  note 62 off, chan 0, velocity 0
+->Stop note 62, generator 1, track 1
+trk 1 delta time 3840, note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 422400
+->Delay 81 msec (3840 ticks)
+->Start note 55, generator 0, instrument 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 422400
+->Start note 60, generator 1, instrument 0, track 1
+trk 1 delta time 23040, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 445440
+->Delay 491 msec (23040 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 60 off, chan 0, velocity 0
+->Stop note 60, generator 1, track 1
+trk 1                  note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 445440
+->Start note 55, generator 0, instrument 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 445440
+->Start note 60, generator 1, instrument 0, track 1
+trk 1 delta time 7680, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 453120
+->Delay 163 msec (7680 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 60 off, chan 0, velocity 0
+->Stop note 60, generator 1, track 1
+trk 1 delta time 7680, note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 460800
+->Delay 163 msec (7680 ticks)
+->Start note 58, generator 0, instrument 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 460800
+->Start note 63, generator 1, instrument 0, track 1
+trk 1 delta time 3840, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 464640
+->Delay 81 msec (3840 ticks)
+->Stop note 58, generator 0, track 1
+trk 1                  note 63 off, chan 0, velocity 0
+->Stop note 63, generator 1, track 1
+trk 1 delta time 3840, note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 468480
+->Delay 81 msec (3840 ticks)
+->Start note 60, generator 0, instrument 0, track 1
+trk 1                  note 65 on, chan 0, velocity 100
+Earliest time is trk 1, time 468480
+->Start note 65, generator 1, instrument 0, track 1
+trk 1 delta time 15360, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 483840
+->Delay 327 msec (15360 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 65 off, chan 0, velocity 0
+->Stop note 65, generator 1, track 1
+trk 1 delta time 7680, note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 491520
+->Delay 163 msec (7680 ticks)
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 506880
+->Delay 327 msec (15360 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 67 on, chan 0, velocity 100
+Earliest time is trk 1, time 506880
+->Start note 67, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 67 off, chan 0, velocity 0
+Earliest time is trk 1, time 522240
+->Delay 327 msec (15360 ticks)
+->Stop note 67, generator 0, track 1
+trk 1                  note 65 on, chan 0, velocity 100
+Earliest time is trk 1, time 522240
+->Start note 65, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 65 off, chan 0, velocity 0
+Earliest time is trk 1, time 529920
+->Delay 163 msec (7680 ticks)
+->Stop note 65, generator 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 529920
+->Start note 63, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 63 off, chan 0, velocity 0
+Earliest time is trk 1, time 537600
+->Delay 163 msec (7680 ticks)
+->Stop note 63, generator 0, track 1
+trk 1                  note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 537600
+->Start note 62, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 62 off, chan 0, velocity 0
+Earliest time is trk 1, time 545280
+->Delay 163 msec (7680 ticks)
+->Stop note 62, generator 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 545280
+->Start note 63, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 63 off, chan 0, velocity 0
+Earliest time is trk 1, time 552960
+->Delay 163 msec (7680 ticks)
+->Stop note 63, generator 0, track 1
+trk 1                  note 65 on, chan 0, velocity 100
+Earliest time is trk 1, time 552960
+->Start note 65, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 65 off, chan 0, velocity 0
+Earliest time is trk 1, time 560640
+->Delay 163 msec (7680 ticks)
+->Stop note 65, generator 0, track 1
+trk 1                  note 67 on, chan 0, velocity 100
+Earliest time is trk 1, time 560640
+->Start note 67, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 67 off, chan 0, velocity 0
+Earliest time is trk 1, time 568320
+->Delay 163 msec (7680 ticks)
+->Stop note 67, generator 0, track 1
+trk 1 delta time 7680, note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 576000
+->Delay 163 msec (7680 ticks)
+->Start note 58, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 583680
+->Delay 163 msec (7680 ticks)
+->Stop note 58, generator 0, track 1
+trk 1 delta time 7680, note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 591360
+->Delay 163 msec (7680 ticks)
+->Start note 58, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 599040
+->Delay 163 msec (7680 ticks)
+->Stop note 58, generator 0, track 1
+trk 1                  note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 599040
+->Start note 55, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 606720
+->Delay 163 msec (7680 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 606720
+->Start note 58, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 614400
+->Delay 163 msec (7680 ticks)
+->Stop note 58, generator 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 614400
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 629760
+->Delay 327 msec (15360 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 629760
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 645120
+->Delay 327 msec (15360 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 645120
+->Start note 62, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 62 off, chan 0, velocity 0
+Earliest time is trk 1, time 652800
+->Delay 163 msec (7680 ticks)
+->Stop note 62, generator 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 652800
+->Start note 63, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 63 off, chan 0, velocity 0
+Earliest time is trk 1, time 660480
+->Delay 163 msec (7680 ticks)
+->Stop note 63, generator 0, track 1
+trk 1 delta time 7680, note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 668160
+->Delay 163 msec (7680 ticks)
+->Start note 62, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 62 off, chan 0, velocity 0
+Earliest time is trk 1, time 675840
+->Delay 163 msec (7680 ticks)
+->Stop note 62, generator 0, track 1
+trk 1 delta time 15360, note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 691200
+->Delay 327 msec (15360 ticks)
+->Start note 62, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 62 off, chan 0, velocity 0
+Earliest time is trk 1, time 706560
+->Delay 327 msec (15360 ticks)
+->Stop note 62, generator 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 706560
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 714240
+->Delay 163 msec (7680 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 714240
+->Start note 58, generator 0, instrument 0, track 1
+trk 1 delta time 23040, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 737280
+->Delay 491 msec (23040 ticks)
+->Stop note 58, generator 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 737280
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 752640
+->Delay 327 msec (15360 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 67 on, chan 0, velocity 100
+Earliest time is trk 1, time 752640
+->Start note 67, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 67 off, chan 0, velocity 0
+Earliest time is trk 1, time 768000
+->Delay 327 msec (15360 ticks)
+->Stop note 67, generator 0, track 1
+trk 1                  note 65 on, chan 0, velocity 100
+Earliest time is trk 1, time 768000
+->Start note 65, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 65 off, chan 0, velocity 0
+Earliest time is trk 1, time 775680
+->Delay 163 msec (7680 ticks)
+->Stop note 65, generator 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 775680
+->Start note 63, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 63 off, chan 0, velocity 0
+Earliest time is trk 1, time 783360
+->Delay 163 msec (7680 ticks)
+->Stop note 63, generator 0, track 1
+trk 1                  note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 783360
+->Start note 62, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 62 off, chan 0, velocity 0
+Earliest time is trk 1, time 791040
+->Delay 163 msec (7680 ticks)
+->Stop note 62, generator 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 791040
+->Start note 63, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 63 off, chan 0, velocity 0
+Earliest time is trk 1, time 798720
+->Delay 163 msec (7680 ticks)
+->Stop note 63, generator 0, track 1
+trk 1                  note 65 on, chan 0, velocity 100
+Earliest time is trk 1, time 798720
+->Start note 65, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 65 off, chan 0, velocity 0
+Earliest time is trk 1, time 806400
+->Delay 163 msec (7680 ticks)
+->Stop note 65, generator 0, track 1
+trk 1                  note 67 on, chan 0, velocity 100
+Earliest time is trk 1, time 806400
+->Start note 67, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 67 off, chan 0, velocity 0
+Earliest time is trk 1, time 814080
+->Delay 163 msec (7680 ticks)
+->Stop note 67, generator 0, track 1
+trk 1 delta time 7680, note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 821760
+->Delay 163 msec (7680 ticks)
+->Start note 58, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 829440
+->Delay 163 msec (7680 ticks)
+->Stop note 58, generator 0, track 1
+trk 1 delta time 7680, note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 837120
+->Delay 163 msec (7680 ticks)
+->Start note 58, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 844800
+->Delay 163 msec (7680 ticks)
+->Stop note 58, generator 0, track 1
+trk 1                  note 55 on, chan 0, velocity 100
+Earliest time is trk 1, time 844800
+->Start note 55, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 55 off, chan 0, velocity 0
+Earliest time is trk 1, time 852480
+->Delay 163 msec (7680 ticks)
+->Stop note 55, generator 0, track 1
+trk 1                  note 58 on, chan 0, velocity 100
+Earliest time is trk 1, time 852480
+->Start note 58, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 58 off, chan 0, velocity 0
+Earliest time is trk 1, time 860160
+->Delay 163 msec (7680 ticks)
+->Stop note 58, generator 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 860160
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 875520
+->Delay 327 msec (15360 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 875520
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 890880
+->Delay 327 msec (15360 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 890880
+->Start note 62, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 62 off, chan 0, velocity 0
+Earliest time is trk 1, time 898560
+->Delay 163 msec (7680 ticks)
+->Stop note 62, generator 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 898560
+->Start note 63, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 63 off, chan 0, velocity 0
+Earliest time is trk 1, time 906240
+->Delay 163 msec (7680 ticks)
+->Stop note 63, generator 0, track 1
+trk 1 delta time 7680, note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 913920
+->Delay 163 msec (7680 ticks)
+->Start note 62, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 62 off, chan 0, velocity 0
+Earliest time is trk 1, time 921600
+->Delay 163 msec (7680 ticks)
+->Stop note 62, generator 0, track 1
+trk 1 delta time 15360, note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 936960
+->Delay 327 msec (15360 ticks)
+->Start note 62, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 62 off, chan 0, velocity 0
+Earliest time is trk 1, time 952320
+->Delay 327 msec (15360 ticks)
+->Stop note 62, generator 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 952320
+->Start note 63, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 63 off, chan 0, velocity 0
+Earliest time is trk 1, time 960000
+->Delay 163 msec (7680 ticks)
+->Stop note 63, generator 0, track 1
+trk 1                  note 65 on, chan 0, velocity 100
+Earliest time is trk 1, time 960000
+->Start note 65, generator 0, instrument 0, track 1
+trk 1 delta time 23040, note 65 off, chan 0, velocity 0
+Earliest time is trk 1, time 983040
+->Delay 491 msec (23040 ticks)
+->Stop note 65, generator 0, track 1
+trk 1                  note 67 on, chan 0, velocity 100
+Earliest time is trk 1, time 983040
+->Start note 67, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 67 off, chan 0, velocity 0
+Earliest time is trk 1, time 990720
+->Delay 163 msec (7680 ticks)
+->Stop note 67, generator 0, track 1
+trk 1                  note 65 on, chan 0, velocity 100
+Earliest time is trk 1, time 990720
+->Start note 65, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 65 off, chan 0, velocity 0
+Earliest time is trk 1, time 998400
+->Delay 163 msec (7680 ticks)
+->Stop note 65, generator 0, track 1
+trk 1 delta time 7680, note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 1006080
+->Delay 163 msec (7680 ticks)
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 46080, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 1052160
+->Delay 983 msec (46080 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 1052160
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 1059840
+->Delay 163 msec (7680 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 1059840
+->Start note 63, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 63 off, chan 0, velocity 0
+Earliest time is trk 1, time 1067520
+->Delay 163 msec (7680 ticks)
+->Stop note 63, generator 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 1067520
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 1075200
+->Delay 163 msec (7680 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 67 on, chan 0, velocity 100
+Earliest time is trk 1, time 1075200
+->Start note 67, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 67 off, chan 0, velocity 0
+Earliest time is trk 1, time 1082880
+->Delay 163 msec (7680 ticks)
+->Stop note 67, generator 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 1082880
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 1098240
+->Delay 327 msec (15360 ticks)
+->Stop note 60, generator 0, track 1
+trk 1 delta time 7680, note 67 on, chan 0, velocity 100
+Earliest time is trk 1, time 1105920
+->Delay 163 msec (7680 ticks)
+->Start note 67, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 67 off, chan 0, velocity 0
+Earliest time is trk 1, time 1113600
+->Delay 163 msec (7680 ticks)
+->Stop note 67, generator 0, track 1
+trk 1                  note 65 on, chan 0, velocity 100
+Earliest time is trk 1, time 1113600
+->Start note 65, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 65 off, chan 0, velocity 0
+Earliest time is trk 1, time 1121280
+->Delay 163 msec (7680 ticks)
+->Stop note 65, generator 0, track 1
+trk 1 delta time 7680, note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 1128960
+->Delay 163 msec (7680 ticks)
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 46080, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 1175040
+->Delay 983 msec (46080 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 1175040
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 1182720
+->Delay 163 msec (7680 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 62 on, chan 0, velocity 100
+Earliest time is trk 1, time 1182720
+->Start note 62, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 62 off, chan 0, velocity 0
+Earliest time is trk 1, time 1190400
+->Delay 163 msec (7680 ticks)
+->Stop note 62, generator 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 1190400
+->Start note 63, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 63 off, chan 0, velocity 0
+Earliest time is trk 1, time 1198080
+->Delay 163 msec (7680 ticks)
+->Stop note 63, generator 0, track 1
+trk 1                  note 65 on, chan 0, velocity 100
+Earliest time is trk 1, time 1198080
+->Start note 65, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 65 off, chan 0, velocity 0
+Earliest time is trk 1, time 1205760
+->Delay 163 msec (7680 ticks)
+->Stop note 65, generator 0, track 1
+trk 1                  note 67 on, chan 0, velocity 100
+Earliest time is trk 1, time 1205760
+->Start note 67, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 67 off, chan 0, velocity 0
+Earliest time is trk 1, time 1221120
+->Delay 327 msec (15360 ticks)
+->Stop note 67, generator 0, track 1
+trk 1 delta time 7680, note 67 on, chan 0, velocity 100
+Earliest time is trk 1, time 1228800
+->Delay 163 msec (7680 ticks)
+->Start note 67, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 67 off, chan 0, velocity 0
+Earliest time is trk 1, time 1236480
+->Delay 163 msec (7680 ticks)
+->Stop note 67, generator 0, track 1
+trk 1                  note 65 on, chan 0, velocity 100
+Earliest time is trk 1, time 1236480
+->Start note 65, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 65 off, chan 0, velocity 0
+Earliest time is trk 1, time 1244160
+->Delay 163 msec (7680 ticks)
+->Stop note 65, generator 0, track 1
+trk 1 delta time 7680, note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 1251840
+->Delay 163 msec (7680 ticks)
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 46080, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 1297920
+->Delay 983 msec (46080 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 1297920
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 1305600
+->Delay 163 msec (7680 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 63 on, chan 0, velocity 100
+Earliest time is trk 1, time 1305600
+->Start note 63, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 63 off, chan 0, velocity 0
+Earliest time is trk 1, time 1313280
+->Delay 163 msec (7680 ticks)
+->Stop note 63, generator 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 1313280
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 1320960
+->Delay 163 msec (7680 ticks)
+->Stop note 60, generator 0, track 1
+trk 1                  note 67 on, chan 0, velocity 100
+Earliest time is trk 1, time 1320960
+->Start note 67, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 67 off, chan 0, velocity 0
+Earliest time is trk 1, time 1328640
+->Delay 163 msec (7680 ticks)
+->Stop note 67, generator 0, track 1
+trk 1                  note 60 on, chan 0, velocity 100
+Earliest time is trk 1, time 1328640
+->Start note 60, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 60 off, chan 0, velocity 0
+Earliest time is trk 1, time 1344000
+->Delay 327 msec (15360 ticks)
+->Stop note 60, generator 0, track 1
+trk 1 delta time 7680, note 67 on, chan 0, velocity 100
+Earliest time is trk 1, time 1351680
+->Delay 163 msec (7680 ticks)
+->Start note 67, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 67 off, chan 0, velocity 0
+Earliest time is trk 1, time 1359360
+->Delay 163 msec (7680 ticks)
+->Stop note 67, generator 0, track 1
+trk 1                  note 65 on, chan 0, velocity 100
+Earliest time is trk 1, time 1359360
+->Start note 65, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 65 off, chan 0, velocity 0
+Earliest time is trk 1, time 1367040
+->Delay 163 msec (7680 ticks)
+->Stop note 65, generator 0, track 1
+trk 1                  note 67 on, chan 0, velocity 100
+Earliest time is trk 1, time 1367040
+->Start note 67, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 67 off, chan 0, velocity 0
+Earliest time is trk 1, time 1374720
+->Delay 163 msec (7680 ticks)
+->Stop note 67, generator 0, track 1
+trk 1                  note 70 on, chan 0, velocity 100
+Earliest time is trk 1, time 1374720
+->Start note 70, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 70 off, chan 0, velocity 0
+Earliest time is trk 1, time 1390080
+->Delay 327 msec (15360 ticks)
+->Stop note 70, generator 0, track 1
+trk 1                  note 67 on, chan 0, velocity 100
+Earliest time is trk 1, time 1390080
+->Start note 67, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 67 off, chan 0, velocity 0
+Earliest time is trk 1, time 1397760
+->Delay 163 msec (7680 ticks)
+->Stop note 67, generator 0, track 1
+trk 1                  note 65 on, chan 0, velocity 100
+Earliest time is trk 1, time 1397760
+->Start note 65, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 65 off, chan 0, velocity 0
+Earliest time is trk 1, time 1405440
+->Delay 163 msec (7680 ticks)
+->Stop note 65, generator 0, track 1
+trk 1                  note 67 on, chan 0, velocity 100
+Earliest time is trk 1, time 1405440
+->Start note 67, generator 0, instrument 0, track 1
+trk 1 delta time 53760, note 67 off, chan 0, velocity 0
+Earliest time is trk 1, time 1459200
+->Delay 1147 msec (53760 ticks)
+->Stop note 67, generator 0, track 1
+trk 1                  note 70 on, chan 0, velocity 100
+Earliest time is trk 1, time 1459200
+->Start note 70, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 70 off, chan 0, velocity 0
+Earliest time is trk 1, time 1474560
+->Delay 327 msec (15360 ticks)
+->Stop note 70, generator 0, track 1
+trk 1                  note 72 on, chan 0, velocity 100
+Earliest time is trk 1, time 1474560
+->Start note 72, generator 0, instrument 0, track 1
+trk 1 delta time 30720, note 72 off, chan 0, velocity 0
+Earliest time is trk 1, time 1505280
+->Delay 655 msec (30720 ticks)
+->Stop note 72, generator 0, track 1
+trk 1                  note 74 on, chan 0, velocity 100
+Earliest time is trk 1, time 1505280
+->Start note 74, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 74 off, chan 0, velocity 0
+Earliest time is trk 1, time 1520640
+->Delay 327 msec (15360 ticks)
+->Stop note 74, generator 0, track 1
+trk 1                  note 75 on, chan 0, velocity 100
+Earliest time is trk 1, time 1520640
+->Start note 75, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 75 off, chan 0, velocity 0
+Earliest time is trk 1, time 1528320
+->Delay 163 msec (7680 ticks)
+->Stop note 75, generator 0, track 1
+trk 1                  note 72 on, chan 0, velocity 100
+Earliest time is trk 1, time 1528320
+->Start note 72, generator 0, instrument 0, track 1
+trk 1 delta time 38400, note 72 off, chan 0, velocity 0
+Earliest time is trk 1, time 1566720
+->Delay 819 msec (38400 ticks)
+->Stop note 72, generator 0, track 1
+trk 1                  note 74 on, chan 0, velocity 100
+Earliest time is trk 1, time 1566720
+->Start note 74, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 74 off, chan 0, velocity 0
+Earliest time is trk 1, time 1582080
+->Delay 327 msec (15360 ticks)
+->Stop note 74, generator 0, track 1
+trk 1                  note 75 on, chan 0, velocity 100
+Earliest time is trk 1, time 1582080
+->Start note 75, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 75 off, chan 0, velocity 0
+Earliest time is trk 1, time 1589760
+->Delay 163 msec (7680 ticks)
+->Stop note 75, generator 0, track 1
+trk 1                  note 72 on, chan 0, velocity 100
+Earliest time is trk 1, time 1589760
+->Start note 72, generator 0, instrument 0, track 1
+trk 1 delta time 38400, note 72 off, chan 0, velocity 0
+Earliest time is trk 1, time 1628160
+->Delay 819 msec (38400 ticks)
+->Stop note 72, generator 0, track 1
+trk 1                  note 74 on, chan 0, velocity 100
+Earliest time is trk 1, time 1628160
+->Start note 74, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 74 off, chan 0, velocity 0
+Earliest time is trk 1, time 1643520
+->Delay 327 msec (15360 ticks)
+->Stop note 74, generator 0, track 1
+trk 1                  note 75 on, chan 0, velocity 100
+Earliest time is trk 1, time 1643520
+->Start note 75, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 75 off, chan 0, velocity 0
+Earliest time is trk 1, time 1651200
+->Delay 163 msec (7680 ticks)
+->Stop note 75, generator 0, track 1
+trk 1                  note 79 on, chan 0, velocity 100
+Earliest time is trk 1, time 1651200
+->Start note 79, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 79 off, chan 0, velocity 0
+Earliest time is trk 1, time 1658880
+->Delay 163 msec (7680 ticks)
+->Stop note 79, generator 0, track 1
+trk 1 delta time 7680, note 77 on, chan 0, velocity 100
+Earliest time is trk 1, time 1666560
+->Delay 163 msec (7680 ticks)
+->Start note 77, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 77 off, chan 0, velocity 0
+Earliest time is trk 1, time 1674240
+->Delay 163 msec (7680 ticks)
+->Stop note 77, generator 0, track 1
+trk 1 delta time 7680, note 75 on, chan 0, velocity 100
+Earliest time is trk 1, time 1681920
+->Delay 163 msec (7680 ticks)
+->Start note 75, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 75 off, chan 0, velocity 0
+Earliest time is trk 1, time 1689600
+->Delay 163 msec (7680 ticks)
+->Stop note 75, generator 0, track 1
+trk 1 delta time 7680, note 70 on, chan 0, velocity 100
+Earliest time is trk 1, time 1697280
+->Delay 163 msec (7680 ticks)
+->Start note 70, generator 0, instrument 0, track 1
+trk 1 delta time 23040, note 70 off, chan 0, velocity 0
+Earliest time is trk 1, time 1720320
+->Delay 491 msec (23040 ticks)
+->Stop note 70, generator 0, track 1
+trk 1                  note 72 on, chan 0, velocity 100
+Earliest time is trk 1, time 1720320
+->Start note 72, generator 0, instrument 0, track 1
+trk 1 delta time 30720, note 72 off, chan 0, velocity 0
+Earliest time is trk 1, time 1751040
+->Delay 655 msec (30720 ticks)
+->Stop note 72, generator 0, track 1
+trk 1                  note 74 on, chan 0, velocity 100
+Earliest time is trk 1, time 1751040
+->Start note 74, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 74 off, chan 0, velocity 0
+Earliest time is trk 1, time 1766400
+->Delay 327 msec (15360 ticks)
+->Stop note 74, generator 0, track 1
+trk 1                  note 75 on, chan 0, velocity 100
+Earliest time is trk 1, time 1766400
+->Start note 75, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 75 off, chan 0, velocity 0
+Earliest time is trk 1, time 1774080
+->Delay 163 msec (7680 ticks)
+->Stop note 75, generator 0, track 1
+trk 1                  note 72 on, chan 0, velocity 100
+Earliest time is trk 1, time 1774080
+->Start note 72, generator 0, instrument 0, track 1
+trk 1 delta time 38400, note 72 off, chan 0, velocity 0
+Earliest time is trk 1, time 1812480
+->Delay 819 msec (38400 ticks)
+->Stop note 72, generator 0, track 1
+trk 1                  note 74 on, chan 0, velocity 100
+Earliest time is trk 1, time 1812480
+->Start note 74, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 74 off, chan 0, velocity 0
+Earliest time is trk 1, time 1827840
+->Delay 327 msec (15360 ticks)
+->Stop note 74, generator 0, track 1
+trk 1                  note 75 on, chan 0, velocity 100
+Earliest time is trk 1, time 1827840
+->Start note 75, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 75 off, chan 0, velocity 0
+Earliest time is trk 1, time 1835520
+->Delay 163 msec (7680 ticks)
+->Stop note 75, generator 0, track 1
+trk 1                  note 72 on, chan 0, velocity 100
+Earliest time is trk 1, time 1835520
+->Start note 72, generator 0, instrument 0, track 1
+trk 1 delta time 38400, note 72 off, chan 0, velocity 0
+Earliest time is trk 1, time 1873920
+->Delay 819 msec (38400 ticks)
+->Stop note 72, generator 0, track 1
+trk 1                  note 74 on, chan 0, velocity 100
+Earliest time is trk 1, time 1873920
+->Start note 74, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 74 off, chan 0, velocity 0
+Earliest time is trk 1, time 1889280
+->Delay 327 msec (15360 ticks)
+->Stop note 74, generator 0, track 1
+trk 1                  note 75 on, chan 0, velocity 100
+Earliest time is trk 1, time 1889280
+->Start note 75, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 75 off, chan 0, velocity 0
+Earliest time is trk 1, time 1896960
+->Delay 163 msec (7680 ticks)
+->Stop note 75, generator 0, track 1
+trk 1                  note 79 on, chan 0, velocity 100
+Earliest time is trk 1, time 1896960
+->Start note 79, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 79 off, chan 0, velocity 0
+Earliest time is trk 1, time 1904640
+->Delay 163 msec (7680 ticks)
+->Stop note 79, generator 0, track 1
+trk 1 delta time 7680, note 77 on, chan 0, velocity 100
+Earliest time is trk 1, time 1912320
+->Delay 163 msec (7680 ticks)
+->Start note 77, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 77 off, chan 0, velocity 0
+Earliest time is trk 1, time 1920000
+->Delay 163 msec (7680 ticks)
+->Stop note 77, generator 0, track 1
+trk 1 delta time 7680, note 79 on, chan 0, velocity 100
+Earliest time is trk 1, time 1927680
+->Delay 163 msec (7680 ticks)
+->Start note 79, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 79 off, chan 0, velocity 0
+Earliest time is trk 1, time 1935360
+->Delay 163 msec (7680 ticks)
+->Stop note 79, generator 0, track 1
+trk 1 delta time 7680, note 82 on, chan 0, velocity 100
+Earliest time is trk 1, time 1943040
+->Delay 163 msec (7680 ticks)
+->Start note 82, generator 0, instrument 0, track 1
+trk 1 delta time 23040, note 82 off, chan 0, velocity 0
+Earliest time is trk 1, time 1966080
+->Delay 491 msec (23040 ticks)
+->Stop note 82, generator 0, track 1
+trk 1                  note 84 on, chan 0, velocity 100
+Earliest time is trk 1, time 1966080
+->Start note 84, generator 0, instrument 0, track 1
+trk 1 delta time 30720, note 84 off, chan 0, velocity 0
+Earliest time is trk 1, time 1996800
+->Delay 655 msec (30720 ticks)
+->Stop note 84, generator 0, track 1
+trk 1                  note 86 on, chan 0, velocity 100
+Earliest time is trk 1, time 1996800
+->Start note 86, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 86 off, chan 0, velocity 0
+Earliest time is trk 1, time 2012160
+->Delay 327 msec (15360 ticks)
+->Stop note 86, generator 0, track 1
+trk 1                  note 87 on, chan 0, velocity 100
+Earliest time is trk 1, time 2012160
+->Start note 87, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 87 off, chan 0, velocity 0
+Earliest time is trk 1, time 2019840
+->Delay 163 msec (7680 ticks)
+->Stop note 87, generator 0, track 1
+trk 1                  note 84 on, chan 0, velocity 100
+Earliest time is trk 1, time 2019840
+->Start note 84, generator 0, instrument 0, track 1
+trk 1 delta time 38400, note 84 off, chan 0, velocity 0
+Earliest time is trk 1, time 2058240
+->Delay 819 msec (38400 ticks)
+->Stop note 84, generator 0, track 1
+trk 1                  note 86 on, chan 0, velocity 100
+Earliest time is trk 1, time 2058240
+->Start note 86, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 86 off, chan 0, velocity 0
+Earliest time is trk 1, time 2073600
+->Delay 327 msec (15360 ticks)
+->Stop note 86, generator 0, track 1
+trk 1                  note 87 on, chan 0, velocity 100
+Earliest time is trk 1, time 2073600
+->Start note 87, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 87 off, chan 0, velocity 0
+Earliest time is trk 1, time 2081280
+->Delay 163 msec (7680 ticks)
+->Stop note 87, generator 0, track 1
+trk 1                  note 84 on, chan 0, velocity 100
+Earliest time is trk 1, time 2081280
+->Start note 84, generator 0, instrument 0, track 1
+trk 1 delta time 38400, note 84 off, chan 0, velocity 0
+Earliest time is trk 1, time 2119680
+->Delay 819 msec (38400 ticks)
+->Stop note 84, generator 0, track 1
+trk 1                  note 86 on, chan 0, velocity 100
+Earliest time is trk 1, time 2119680
+->Start note 86, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 86 off, chan 0, velocity 0
+Earliest time is trk 1, time 2135040
+->Delay 327 msec (15360 ticks)
+->Stop note 86, generator 0, track 1
+trk 1                  note 87 on, chan 0, velocity 100
+Earliest time is trk 1, time 2135040
+->Start note 87, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 87 off, chan 0, velocity 0
+Earliest time is trk 1, time 2142720
+->Delay 163 msec (7680 ticks)
+->Stop note 87, generator 0, track 1
+trk 1                  note 91 on, chan 0, velocity 100
+Earliest time is trk 1, time 2142720
+->Start note 91, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 91 off, chan 0, velocity 0
+Earliest time is trk 1, time 2150400
+->Delay 163 msec (7680 ticks)
+->Stop note 91, generator 0, track 1
+trk 1 delta time 7680, note 89 on, chan 0, velocity 100
+Earliest time is trk 1, time 2158080
+->Delay 163 msec (7680 ticks)
+->Start note 89, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 89 off, chan 0, velocity 0
+Earliest time is trk 1, time 2165760
+->Delay 163 msec (7680 ticks)
+->Stop note 89, generator 0, track 1
+trk 1 delta time 7680, note 87 on, chan 0, velocity 100
+Earliest time is trk 1, time 2173440
+->Delay 163 msec (7680 ticks)
+->Start note 87, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 87 off, chan 0, velocity 0
+Earliest time is trk 1, time 2181120
+->Delay 163 msec (7680 ticks)
+->Stop note 87, generator 0, track 1
+trk 1 delta time 7680, note 82 on, chan 0, velocity 100
+Earliest time is trk 1, time 2188800
+->Delay 163 msec (7680 ticks)
+->Start note 82, generator 0, instrument 0, track 1
+trk 1 delta time 23040, note 82 off, chan 0, velocity 0
+Earliest time is trk 1, time 2211840
+->Delay 491 msec (23040 ticks)
+->Stop note 82, generator 0, track 1
+trk 1                  note 84 on, chan 0, velocity 100
+Earliest time is trk 1, time 2211840
+->Start note 84, generator 0, instrument 0, track 1
+trk 1 delta time 30720, note 84 off, chan 0, velocity 0
+Earliest time is trk 1, time 2242560
+->Delay 655 msec (30720 ticks)
+->Stop note 84, generator 0, track 1
+trk 1                  note 86 on, chan 0, velocity 100
+Earliest time is trk 1, time 2242560
+->Start note 86, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 86 off, chan 0, velocity 0
+Earliest time is trk 1, time 2257920
+->Delay 327 msec (15360 ticks)
+->Stop note 86, generator 0, track 1
+trk 1                  note 87 on, chan 0, velocity 100
+Earliest time is trk 1, time 2257920
+->Start note 87, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 87 off, chan 0, velocity 0
+Earliest time is trk 1, time 2265600
+->Delay 163 msec (7680 ticks)
+->Stop note 87, generator 0, track 1
+trk 1                  note 84 on, chan 0, velocity 100
+Earliest time is trk 1, time 2265600
+->Start note 84, generator 0, instrument 0, track 1
+trk 1 delta time 38400, note 84 off, chan 0, velocity 0
+Earliest time is trk 1, time 2304000
+->Delay 819 msec (38400 ticks)
+->Stop note 84, generator 0, track 1
+trk 1                  note 86 on, chan 0, velocity 100
+Earliest time is trk 1, time 2304000
+->Start note 86, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 86 off, chan 0, velocity 0
+Earliest time is trk 1, time 2319360
+->Delay 327 msec (15360 ticks)
+->Stop note 86, generator 0, track 1
+trk 1                  note 87 on, chan 0, velocity 100
+Earliest time is trk 1, time 2319360
+->Start note 87, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 87 off, chan 0, velocity 0
+Earliest time is trk 1, time 2327040
+->Delay 163 msec (7680 ticks)
+->Stop note 87, generator 0, track 1
+trk 1                  note 84 on, chan 0, velocity 100
+Earliest time is trk 1, time 2327040
+->Start note 84, generator 0, instrument 0, track 1
+trk 1 delta time 38400, note 84 off, chan 0, velocity 0
+Earliest time is trk 1, time 2365440
+->Delay 819 msec (38400 ticks)
+->Stop note 84, generator 0, track 1
+trk 1                  note 86 on, chan 0, velocity 100
+Earliest time is trk 1, time 2365440
+->Start note 86, generator 0, instrument 0, track 1
+trk 1 delta time 15360, note 86 off, chan 0, velocity 0
+Earliest time is trk 1, time 2380800
+->Delay 327 msec (15360 ticks)
+->Stop note 86, generator 0, track 1
+trk 1                  note 87 on, chan 0, velocity 100
+Earliest time is trk 1, time 2380800
+->Start note 87, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 87 off, chan 0, velocity 0
+Earliest time is trk 1, time 2388480
+->Delay 163 msec (7680 ticks)
+->Stop note 87, generator 0, track 1
+trk 1                  note 91 on, chan 0, velocity 100
+Earliest time is trk 1, time 2388480
+->Start note 91, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 91 off, chan 0, velocity 0
+Earliest time is trk 1, time 2396160
+->Delay 163 msec (7680 ticks)
+->Stop note 91, generator 0, track 1
+trk 1 delta time 7680, note 89 on, chan 0, velocity 100
+Earliest time is trk 1, time 2403840
+->Delay 163 msec (7680 ticks)
+->Start note 89, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 89 off, chan 0, velocity 0
+Earliest time is trk 1, time 2411520
+->Delay 163 msec (7680 ticks)
+->Stop note 89, generator 0, track 1
+trk 1 delta time 7680, note 91 on, chan 0, velocity 100
+Earliest time is trk 1, time 2419200
+->Delay 163 msec (7680 ticks)
+->Start note 91, generator 0, instrument 0, track 1
+trk 1 delta time 7680, note 91 off, chan 0, velocity 0
+Earliest time is trk 1, time 2426880
+->Delay 163 msec (7680 ticks)
+->Stop note 91, generator 0, track 1
+trk 1 delta time 7680, note 94 on, chan 0, velocity 100
+Earliest time is trk 1, time 2434560
+->Delay 163 msec (7680 ticks)
+->Start note 94, generator 0, instrument 0, track 1
+trk 1 delta time 23040, note 94 off, chan 0, velocity 0
+Earliest time is trk 1, time 2457600
+->Delay 491 msec (23040 ticks)
+->Stop note 94, generator 0, track 1
+trk 1                  note 96 on, chan 0, velocity 100
+Earliest time is trk 1, time 2457600
+->Start note 96, generator 0, instrument 0, track 1
+trk 1 delta time 122880, note 96 off, chan 0, velocity 0
+Earliest time is trk 1, time 2580480
+->Delay 2622 msec (122880 ticks)
+->Stop note 96, generator 0, track 1
+trk 1 delta time 3563520, end of track
+185 note-on commands, 0 instrument changes.
