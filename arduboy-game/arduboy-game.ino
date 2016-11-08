@@ -3,24 +3,8 @@
 */
 
 #include "Arduboy.h"
+#include "globals.h"
 
-// Define limits that ship movement is bounded by
-#define MIN_SHIP_X 2
-#define MAX_SHIP_X 75
-#define MIN_SHIP_Y 10
-#define MAX_SHIP_Y 57
-
-
-// Time before title screen flips to high score screen
-#define ATTRACT_MODE_TIMEOUT 10000
-
-// Title screen outcomes
-#define TITLE_CREDITS 0
-#define TITLE_PLAY_GAME 1
-#define TITLE_TIMEOUT 2
-
-// Global variables
-Arduboy arduboy;
 // TODO highScore should be replaced with table in EEPROM
 unsigned int score, highScore = 0;
 byte livesRemaining = 4;
