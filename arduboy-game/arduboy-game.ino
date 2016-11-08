@@ -103,6 +103,7 @@ void playGame() {
   // to count down user lives
   unsigned short shipX = 2, shipY = 32;
   score = 0;
+  int offset = 0;
 
   // Random test to set score 
   unsigned int randomScore = random(4000, 15000);
@@ -111,21 +112,26 @@ void playGame() {
   // close to value of randomScore
   while (true) {
     arduboy.clear();
-    arduboy.drawBitmap(shipX, shipY, playerShip, 16, 16, 1);
-//    arduboy.fillRect(shipX, shipY, 6, 4, 1);
-//    sprintf(textBuf, "SCORE %u", score);
+    arduboy.drawBitmap(shipX, shipY, playerShip+offset, 16, 16, 1);
+
+    sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
     score += random(0, 50);
     arduboy.display();
 
+    offset = 0;
     if (arduboy.pressed(UP_BUTTON) && shipY > MIN_SHIP_Y) {
       shipY--;
+      offset = 32;
     } else if (arduboy.pressed(DOWN_BUTTON) && shipY < MAX_SHIP_Y) {
       shipY++;
+      offset = 64;
     } else if (arduboy.pressed(LEFT_BUTTON) && shipX > MIN_SHIP_X) {
       shipX--;
+      offset = 0;
     } else if (arduboy.pressed(RIGHT_BUTTON) && shipX < MAX_SHIP_X) {
       shipX++;
+      offset = 0;
     }
   }
 }
@@ -167,7 +173,7 @@ void loop() {
       break;
     case TITLE_PLAY_GAME:
       playGame();
-//      gameOverScreen();
+      gameOverScreen();
       // TODO high score should be checked against a set of high scores
       // in the EEPROM
       if (score > highScore) {
