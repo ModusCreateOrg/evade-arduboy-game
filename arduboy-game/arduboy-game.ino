@@ -4,12 +4,14 @@
 
 #include "Arduboy.h"
 #include "globals.h"
+#include "bullet.h"
 
 // TODO highScore should be replaced with table in EEPROM
 unsigned int score, highScore = 0;
 byte livesRemaining = 4;
 
-// Bullets array
+// Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
+Bullet bullets[20];
 
 // General purpose text buffer for string concatenations etc
 char textBuf[15];
@@ -96,10 +98,16 @@ void playGame() {
   // close to value of randomScore
   while (score < randomScore) {
     arduboy.clear();
+    
     arduboy.fillRect(shipX, shipY, 6, 4, 1);
+
+    bullets[0].draw();
+    bullets[0].update();
+
     sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
     score += random(0, 50);
+    
     arduboy.display();
 
     if (arduboy.pressed(UP_BUTTON) && shipY > MIN_SHIP_Y) {
@@ -110,6 +118,8 @@ void playGame() {
       shipX--;
     } else if (arduboy.pressed(RIGHT_BUTTON) && shipX < MAX_SHIP_X) {
       shipX++;
+    } else if (arduboy.pressed(A_BUTTON)) {
+      bullets[0].set(shipX, shipY);
     }
   }
 }
