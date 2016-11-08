@@ -25,6 +25,8 @@ Arduboy arduboy;
 unsigned int score, highScore = 0;
 byte livesRemaining = 4;
 
+// Bullets array
+
 // General purpose text buffer for string concatenations etc
 char textBuf[15];
 
