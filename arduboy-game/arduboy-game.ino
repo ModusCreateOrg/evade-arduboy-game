@@ -3,12 +3,13 @@
 */
 
 #include "Arduboy.h"
+#include "bitmaps.h"
 
 // Define limits that ship movement is bounded by
 #define MIN_SHIP_X 2
 #define MAX_SHIP_X 75
-#define MIN_SHIP_Y 10
-#define MAX_SHIP_Y 57
+#define MIN_SHIP_Y 2
+#define MAX_SHIP_Y 48
 
 
 // Time before title screen flips to high score screen
@@ -108,10 +109,11 @@ void playGame() {
 
   // Loop to simulate a game that ends with score being 
   // close to value of randomScore
-  while (score < randomScore) {
+  while (true) {
     arduboy.clear();
-    arduboy.fillRect(shipX, shipY, 6, 4, 1);
-    sprintf(textBuf, "SCORE %u", score);
+    arduboy.drawBitmap(shipX, shipY, playerShip, 16, 16, 1);
+//    arduboy.fillRect(shipX, shipY, 6, 4, 1);
+//    sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
     score += random(0, 50);
     arduboy.display();
@@ -165,7 +167,7 @@ void loop() {
       break;
     case TITLE_PLAY_GAME:
       playGame();
-      gameOverScreen();
+//      gameOverScreen();
       // TODO high score should be checked against a set of high scores
       // in the EEPROM
       if (score > highScore) {
