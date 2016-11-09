@@ -3,28 +3,16 @@
 */
 
 #include "Arduboy.h"
+#include "globals.h"
+#include "bullet.h"
 #include "bitmaps.h"
 
-// Define limits that ship movement is bounded by
-#define MIN_SHIP_X 2
-#define MAX_SHIP_X 75
-#define MIN_SHIP_Y 2
-#define MAX_SHIP_Y 48
-
-
-// Time before title screen flips to high score screen
-#define ATTRACT_MODE_TIMEOUT 10000
-
-// Title screen outcomes
-#define TITLE_CREDITS 0
-#define TITLE_PLAY_GAME 1
-#define TITLE_TIMEOUT 2
-
-// Global variables
-Arduboy arduboy;
 // TODO highScore should be replaced with table in EEPROM
 unsigned int score, highScore = 0;
 byte livesRemaining = 4;
+
+// Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
+Bullet bullets[20];
 
 // General purpose text buffer for string concatenations etc
 char textBuf[15];
@@ -118,16 +106,21 @@ void playGame() {
   score = 0;
 
   // Random test to set score 
-  unsigned int randomScore = random(4000, 15000);
+  unsigned int randomScore = random(4000, 99999);
 
   // Loop to simulate a game that ends with score being 
   // close to value of randomScore
-  while (true) {
+  while (score < randomScore) {
     arduboy.clearDisplay();
     sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
     score += random(0, 50);
+
     drawPlayerShip();
+
+    bullets[0].draw();
+    bullets[0].update();
+
     arduboy.display();
   }
 }
@@ -153,6 +146,9 @@ void drawPlayerShip() {
       if (arduboy.everyXFrames(9)) spaceShip.frame++;
       if (spaceShip.frame  > 4) spaceShip.frame = 4;
     }
+    if (arduboy.pressed(A_BUTTON)) {
+      bullets[0].set(spaceShip.x, spaceShip.y);
+    }
 
     if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON))
     {
@@ -167,6 +163,7 @@ void drawPlayerShip() {
 
     draw(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
 }
+
 void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
   unsigned int frame_offset;
   uint8_t width = pgm_read_byte(bitmap);
