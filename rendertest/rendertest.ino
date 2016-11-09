@@ -20,40 +20,42 @@ void loop() {
   while (true) {
 
     arduboy.clearDisplay();
+//
+//    if (arduboy.pressed(RIGHT_BUTTON))
+//    {
+//      if (shipX < MAX_SHIP_X) shipX++;
+//    }
+//    if (arduboy.pressed(LEFT_BUTTON))
+//    {
+//      if (shipX > MIN_SHIP_X) shipX--;
+//    }
+//    if (arduboy.pressed(UP_BUTTON))
+//    {
+//      if (shipY > MIN_SHIP_X) shipY--;
+//      if (arduboy.everyXFrames(9)) frame--;
+//      if (frame < 0) frame = 0;
+//    }
+//    if (arduboy.pressed(DOWN_BUTTON))
+//    {
+//      if (shipY < MAX_SHIP_Y) shipY++;
+//      if (arduboy.everyXFrames(9)) frame++;
+//      if (frame  > 4) frame = 4;
+//    }
+//
+//    if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON))
+//    {
+//      if (arduboy.everyXFrames(12))
+//      {
+//        if (frame > 2)
+//          frame--;
+//        if (frame < 2)
+//          frame++;
+//      }
+//    }
 
-    if (arduboy.pressed(RIGHT_BUTTON))
-    {
-      if (shipX < MAX_SHIP_X) shipX++;
-    }
-    if (arduboy.pressed(LEFT_BUTTON))
-    {
-      if (shipX > MIN_SHIP_X) shipX--;
-    }
-    if (arduboy.pressed(UP_BUTTON))
-    {
-      if (shipY > MIN_SHIP_X) shipY--;
-      if (arduboy.everyXFrames(9)) frame--;
-      if (frame < 0) frame = 0;
-    }
-    if (arduboy.pressed(DOWN_BUTTON))
-    {
-      if (shipY < MAX_SHIP_Y) shipY++;
-      if (arduboy.everyXFrames(9)) frame++;
-      if (frame  > 4) frame = 4;
-    }
+//    draw(shipX, shipY, playerShip, frame);
 
-    if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON))
-    {
-      if (arduboy.everyXFrames(12))
-      {
-        if (frame > 2)
-          frame--;
-        if (frame < 2)
-          frame++;
-      }
-    }
-
-    draw(shipX, shipY, playerShip, frame);
+    draw(24, 4, modus, 0);
     arduboy.display();
   }
 }

@@ -110,7 +110,7 @@ void playGame() {
 
   // Loop to simulate a game that ends with score being 
   // close to value of randomScore
-  while (score < randomScore) {
+  while (true) {
     arduboy.clearDisplay();
     sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
@@ -126,42 +126,54 @@ void playGame() {
 }
 
 void drawPlayerShip() {
-  if (arduboy.pressed(RIGHT_BUTTON))
-    {
-      if (spaceShip.x < MAX_SHIP_X) spaceShip.x++;
+  if (arduboy.pressed(RIGHT_BUTTON) && (spaceShip.x < MAX_SHIP_X)) {
+    spaceShip.x++;
+  }
+  
+  if (arduboy.pressed(LEFT_BUTTON) && (spaceShip.x > MIN_SHIP_X)) {
+    spaceShip.x--;
+  }
+  
+  if (arduboy.pressed(UP_BUTTON)) {
+    if (spaceShip.y > MIN_SHIP_X) {
+      spaceShip.y--;
     }
-    if (arduboy.pressed(LEFT_BUTTON))
-    {
-      if (spaceShip.x > MIN_SHIP_X) spaceShip.x--;
+    if (arduboy.everyXFrames(9)) {
+      spaceShip.frame--;
     }
-    if (arduboy.pressed(UP_BUTTON))
-    {
-      if (spaceShip.y > MIN_SHIP_X) spaceShip.y--;
-      if (arduboy.everyXFrames(9)) spaceShip.frame--;
-      if (spaceShip.frame < 0) spaceShip.frame = 0;
+    if (spaceShip.frame < 0) {
+      spaceShip.frame = 0;
     }
-    if (arduboy.pressed(DOWN_BUTTON))
-    {
-      if (spaceShip.y < MAX_SHIP_Y) spaceShip.y++;
-      if (arduboy.everyXFrames(9)) spaceShip.frame++;
-      if (spaceShip.frame  > 4) spaceShip.frame = 4;
+  }
+  
+  if (arduboy.pressed(DOWN_BUTTON)) {
+    if (spaceShip.y < MAX_SHIP_Y)  {
+      spaceShip.y++;
     }
-    if (arduboy.pressed(A_BUTTON)) {
-      bullets[0].set(spaceShip.x, spaceShip.y);
+    if (arduboy.everyXFrames(9)) {
+      spaceShip.frame++;
     }
-
-    if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON))
-    {
-      if (arduboy.everyXFrames(12))
-      {
-        if (spaceShip.frame > 2)
-          spaceShip.frame--;
-        if (spaceShip.frame < 2)
-          spaceShip.frame++;
+    if (spaceShip.frame  > 4){
+      spaceShip.frame = 4;
+    }
+  }
+  
+  if (arduboy.pressed(A_BUTTON)) {
+    bullets[0].set(spaceShip.x, spaceShip.y);
+  }
+  
+  if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON)) {
+    if (arduboy.everyXFrames(12)) {
+      if (spaceShip.frame > 2) {
+        spaceShip.frame--;
+      }
+      if (spaceShip.frame < 2) {
+        spaceShip.frame++;
       }
     }
-
-    draw(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
+  }
+  
+  draw(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
 }
 
 void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
