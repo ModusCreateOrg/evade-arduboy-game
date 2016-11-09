@@ -1,4 +1,4 @@
-/*
+w/*
  * arduboy-game, Modus Create 2016
 */
 
@@ -110,7 +110,7 @@ void playGame() {
 
   // Loop to simulate a game that ends with score being 
   // close to value of randomScore
-  while (true) {
+  while (score < randomScore)) {
     arduboy.clearDisplay();
     sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
