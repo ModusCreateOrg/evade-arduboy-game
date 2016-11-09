@@ -106,7 +106,7 @@ void playGame() {
   score = 0;
 
   // Random test to set score 
-  unsigned int randomScore = random(4000, 99999);
+  unsigned int randomScore = random(65000, 99999);
 
   // Loop to simulate a game that ends with score being 
   // close to value of randomScore
