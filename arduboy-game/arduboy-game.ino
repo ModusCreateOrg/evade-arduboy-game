@@ -39,7 +39,7 @@ void printText(char *message, int x, int y, int textSize) {
 
 void introScreen() {
   arduboy.clear();
-  printText("INTRO", 10, 20, 2);
+  draw(24, 4, modusLogo, 0);
   arduboy.display();
   delay(3000);
 }
