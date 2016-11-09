@@ -29,6 +29,20 @@ byte livesRemaining = 4;
 // General purpose text buffer for string concatenations etc
 char textBuf[15];
 
+struct Player {
+  int x;
+  int y;
+  int frame;
+
+  void set() {
+    x = 2;
+    y = 32;
+    frame = 2;
+  }
+};
+
+struct Player spaceShip;
+
 void printText(char *message, int x, int y, int textSize) {
   arduboy.setCursor(x, y);
   arduboy.setTextSize(textSize);
@@ -101,9 +115,7 @@ void creditsScreen() {
 void playGame() {
   // TODO, this is placeholder, should also use livesRemaining
   // to count down user lives
-  unsigned short shipX = 2, shipY = 32;
   score = 0;
-  int offset = 0;
 
   // Random test to set score 
   unsigned int randomScore = random(4000, 15000);
@@ -111,29 +123,62 @@ void playGame() {
   // Loop to simulate a game that ends with score being 
   // close to value of randomScore
   while (true) {
-    arduboy.clear();
-    arduboy.drawBitmap(shipX, shipY, playerShip+offset, 16, 16, 1);
-
+    arduboy.clearDisplay();
     sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
     score += random(0, 50);
+    drawPlayerShip();
     arduboy.display();
-
-    offset = 0;
-    if (arduboy.pressed(UP_BUTTON) && shipY > MIN_SHIP_Y) {
-      shipY--;
-      offset = 32;
-    } else if (arduboy.pressed(DOWN_BUTTON) && shipY < MAX_SHIP_Y) {
-      shipY++;
-      offset = 64;
-    } else if (arduboy.pressed(LEFT_BUTTON) && shipX > MIN_SHIP_X) {
-      shipX--;
-      offset = 0;
-    } else if (arduboy.pressed(RIGHT_BUTTON) && shipX < MAX_SHIP_X) {
-      shipX++;
-      offset = 0;
-    }
   }
+}
+
+void drawPlayerShip() {
+  if (arduboy.pressed(RIGHT_BUTTON))
+    {
+      if (spaceShip.x < MAX_SHIP_X) spaceShip.x++;
+    }
+    if (arduboy.pressed(LEFT_BUTTON))
+    {
+      if (spaceShip.x > MIN_SHIP_X) spaceShip.x--;
+    }
+    if (arduboy.pressed(UP_BUTTON))
+    {
+      if (spaceShip.y > MIN_SHIP_X) spaceShip.y--;
+      if (arduboy.everyXFrames(9)) spaceShip.frame--;
+      if (spaceShip.frame < 0) spaceShip.frame = 0;
+    }
+    if (arduboy.pressed(DOWN_BUTTON))
+    {
+      if (spaceShip.y < MAX_SHIP_Y) spaceShip.y++;
+      if (arduboy.everyXFrames(9)) spaceShip.frame++;
+      if (spaceShip.frame  > 4) spaceShip.frame = 4;
+    }
+
+    if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON))
+    {
+      if (arduboy.everyXFrames(12))
+      {
+        if (spaceShip.frame > 2)
+          spaceShip.frame--;
+        if (spaceShip.frame < 2)
+          spaceShip.frame++;
+      }
+    }
+
+    draw(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
+}
+void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
+  unsigned int frame_offset;
+  uint8_t width = pgm_read_byte(bitmap);
+  uint8_t height = pgm_read_byte(++bitmap);
+
+  bitmap++;
+  if (frame > 0) {
+    frame_offset = (width * ( height / 8 + ( height % 8 == 0 ? 0 : 1)));
+    // sprite plus mask uses twice as much space for each frame
+    bitmap += frame * frame_offset;
+  }
+  arduboy.drawBitmap(x, y, bitmap, width, height, 1);
 }
 
 void gameOverScreen() {
@@ -156,6 +201,7 @@ void newHighScoreScreen() {
 void setup() {
   arduboy.beginNoLogo();
   introScreen();
+  spaceShip.set();
 }
 
 
