@@ -1,17 +1,14 @@
 #include "Arduboy.h"
 #include "MusicPlayer.h"
 #include "Stage1Music.h"
+#include "Stage2Music.h"
+#include "Stage3Music.h"
+#include "BossMusic.h"
 
 
-void playMusic() {
-    Arduboy ab;
+int currentSong;
 
-   
-    if (!ab.tunes.playing()) {
-        ab.tunes.playScore(stage1Music);
-    }
-    
-}
+
 
 void stopMusic() {
     Arduboy ab;
@@ -20,6 +17,36 @@ void stopMusic() {
         ab.tunes.stopScore();
     }
 }
+
+void playMusic(int song) {
+    Arduboy ab;
+
+   if (!ab.tunes.playing()) {
+
+      if (song == 1 && currentSong != song) {
+        stopMusic();
+        ab.tunes.playScore(stage1Music);
+      }
+      else if (song == 2 && currentSong != song) {
+        stopMusic();
+        ab.tunes.playScore(stage2Music);
+      }
+          
+      else if (song == 3 && currentSong != song) {
+        stopMusic();
+        ab.tunes.playScore(stage3Music);
+      }
+      else if (song == 4 && currentSong != song) {
+        stopMusic();
+        ab.tunes.playScore(bossMusic);
+      }
+
+    }
+    
+}
+
+
+
 
 void playTone1() {
   Arduboy ab;

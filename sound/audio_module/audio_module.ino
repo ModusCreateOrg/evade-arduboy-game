@@ -17,64 +17,54 @@ void setup()
 
 int x = 0, 
     y = 0,
-    played = 0;
+    playing = 0;
 
 
 void loop ()
 {
   // pause render until it's time for the next frame
-  if (!(arduboy.nextFrame()))
+  if (!(arduboy.nextFrame())) {
     return;
-
-
-  if (arduboy.pressed(UP_BUTTON)) {
-    y-=1;
-    playTone1();
+  }
+  
+  if (arduboy.pressed(UP_BUTTON) && playing == 0) {
+    playMusic(1);
+    playing = 1;
   } 
-  else if (arduboy.pressed(DOWN_BUTTON)) {
-    playTone2();
-
-    y+=1;
+  else if (arduboy.pressed(DOWN_BUTTON) && playing == 0) {
+    playMusic(2);
+    playing = 1;
   } 
-  else if (arduboy.pressed(LEFT_BUTTON)) {
-    playTone3();
-    x-=1;
+  else if (arduboy.pressed(LEFT_BUTTON) && playing == 0) {
+    playMusic(3);
+    playing = 1;
   } 
-  else if (arduboy.pressed(RIGHT_BUTTON)) {
-    playTone4();
-    x+=1;
+  else if (arduboy.pressed(RIGHT_BUTTON) && playing == 0) {
+    playMusic(4);
+    playing = 1;
   }
 
 
   
-  if (arduboy.pressed(A_BUTTON)) {
-    played = 2;
+  if (arduboy.pressed(A_BUTTON)|| arduboy.pressed(B_BUTTON)) {
+    playing = 0;
+    stopMusic();
   } 
-  else if (arduboy.pressed(B_BUTTON)) {
-    played = 1;
-  }
-  
+    
   arduboy.clear();
   arduboy.setCursor(x,y);
-  
-  if (played == 0) {
-    arduboy.print("Press B to play...");
-    stopMusic();
-  }
-  else if (played == 1) {
-    arduboy.print("Playing...\nPress A to stop");
-    playMusic();
-  }
-  else if (played == 2) {
-    arduboy.print("Stopped...\nPress B to play");
-    stopMusic();
-  }
 
+  arduboy.print("Up: stage1Music\nDn: stage2Music\nLt: stage3Music\nRt: bossMusic\nAB: stop\n");
+  
+  if (playing == 0) {
+    arduboy.print("\nStopped...");
+    stopMusic();
+  }
+  else if (playing == 1) {
+    arduboy.print("\nPlaying...\nPress A to stop");
+  }
+  
 
   arduboy.display();
 
-
-  // play the tune if we aren't already
-//  if (!arduboy.tunes.playing())
-//    arduboy.tunes.playScore(stage1Music);
 }
