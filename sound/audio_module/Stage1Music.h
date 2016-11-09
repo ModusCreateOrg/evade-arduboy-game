@@ -1,6 +1,8 @@
-// Playtune bytestream for file "stage1.mid.mid" created by MIDITONES V1.14 on Wed Nov  9 08:58:33 2016
+// Playtune bytestream for file "stage1.mid.mid" created by MIDITONES V1.14 on Wed Nov  9 08:56:00 2016
 // command line: miditones stage1.mid 
-const unsigned char PROGMEM score [] = {
+ // Playtune bytestream for file "stage1.mid.mid" created by MIDITONES V1.14 on Wed Nov  9 08:58:33 2016
+// command line: miditones stage1.mid 
+const unsigned char PROGMEM stage1Music [] = {
 // Transport
 0x90,60, 0,1, 0x91,36, 0,105, 0x81, 0,81, 0x91,48, 0,105, 0x81, 0,8, 0x80, 0,72, 0x90,60, 0,0, 0x91,36, 
 0,105, 0x81, 0,5, 0x80, 0,75, 0x90,62, 0,0, 0x91,48, 0,105, 0x81, 0,81, 0x91,36, 0,37, 0x80, 0,69, 
@@ -53,4 +55,5 @@ const unsigned char PROGMEM score [] = {
 0x91,50, 0,46, 0x80, 0,59, 0x81, 0,80, 0x90,58, 0,0, 0x91,38, 0,105, 0x81, 0,81, 0x90,75, 0,0, 0x91,50, 
 0,107, 0x81, 0,81, 0x91,38, 0,45, 0x80, 0,60, 0x81, 0,80, 0x90,74, 0,1, 0x91,50, 0,105, 0x81, 0,33, 
 0x90,36, 0,46, 0x91,60, 0x92,48, 0x93,51, 0xf0};
-// This score contains 1331 bytes, and 4 tone generators are used.
+// This stage1Music contains 1331 bytes, and 4 tone generators are used.
+
