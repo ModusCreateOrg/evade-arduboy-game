@@ -4,6 +4,7 @@ w/*
 
 #include "Arduboy.h"
 #include "globals.h"
+#include "player.h"
 #include "bullet.h"
 #include "bitmaps.h"
 
@@ -17,19 +18,7 @@ Bullet bullets[20];
 // General purpose text buffer for string concatenations etc
 char textBuf[15];
 
-struct Player {
-  int x;
-  int y;
-  int frame;
-
-  void set() {
-    x = 2;
-    y = 32;
-    frame = 2;
-  }
-};
-
-struct Player spaceShip;
+Player spaceShip;
 
 void printText(char *message, int x, int y, int textSize) {
   arduboy.setCursor(x, y);
@@ -159,7 +148,7 @@ void drawPlayerShip() {
   }
   
   if (arduboy.pressed(A_BUTTON)) {
-    bullets[0].set(spaceShip.x, spaceShip.y);
+    bullets[0].set(spaceShip.x, spaceShip.y + (spaceShip.height / 2) - 1);
   }
   
   if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON)) {
