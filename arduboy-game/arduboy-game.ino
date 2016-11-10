@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "player.h"
 #include "bullet.h"
+#include "enemy.h"
 #include "bitmaps.h"
 
 // TODO highScore should be replaced with table in EEPROM
@@ -106,7 +107,7 @@ void playGame() {
     score += random(0, 50);
 
     drawPlayerShip();
-
+    drawEnemies();
     for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
       playerBullets[i].draw();
       playerBullets[i].update();
@@ -169,6 +170,16 @@ void drawPlayerShip() {
   }
   
   draw(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
+}
+
+void drawEnemies() {
+  Enemy enemyType1;
+  enemyType1.set(82, 16, 1);
+  draw(enemyType1.x, enemyType1.y, enemyType1.bitmap, 0);
+
+  Enemy enemyType2;
+  enemyType2.set(82, 48, 2);
+  draw(enemyType2.x, enemyType2.y, enemyType2.bitmap, 0);
 }
 
 void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
