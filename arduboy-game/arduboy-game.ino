@@ -50,7 +50,6 @@ byte titleScreen() {
 
   while(totalDelay < ATTRACT_MODE_TIMEOUT) {
 
-    // TODO This needs a debounced button press routine... arduboy.pressed isn't doing it
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
       break;
     }
@@ -150,8 +149,10 @@ void settingsScreen() {
   printText("SETTINGS", 20, 5, 2);
   printText("SOUND", 20, 25, 1);
   printText("RESET HIGHSCORE", 20, 35, 1);
+  printText("EXIT", 20, 45, 1);
   arduboy.display();
-  delay(5000);
+  delay(5000); 
+  
 }
 
 void playGame() {
