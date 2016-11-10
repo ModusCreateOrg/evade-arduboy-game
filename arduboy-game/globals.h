@@ -20,6 +20,8 @@
 #define TITLE_PLAY_GAME 1
 #define TITLE_TIMEOUT 2
 
+#define MAX_PLAYER_BULLETS 8
+
 Arduboy arduboy;
 
 #endif

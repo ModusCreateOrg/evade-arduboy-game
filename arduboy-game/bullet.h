@@ -24,9 +24,12 @@ struct Bullet {
     }
 
     void update() {
-      posX += speedX;
-      if (posX > arduboy.width()) {
-        isVisible = false;
+      if (isVisible) {
+        posX += speedX;
+        
+        if (posX > arduboy.width()) {
+          isVisible = false;
+        }
       }
     }
 

@@ -13,7 +13,7 @@ unsigned int score, highScore = 0;
 byte livesRemaining = 4;
 
 // Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
-Bullet bullets[20];
+Bullet playerBullets[MAX_PLAYER_BULLETS];
 
 // General purpose text buffer for string concatenations etc
 char textBuf[15];
@@ -107,8 +107,10 @@ void playGame() {
 
     drawPlayerShip();
 
-    bullets[0].draw();
-    bullets[0].update();
+    for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
+      playerBullets[i].draw();
+      playerBullets[i].update();
+    }
 
     arduboy.display();
   }
@@ -148,7 +150,11 @@ void drawPlayerShip() {
   }
   
   if (arduboy.pressed(A_BUTTON)) {
-    bullets[0].set(spaceShip.x, spaceShip.y + (spaceShip.height / 2) - 1);
+    for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
+      if (!playerBullets[i].isVisible) {
+        playerBullets[i].set(spaceShip.x, spaceShip.y + (spaceShip.height / 2) - 1);
+      }
+    }
   }
   
   if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON)) {
