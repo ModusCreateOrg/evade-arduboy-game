@@ -21,6 +21,12 @@
 #define TITLE_SETTINGS 2
 #define TITLE_TIMEOUT 3
 
+// Settings screen outcomes
+#define SETTINGS_SOUND 0
+#define SETTINGS_RESET_HIGH_SCORE 1
+#define SETTINGS_EXIT 2
+
+
 Arduboy arduboy;
 
 #endif
