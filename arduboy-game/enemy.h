@@ -21,10 +21,19 @@ struct Enemy {
     width = 16;
     height = 16;
     type = _type;
-    if(type == 1) {
-      bitmap = enemy1;
-    } else if(type == 2) {
-      bitmap = enemy2;
+
+    switch(type) {
+      case 1:
+        bitmap = enemy1;
+        break;
+      case 2:
+        bitmap = enemy2;
+        break;
+      case 3:
+        bitmap = enemy3;
+        break;
+      default:
+        bitmap = enemy1;
     }
   }
 };

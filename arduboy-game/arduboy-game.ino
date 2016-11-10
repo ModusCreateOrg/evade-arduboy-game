@@ -180,6 +180,10 @@ void drawEnemies() {
   Enemy enemyType2;
   enemyType2.set(82, 48, 2);
   draw(enemyType2.x, enemyType2.y, enemyType2.bitmap, 0);
+
+  Enemy enemyType3;
+  enemyType3.set(56, 32, 3);
+  draw(enemyType3.x, enemyType3.y, enemyType3.bitmap, 0);
 }
 
 void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
