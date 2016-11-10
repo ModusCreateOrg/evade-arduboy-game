@@ -1,4 +1,4 @@
-w/*
+/*
  * arduboy-game, Modus Create 2016
 */
 
@@ -93,13 +93,13 @@ void playGame() {
   // TODO, this is placeholder, should also use livesRemaining
   // to count down user lives
   score = 0;
-
+  spaceShip.reset();
   // Random test to set score 
   unsigned int randomScore = random(65000, 99999);
 
   // Loop to simulate a game that ends with score being 
   // close to value of randomScore
-  while (score < randomScore)) {
+  while (score < randomScore) {
     arduboy.clearDisplay();
     sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
