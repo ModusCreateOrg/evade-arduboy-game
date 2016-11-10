@@ -17,7 +17,8 @@ void setup()
 
 int x = 0, 
     y = 0,
-    playing = 0;
+    playing = 0,
+    currentTrack;
 
 
 void loop ()
@@ -28,23 +29,26 @@ void loop ()
   }
   
   if (arduboy.pressed(UP_BUTTON) && playing == 0) {
-    playMusic(1);
+    currentTrack = 1;
     playing = 1;
   } 
   else if (arduboy.pressed(DOWN_BUTTON) && playing == 0) {
-    playMusic(2);
+    currentTrack = 2;
     playing = 1;
   } 
   else if (arduboy.pressed(LEFT_BUTTON) && playing == 0) {
-    playMusic(3);
+    currentTrack = 3;
     playing = 1;
   } 
   else if (arduboy.pressed(RIGHT_BUTTON) && playing == 0) {
-    playMusic(4);
+    currentTrack = 4;
     playing = 1;
   }
 
-
+  // Gotta keep calling this so that the audio loops. Else, it will end when the song is over.
+  if (playing == 1) {
+    playMusic(currentTrack);
+  }
   
   if (arduboy.pressed(A_BUTTON)|| arduboy.pressed(B_BUTTON)) {
     playing = 0;
