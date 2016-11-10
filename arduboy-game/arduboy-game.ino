@@ -36,6 +36,8 @@ void introScreen() {
 byte titleScreen() {
   byte selectedItem = TITLE_PLAY_GAME;
   unsigned short totalDelay = 0;
+  long lastDebounceTime = 0;  // the last time the button was pressed
+  long debounceDelay = 100; 
   
   arduboy.clear();
   printText("TITLE", 25, 20, 2);
@@ -47,45 +49,83 @@ byte titleScreen() {
   arduboy.display();
 
   while(totalDelay < ATTRACT_MODE_TIMEOUT) {
+
     // TODO This needs a debounced button press routine... arduboy.pressed isn't doing it
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
       break;
-    } else if (arduboy.pressed(LEFT_BUTTON)) {
-      if (selectedItem == TITLE_CREDITS) {
-        // Highlight play option
-        selectedItem = TITLE_PLAY_GAME;
-        arduboy.drawRect(30, 47, 45, 13, 0);
-        arduboy.drawRect(2, 47, 26, 13, 1);
-        arduboy.display();
-      } else if (selectedItem == TITLE_SETTINGS) {
-        // TODO move to credits
-        selectedItem = TITLE_CREDITS;
-        // TODO clear settings
-        arduboy.drawRect(76, 47, 51, 13, 0);
-        arduboy.drawRect(30, 47, 45, 13, 1);
-        arduboy.display();        
-      }      
-    } else if (arduboy.pressed(RIGHT_BUTTON)) {
-      if (selectedItem == TITLE_PLAY_GAME) {
-        // Highlight credits option
-        selectedItem = TITLE_CREDITS;
-        arduboy.drawRect(2, 47, 26, 13, 0);
-        arduboy.drawRect(30, 47, 45, 13, 1);
-        arduboy.display();
-      } else if (selectedItem == TITLE_CREDITS) {
-        selectedItem = TITLE_SETTINGS;
-        // TODO draw settings
-        arduboy.drawRect(30, 47, 45, 13, 0);
-        arduboy.drawRect(76, 47, 51, 13, 1);
-        arduboy.display();
+    }
+    
+    if (arduboy.pressed(LEFT_BUTTON)) {
+      if ( (millis() - lastDebounceTime) > debounceDelay) {
+        selectedItem = titleMenuLeftButton(selectedItem);
+        lastDebounceTime = millis(); //set the current time
+      }
+    }
+  
+    if (arduboy.pressed(RIGHT_BUTTON)) {
+      if ( (millis() - lastDebounceTime) > debounceDelay) {
+        selectedItem = titleMenuRightButton(selectedItem);
+        lastDebounceTime = millis(); //set the current time
       }
     }
 
     delay(15);
     totalDelay += 15;
   }
-
   return(totalDelay >= ATTRACT_MODE_TIMEOUT ? TITLE_TIMEOUT : selectedItem);
+}
+
+byte titleMenuLeftButton(byte selectedItem) {
+  /**
+   * Handle clicks on the left button
+   * to navigate through main menu
+   * items.
+   */
+  switch (selectedItem) {
+        
+    case TITLE_SETTINGS:
+         arduboy.drawRect(76, 47, 51, 13, 0);
+         arduboy.drawRect(30, 47, 45, 13, 1);
+         arduboy.display();
+         return TITLE_CREDITS;
+         break; 
+
+    case TITLE_CREDITS:
+         arduboy.drawRect(30, 47, 45, 13, 0);
+         arduboy.drawRect(2, 47, 26, 13, 1);
+         arduboy.display();
+         return  TITLE_PLAY_GAME;
+         break;
+
+    default: break;
+  }  
+}
+
+
+byte titleMenuRightButton(byte selectedItem){
+  /**
+   * Handle clicks on the right button
+   * to navigate through main menu 
+   * items.
+   */
+  switch (selectedItem) {
+        
+    case TITLE_PLAY_GAME:
+         arduboy.drawRect(2, 47, 26, 13, 0);
+         arduboy.drawRect(30, 47, 45, 13, 1);
+         arduboy.display();
+         return TITLE_CREDITS;
+         break; 
+
+    case TITLE_CREDITS:
+         arduboy.drawRect(30, 47, 45, 13, 0);
+         arduboy.drawRect(76, 47, 51, 13, 1);
+         arduboy.display(); 
+         return TITLE_SETTINGS; 
+         break;
+
+    default: break;      
+  }
 }
 
 void highScoreScreen() {
@@ -107,7 +147,9 @@ void creditsScreen() {
 void settingsScreen() {
   // TODO, this is a placeholder
   arduboy.clear();
-  printText("SETTINGS", 20, 25, 2);
+  printText("SETTINGS", 20, 5, 2);
+  printText("SOUND", 20, 25, 1);
+  printText("RESET HIGHSCORE", 20, 35, 1);
   arduboy.display();
   delay(5000);
 }
