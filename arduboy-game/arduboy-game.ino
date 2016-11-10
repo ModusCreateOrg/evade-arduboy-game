@@ -1,4 +1,4 @@
-w/*
+/*
  * arduboy-game, Modus Create 2016
 */
 
@@ -34,43 +34,58 @@ void introScreen() {
 }
 
 byte titleScreen() {
-  byte result = TITLE_PLAY_GAME;
+  byte selectedItem = TITLE_PLAY_GAME;
   unsigned short totalDelay = 0;
   
   arduboy.clear();
   printText("TITLE", 25, 20, 2);
-  arduboy.drawRect(2, 47, 31, 13, 1);
-  printText("PLAY", 5, 50, 1);
-  printText("CREDITS", 45, 50, 1);
+  arduboy.drawRect(2, 47, 26, 13, 1);
+  printText("PLAY", 3, 50, 1);
+  printText("CREDITS", 32, 50, 1);
+  printText("SETTINGS", 78, 50, 1);
+  // TODO DRAW RECT
   arduboy.display();
 
   while(totalDelay < ATTRACT_MODE_TIMEOUT) {
+    // TODO This needs a debounced button press routine... arduboy.pressed isn't doing it
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
       break;
     } else if (arduboy.pressed(LEFT_BUTTON)) {
-      // Highlight play option
-      result = TITLE_PLAY_GAME;
-      arduboy.drawRect(42, 47, 48, 13, 0);
-      arduboy.drawRect(2, 47, 31, 13, 1);
-      arduboy.display();
+      if (selectedItem == TITLE_CREDITS) {
+        // Highlight play option
+        selectedItem = TITLE_PLAY_GAME;
+        arduboy.drawRect(30, 47, 45, 13, 0);
+        arduboy.drawRect(2, 47, 26, 13, 1);
+        arduboy.display();
+      } else if (selectedItem == TITLE_SETTINGS) {
+        // TODO move to credits
+        selectedItem = TITLE_CREDITS;
+        // TODO clear settings
+        arduboy.drawRect(76, 47, 51, 13, 0);
+        arduboy.drawRect(30, 47, 45, 13, 1);
+        arduboy.display();        
+      }      
     } else if (arduboy.pressed(RIGHT_BUTTON)) {
-      // Highlight credits option
-      result = TITLE_CREDITS;
-      arduboy.drawRect(2, 47, 31, 13, 0);
-      arduboy.drawRect(42, 47, 48, 13, 1);
-      arduboy.display();
+      if (selectedItem == TITLE_PLAY_GAME) {
+        // Highlight credits option
+        selectedItem = TITLE_CREDITS;
+        arduboy.drawRect(2, 47, 26, 13, 0);
+        arduboy.drawRect(30, 47, 45, 13, 1);
+        arduboy.display();
+      } else if (selectedItem == TITLE_CREDITS) {
+        selectedItem = TITLE_SETTINGS;
+        // TODO draw settings
+        arduboy.drawRect(30, 47, 45, 13, 0);
+        arduboy.drawRect(76, 47, 51, 13, 1);
+        arduboy.display();
+      }
     }
 
     delay(15);
     totalDelay += 15;
   }
 
-  if (totalDelay >= ATTRACT_MODE_TIMEOUT) {
-    // User didn't press a button so title screen just timed out
-    result = TITLE_TIMEOUT;
-  }
-
-  return(result);
+  return(totalDelay >= ATTRACT_MODE_TIMEOUT ? TITLE_TIMEOUT : selectedItem);
 }
 
 void highScoreScreen() {
@@ -89,6 +104,14 @@ void creditsScreen() {
   delay(5000);
 }
 
+void settingsScreen() {
+  // TODO, this is a placeholder
+  arduboy.clear();
+  printText("SETTINGS", 20, 25, 2);
+  arduboy.display();
+  delay(5000);
+}
+
 void playGame() {
   // TODO, this is placeholder, should also use livesRemaining
   // to count down user lives
@@ -99,7 +122,7 @@ void playGame() {
 
   // Loop to simulate a game that ends with score being 
   // close to value of randomScore
-  while (score < randomScore)) {
+  while (score < randomScore) {
     arduboy.clearDisplay();
     sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
@@ -226,6 +249,9 @@ void loop() {
       }
   
       highScoreScreen();
+      break;
+    case TITLE_SETTINGS:
+      settingsScreen();
       break;
     case TITLE_TIMEOUT:
       // No button pressed on title, alternate with high score  

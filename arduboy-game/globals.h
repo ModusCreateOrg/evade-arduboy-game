@@ -18,7 +18,8 @@
 // Title screen outcomes
 #define TITLE_CREDITS 0
 #define TITLE_PLAY_GAME 1
-#define TITLE_TIMEOUT 2
+#define TITLE_SETTINGS 2
+#define TITLE_TIMEOUT 3
 
 Arduboy arduboy;
 
