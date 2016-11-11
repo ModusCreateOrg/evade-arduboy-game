@@ -130,7 +130,8 @@ byte titleMenuRightButton(byte selectedItem) {
 void highScoreScreen() {
   // TODO, this is placeholder
   arduboy.clear();
-  printText("HI SCORES", 3, 15, 2);
+  printText("HIGH SCORE", 5, 15, 1);
+  arduboy.print(highScore);
   arduboy.display();
   delay(3000);
 }
@@ -213,6 +214,11 @@ void settingsScreen() {
         switch (selectedItem) {
 
           case SETTINGS_EXIT:
+            exit_settings_menu = true;
+            break;
+
+          case SETTINGS_RESET_HIGH_SCORE:
+            highScore = 0;
             exit_settings_menu = true;
             break;
 
@@ -386,7 +392,7 @@ void gameOverScreen() {
 void newHighScoreScreen() {
   // TODO, this is placeholder
   arduboy.clear();
-  printText("NEW HI", 4, 25, 2);
+  printText("NEW HIGHSCORE", 4, 25, 1);
   arduboy.display();
   delay(3000);
 }
