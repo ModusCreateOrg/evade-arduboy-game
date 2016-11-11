@@ -353,7 +353,7 @@ void gameOverScreen() {
   
   // TODO, this is placeholder
   arduboy.clear();
-  printText("GAME OVER", 15, 30, 2);
+  printText("GAME OVER", 13, 28, 2);
   arduboy.display();
 
   // play game over tune
