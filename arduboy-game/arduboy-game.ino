@@ -195,8 +195,8 @@ void settingsScreen() {
 
 byte settingMenuDownButton(byte selectedItem) {
   /**
-     Handle clicks on the right button
-     to navigate through main menu
+     Handle clicks on the down button
+     to navigate through settings menu
      items.
   */
   switch (selectedItem) {
@@ -222,8 +222,8 @@ byte settingMenuDownButton(byte selectedItem) {
 
 byte settingMenuUpButton(byte selectedItem) {
   /**
-     Handle clicks on the right button
-     to navigate through main menu
+     Handle clicks on the up button
+     to navigate through settings menu
      items.
   */
   switch (selectedItem) {
