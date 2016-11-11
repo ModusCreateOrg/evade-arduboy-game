@@ -18,6 +18,12 @@ struct Player {
     width = 16;
     height = 16;
   }
+
+  void reset() {
+    x = 2;
+    y = 32;
+    frame = 2;
+  }
 };
 
 #endif
