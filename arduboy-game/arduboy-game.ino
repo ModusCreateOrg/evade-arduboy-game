@@ -258,7 +258,7 @@ void playGame() {
   // Loop to simulate a game that ends with score being
   // close to value of randomScore
   while (score < randomScore) {
-    arduboy.clearDisplay();
+    arduboy.clear();
     sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
     score += random(0, 50);
