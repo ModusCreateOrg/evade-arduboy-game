@@ -7,6 +7,7 @@
 #include "player.h"
 #include "bullet.h"
 #include "bitmaps.h"
+#include "MusicPlayer.h"
 
 // TODO highScore should be replaced with table in EEPROM
 unsigned int score, highScore = 0;
@@ -23,7 +24,7 @@ Player spaceShip;
 void printText(char *message, int x, int y, int textSize) {
   arduboy.setCursor(x, y);
   arduboy.setTextSize(textSize);
-  arduboy.print(message); 
+  arduboy.print(message);
 }
 
 void introScreen() {
@@ -34,43 +35,97 @@ void introScreen() {
 }
 
 byte titleScreen() {
-  byte result = TITLE_PLAY_GAME;
+  byte selectedItem = TITLE_PLAY_GAME;
   unsigned short totalDelay = 0;
-  
+  long lastDebounceTime = 0;  // the last time the button was pressed
+  long debounceDelay = 100;
+
   arduboy.clear();
   printText("TITLE", 25, 20, 2);
-  arduboy.drawRect(2, 47, 31, 13, 1);
-  printText("PLAY", 5, 50, 1);
-  printText("CREDITS", 45, 50, 1);
+  arduboy.drawRect(2, 47, 26, 13, 1);
+  printText("PLAY", 3, 50, 1);
+  printText("CREDITS", 32, 50, 1);
+  printText("SETTINGS", 78, 50, 1);
+  // TODO DRAW RECT
   arduboy.display();
 
-  while(totalDelay < ATTRACT_MODE_TIMEOUT) {
+  while (totalDelay < ATTRACT_MODE_TIMEOUT) {
+
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
       break;
-    } else if (arduboy.pressed(LEFT_BUTTON)) {
-      // Highlight play option
-      result = TITLE_PLAY_GAME;
-      arduboy.drawRect(42, 47, 48, 13, 0);
-      arduboy.drawRect(2, 47, 31, 13, 1);
-      arduboy.display();
-    } else if (arduboy.pressed(RIGHT_BUTTON)) {
-      // Highlight credits option
-      result = TITLE_CREDITS;
-      arduboy.drawRect(2, 47, 31, 13, 0);
-      arduboy.drawRect(42, 47, 48, 13, 1);
-      arduboy.display();
+    }
+
+    if (arduboy.pressed(LEFT_BUTTON)) {
+      if ( (millis() - lastDebounceTime) > debounceDelay) {
+        selectedItem = titleMenuLeftButton(selectedItem);
+        lastDebounceTime = millis(); //set the current time
+      }
+    }
+
+    if (arduboy.pressed(RIGHT_BUTTON)) {
+      if ( (millis() - lastDebounceTime) > debounceDelay) {
+        selectedItem = titleMenuRightButton(selectedItem);
+        lastDebounceTime = millis(); //set the current time
+      }
     }
 
     delay(15);
     totalDelay += 15;
   }
+  return (totalDelay >= ATTRACT_MODE_TIMEOUT ? TITLE_TIMEOUT : selectedItem);
+}
 
-  if (totalDelay >= ATTRACT_MODE_TIMEOUT) {
-    // User didn't press a button so title screen just timed out
-    result = TITLE_TIMEOUT;
+byte titleMenuLeftButton(byte selectedItem) {
+  /**
+     Handle clicks on the left button
+     to navigate through main menu
+     items.
+  */
+  switch (selectedItem) {
+
+    case TITLE_SETTINGS:
+      arduboy.drawRect(76, 47, 51, 13, 0);
+      arduboy.drawRect(30, 47, 45, 13, 1);
+      arduboy.display();
+      return TITLE_CREDITS;
+      break;
+
+    case TITLE_CREDITS:
+      arduboy.drawRect(30, 47, 45, 13, 0);
+      arduboy.drawRect(2, 47, 26, 13, 1);
+      arduboy.display();
+      return  TITLE_PLAY_GAME;
+      break;
+
+    default: break;
   }
+}
 
-  return(result);
+
+byte titleMenuRightButton(byte selectedItem) {
+  /**
+     Handle clicks on the right button
+     to navigate through main menu
+     items.
+  */
+  switch (selectedItem) {
+
+    case TITLE_PLAY_GAME:
+      arduboy.drawRect(2, 47, 26, 13, 0);
+      arduboy.drawRect(30, 47, 45, 13, 1);
+      arduboy.display();
+      return TITLE_CREDITS;
+      break;
+
+    case TITLE_CREDITS:
+      arduboy.drawRect(30, 47, 45, 13, 0);
+      arduboy.drawRect(76, 47, 51, 13, 1);
+      arduboy.display();
+      return TITLE_SETTINGS;
+      break;
+
+    default: break;
+  }
 }
 
 void highScoreScreen() {
@@ -89,6 +144,110 @@ void creditsScreen() {
   delay(5000);
 }
 
+void settingsScreen() {
+  // TODO, this is a placeholder
+  long lastDebounceTime = 0;  // the last time the button was pressed
+  long debounceDelay = 100;
+  bool exit_settings_menu = false;
+  byte selectedItem;
+
+  arduboy.clear();
+  printText("SETTINGS", 20, 5, 2);
+  printText("SOUND", 20, 25, 1);
+  printText("RESET HIGHSCORE", 20, 37, 1);
+  printText("EXIT", 20, 49, 1);
+  arduboy.drawRect(17, 22, 35, 13, 1);
+  arduboy.display();
+
+
+  while (!exit_settings_menu) {
+
+    if (arduboy.pressed(DOWN_BUTTON)) {
+      if ( (millis() - lastDebounceTime) > debounceDelay) {
+        selectedItem = settingMenuDownButton(selectedItem);
+        lastDebounceTime = millis(); //set the current time
+      }
+    }
+
+
+    if (arduboy.pressed(UP_BUTTON)) {
+      if ( (millis() - lastDebounceTime) > debounceDelay) {
+        selectedItem = settingMenuUpButton(selectedItem);
+        lastDebounceTime = millis(); //set the current time
+      }
+    }
+
+    if (arduboy.pressed(A_BUTTON)) {
+      if ( (millis() - lastDebounceTime) > debounceDelay) {
+        switch (selectedItem) {
+
+          case SETTINGS_EXIT:
+            exit_settings_menu = true;
+            break;
+
+          default: break;
+        }
+      }
+      lastDebounceTime = millis(); //set the current time
+    }
+  }
+}
+
+
+byte settingMenuDownButton(byte selectedItem) {
+  /**
+     Handle clicks on the down button
+     to navigate through settings menu
+     items.
+  */
+  switch (selectedItem) {
+
+    case SETTINGS_SOUND:
+      arduboy.drawRect(17, 22, 35, 13, 0);
+      arduboy.drawRect(17, 34, 95, 13, 1);
+      arduboy.display();
+      return SETTINGS_RESET_HIGH_SCORE;
+      break;
+
+    case SETTINGS_RESET_HIGH_SCORE:
+      arduboy.drawRect(17, 34, 95, 13, 0);
+      arduboy.drawRect(17, 46, 29, 13, 1);
+      arduboy.display();
+      return SETTINGS_EXIT;
+      break;
+
+    default: break;
+  }
+}
+
+
+byte settingMenuUpButton(byte selectedItem) {
+  /**
+     Handle clicks on the up button
+     to navigate through settings menu
+     items.
+  */
+  switch (selectedItem) {
+
+    case SETTINGS_EXIT:
+      arduboy.drawRect(17, 46, 29, 13, 0);
+      arduboy.drawRect(17, 34, 95, 13, 1);
+      arduboy.display();
+      return SETTINGS_RESET_HIGH_SCORE;
+      break;
+
+    case SETTINGS_RESET_HIGH_SCORE:
+      arduboy.drawRect(17, 34, 95, 13, 0);
+      arduboy.drawRect(17, 22, 35, 13, 1);
+      arduboy.display();
+      return SETTINGS_SOUND;
+      break;
+
+    default: break;
+  }
+}
+
+
 void playGame() {
   // TODO, this is placeholder, should also use livesRemaining
   // to count down user lives
@@ -97,10 +256,10 @@ void playGame() {
   // Random test to set score 
   unsigned int randomScore = random(65000, 99999);
 
-  // Loop to simulate a game that ends with score being 
+  // Loop to simulate a game that ends with score being
   // close to value of randomScore
   while (score < randomScore) {
-    arduboy.clearDisplay();
+    arduboy.clear();
     sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
     score += random(0, 50);
@@ -113,18 +272,23 @@ void playGame() {
     }
 
     arduboy.display();
+
+    // Play stage1 music
+    playMusic(1);
   }
+
+  stopMusic();
 }
 
 void drawPlayerShip() {
   if (arduboy.pressed(RIGHT_BUTTON) && (spaceShip.x < MAX_SHIP_X)) {
     spaceShip.x++;
   }
-  
+
   if (arduboy.pressed(LEFT_BUTTON) && (spaceShip.x > MIN_SHIP_X)) {
     spaceShip.x--;
   }
-  
+
   if (arduboy.pressed(UP_BUTTON)) {
     if (spaceShip.y > MIN_SHIP_X) {
       spaceShip.y--;
@@ -136,7 +300,7 @@ void drawPlayerShip() {
       spaceShip.frame = 0;
     }
   }
-  
+
   if (arduboy.pressed(DOWN_BUTTON)) {
     if (spaceShip.y < MAX_SHIP_Y)  {
       spaceShip.y++;
@@ -144,11 +308,11 @@ void drawPlayerShip() {
     if (arduboy.everyXFrames(9)) {
       spaceShip.frame++;
     }
-    if (spaceShip.frame  > 4){
+    if (spaceShip.frame  > 4) {
       spaceShip.frame = 4;
     }
   }
-  
+
   if (arduboy.pressed(A_BUTTON)) {
     for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
       if (!playerBullets[i].isVisible) {
@@ -156,7 +320,7 @@ void drawPlayerShip() {
       }
     }
   }
-  
+
   if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON)) {
     if (arduboy.everyXFrames(12)) {
       if (spaceShip.frame > 2) {
@@ -167,7 +331,7 @@ void drawPlayerShip() {
       }
     }
   }
-  
+
   draw(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
 }
 
@@ -186,11 +350,16 @@ void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
 }
 
 void gameOverScreen() {
+  
   // TODO, this is placeholder
   arduboy.clear();
-  printText("GAME OVER", 15, 30, 2);
+  printText("GAME OVER", 13, 28, 2);
   arduboy.display();
+
+  // play game over tune
+  playMusic(5);
   delay(3000);
+  stopMusic();
 }
 
 void newHighScoreScreen() {
@@ -212,12 +381,12 @@ void setup() {
 // Main program loop
 void loop() {
   byte result;
-  
+
   // TODO alternate between titleScreen and highScoreScreen on a timer
   // until user pressed a button
   result = titleScreen();
 
-  switch(result) {
+  switch (result) {
     case TITLE_CREDITS:
       creditsScreen();
       break;
@@ -230,12 +399,15 @@ void loop() {
         newHighScoreScreen();
         highScore = score;
       }
-  
+
       highScoreScreen();
       break;
+    case TITLE_SETTINGS:
+      settingsScreen();
+      break;
     case TITLE_TIMEOUT:
-      // No button pressed on title, alternate with high score  
+      // No button pressed on title, alternate with high score
       highScoreScreen();
-      break; 
+      break;
   }
 }

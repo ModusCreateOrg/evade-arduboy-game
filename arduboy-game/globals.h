@@ -18,7 +18,14 @@
 // Title screen outcomes
 #define TITLE_CREDITS 0
 #define TITLE_PLAY_GAME 1
-#define TITLE_TIMEOUT 2
+#define TITLE_SETTINGS 2
+#define TITLE_TIMEOUT 3
+
+// Settings screen outcomes
+#define SETTINGS_SOUND 0
+#define SETTINGS_RESET_HIGH_SCORE 1
+#define SETTINGS_EXIT 2
+
 
 #define MAX_PLAYER_BULLETS 8
 
