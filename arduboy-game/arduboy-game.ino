@@ -7,6 +7,7 @@
 #include "player.h"
 #include "bullet.h"
 #include "bitmaps.h"
+#include "MusicPlayer.h"
 
 // TODO highScore should be replaced with table in EEPROM
 unsigned int score, highScore = 0;
@@ -271,7 +272,12 @@ void playGame() {
     }
 
     arduboy.display();
+
+    // Play stage1 music
+    playMusic(1);
   }
+
+  stopMusic();
 }
 
 void drawPlayerShip() {
@@ -344,11 +350,16 @@ void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
 }
 
 void gameOverScreen() {
+  
   // TODO, this is placeholder
   arduboy.clear();
   printText("GAME OVER", 15, 30, 2);
   arduboy.display();
+
+  // play game over tune
+  playMusic(5);
   delay(3000);
+  stopMusic();
 }
 
 void newHighScoreScreen() {

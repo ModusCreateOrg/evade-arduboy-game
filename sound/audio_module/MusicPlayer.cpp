@@ -1,10 +1,6 @@
 #include "Arduboy.h"
 #include "MusicPlayer.h"
-#include "Stage1Music.h"
-#include "Stage2Music.h"
-#include "Stage3Music.h"
-#include "BossMusic.h"
-
+#include "Music.h"
 
 int currentSong;
 
