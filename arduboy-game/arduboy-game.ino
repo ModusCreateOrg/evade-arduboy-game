@@ -1,5 +1,5 @@
 /*
- * arduboy-game, Modus Create 2016
+   arduboy-game, Modus Create 2016
 */
 
 #include "Arduboy.h"
@@ -132,18 +132,51 @@ byte titleMenuRightButton(byte selectedItem) {
 void highScoreScreen() {
   // TODO, this is placeholder
   arduboy.clear();
-  printText("HI SCORES", 3, 15, 2);
+  printText("HIGH SCORE", 5, 15, 1);
+  arduboy.print(highScore);
   arduboy.display();
   delay(3000);
 }
 
 void creditsScreen() {
   // TODO, this is placeholder
-  arduboy.clear();
-  printText("CREDITS", 20, 25, 2);
-  arduboy.display();
-  delay(5000);
+  char* credits[] = {"CREDITS", "p1", "p2", "p3", "p4", "p5", "p6"};
+  int arrsize = sizeof(credits) / sizeof(int);
+  int num_pass = 10;
+  int start = 5;
+  scrollCredits(start, arrsize, credits, false);
+  delay(1000);
 }
+
+void scrollCredits(int y, int arrsize, char* credits[], bool quit) {
+  /**
+   * Recursive function for scrolling
+   * creddits up screen
+   */
+  int padding = 7;
+  int textSize = 1;
+  arduboy.clear();
+  for (int i; i < arrsize; i++) {
+    if (i == 0) {
+      textSize = 2;
+    } else {
+      textSize = 1;
+    }
+    printText(credits[i], 20, y + padding, textSize);
+    arduboy.display();
+    padding = padding + 15;
+    if ( i+1 == arrsize && y + padding < 0) {
+      quit = true;
+    }
+  }
+  delay(1000);
+  y = y - 15;
+
+  if (!quit) {
+    scrollCredits(y, arrsize, credits, quit);
+  }
+}
+
 
 void settingsScreen() {
   // TODO, this is a placeholder
@@ -183,6 +216,11 @@ void settingsScreen() {
         switch (selectedItem) {
 
           case SETTINGS_EXIT:
+            exit_settings_menu = true;
+            break;
+
+          case SETTINGS_RESET_HIGH_SCORE:
+            highScore = 0;
             exit_settings_menu = true;
             break;
 
@@ -254,7 +292,7 @@ void playGame() {
   // to count down user lives
   score = 0;
   spaceShip.reset();
-  // Random test to set score 
+  // Random test to set score
   unsigned int randomScore = random(65000, 99999);
 
   // Loop to simulate a game that ends with score being
@@ -380,7 +418,7 @@ void gameOverScreen() {
 void newHighScoreScreen() {
   // TODO, this is placeholder
   arduboy.clear();
-  printText("NEW HI", 4, 25, 2);
+  printText("NEW HIGHSCORE", 4, 25, 1);
   arduboy.display();
   delay(3000);
 }
