@@ -9,10 +9,14 @@
 #include "enemy.h"
 #include "bitmaps.h"
 #include "MusicPlayer.h"
+#include "star.h"
 
 // TODO highScore should be replaced with table in EEPROM
 unsigned int score, highScore = 0;
 byte livesRemaining = 4;
+int numStars = 30;
+Star stars[30];
+
 
 // Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
 Bullet playerBullets[MAX_PLAYER_BULLETS];
@@ -21,6 +25,8 @@ Bullet playerBullets[MAX_PLAYER_BULLETS];
 char textBuf[15];
 
 Player spaceShip;
+
+
 
 void printText(char *message, int x, int y, int textSize) {
   arduboy.setCursor(x, y);
@@ -297,7 +303,7 @@ void playGame() {
 
   // Loop to simulate a game that ends with score being
   // close to value of randomScore
-  while (score < randomScore) {
+ while (score < randomScore) {
     arduboy.clear();
     sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
@@ -310,13 +316,21 @@ void playGame() {
       playerBullets[i].update();
     }
 
+    drawStarLayer();
     arduboy.display();
+    updateStarFieldVals();
 
     // Play stage1 music
     playMusic(1);
   }
 
   stopMusic();
+}
+
+void drawStarLayer() {
+  for (int i = 0; i < numStars; i++) {
+     arduboy.drawPixel(stars[i].x, stars[i].y, 1);
+  }
 }
 
 void drawPlayerShip() {
@@ -423,11 +437,33 @@ void newHighScoreScreen() {
   delay(3000);
 }
 
+
+void createStarFieldVals() {
+  for (int i = 0; i < numStars; i++) {
+     stars[i].setValues();
+  } 
+}
+
+
+void updateStarFieldVals() {
+
+  for (int i = 0; i < numStars; i++) {
+     if (stars[i].x > 200) {
+       stars[i].x = 0;
+       stars[i].y = random(100);
+     } else {
+         stars[i].x ++;
+     }
+  } 
+  
+}
+
 // Initialization runs once only
 void setup() {
   arduboy.beginNoLogo();
   introScreen();
   spaceShip.set();
+  createStarFieldVals();
 }
 
 
