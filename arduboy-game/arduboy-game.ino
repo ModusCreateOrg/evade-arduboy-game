@@ -27,7 +27,6 @@ char textBuf[15];
 Player spaceShip;
 
 
-
 void printText(char *message, int x, int y, int textSize) {
   arduboy.setCursor(x, y);
   arduboy.setTextSize(textSize);
@@ -138,7 +137,7 @@ byte titleMenuRightButton(byte selectedItem) {
 void highScoreScreen() {
   // TODO, this is placeholder
   arduboy.clear();
-  printText("HIGH SCORE", 5, 15, 1);
+  printText("HIGH SCORE ", 5, 15, 1);
   arduboy.print(highScore);
   arduboy.display();
   delay(3000);
@@ -299,7 +298,7 @@ void playGame() {
   score = 0;
   spaceShip.reset();
   // Random test to set score
-  unsigned int randomScore = random(65000, 99999);
+  unsigned int randomScore = 5000;//random(65000, 99999);
 
   // Loop to simulate a game that ends with score being
   // close to value of randomScore
@@ -307,7 +306,7 @@ void playGame() {
     arduboy.clear();
     sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
-    score += random(0, 50);
+    score += random(0, 2);
 
     drawPlayerShip();
     drawEnemies();
@@ -329,7 +328,7 @@ void playGame() {
 
 void drawStarLayer() {
   for (int i = 0; i < numStars; i++) {
-     arduboy.drawPixel(stars[i].x, stars[i].y, 1);
+     arduboy.drawPixel(stars[i].x, stars[i].y, 3);
   }
 }
 
@@ -448,11 +447,11 @@ void createStarFieldVals() {
 void updateStarFieldVals() {
 
   for (int i = 0; i < numStars; i++) {
-     if (stars[i].x > 200) {
-       stars[i].x = 0;
-       stars[i].y = random(100);
+     if (stars[i].x < -1) {
+       stars[i].x = 128 + random(20);
+       stars[i].y = random(100) + 10;
      } else {
-         stars[i].x ++;
+         stars[i].x--;
      }
   } 
   
