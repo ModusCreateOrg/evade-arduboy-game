@@ -37,6 +37,8 @@ void introScreen() {
   arduboy.clear();
   draw(0, 0, modusLogo, 0);
   arduboy.display();
+  playMusic(0);
+
   delay(3000);
 }
 
@@ -45,18 +47,19 @@ byte titleScreen() {
   unsigned short totalDelay = 0;
   long lastDebounceTime = 0;  // the last time the button was pressed
   long debounceDelay = 100;
-
   arduboy.clear();
   printText("TITLE", 25, 20, 2);
   arduboy.drawRect(2, 47, 26, 13, 1);
   printText("PLAY", 3, 50, 1);
   printText("CREDITS", 32, 50, 1);
   printText("SETTINGS", 78, 50, 1);
+
+  
   // TODO DRAW RECT
   arduboy.display();
 
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {
-
+  
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
       break;
     }
@@ -366,6 +369,7 @@ void drawPlayerShip() {
   }
 
   if (arduboy.pressed(A_BUTTON)) {
+    playTone1();
     for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
       if (!playerBullets[i].isVisible) {
         playerBullets[i].set(spaceShip.x, spaceShip.y + (spaceShip.height / 2) - 1);
