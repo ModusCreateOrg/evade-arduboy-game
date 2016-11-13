@@ -54,7 +54,7 @@ void playMusic(int song) {
 void playTone1() {
   Arduboy ab;
 //  ab.tunes.tone(1318, 400);
-  ab.tunes.tone(200, 50);
+  ab.tunes.tone(800, 50);
 //  delay(120); 
 }
 

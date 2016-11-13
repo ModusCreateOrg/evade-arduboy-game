@@ -18,6 +18,12 @@ int numStars = 30;
 Star stars[30];
 
 
+// Placeholders 
+bool shouldPlayTone1,
+     shouldPlayTone2,
+     shouldPlayTone3;
+
+
 // Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
 Bullet playerBullets[MAX_PLAYER_BULLETS];
 
@@ -324,6 +330,10 @@ void playGame() {
 
     // Play stage1 music
     playMusic(1);
+    if (shouldPlayTone1) {
+      playTone1();
+      shouldPlayTone1 = false;
+    }
   }
 
   stopMusic();
@@ -369,7 +379,8 @@ void drawPlayerShip() {
   }
 
   if (arduboy.pressed(A_BUTTON)) {
-    playTone1();
+    shouldPlayTone1 = true;
+    
     for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
       if (!playerBullets[i].isVisible) {
         playerBullets[i].set(spaceShip.x, spaceShip.y + (spaceShip.height / 2) - 1);
@@ -393,15 +404,15 @@ void drawPlayerShip() {
 
 void drawEnemies() {
   Enemy enemyType1;
-  enemyType1.set(82, 16, 1);
+  enemyType1.set(100, 16, 1);
   draw(enemyType1.x, enemyType1.y, enemyType1.bitmap, 0);
 
   Enemy enemyType2;
-  enemyType2.set(82, 48, 2);
+  enemyType2.set(100, 48, 2);
   draw(enemyType2.x, enemyType2.y, enemyType2.bitmap, 0);
 
   Enemy enemyType3;
-  enemyType3.set(56, 32, 3);
+  enemyType3.set(86, 32, 3);
   draw(enemyType3.x, enemyType3.y, enemyType3.bitmap, 0);
 }
 
@@ -450,12 +461,19 @@ void createStarFieldVals() {
 
 void updateStarFieldVals() {
 
+  
   for (int i = 0; i < numStars; i++) {
+    
      if (stars[i].x < -1) {
        stars[i].x = 128 + random(20);
        stars[i].y = random(100) + 10;
      } else {
-         stars[i].x--;
+       if (stars[i].width > 1) {
+         stars[i].x -= .25;
+       }
+       else {
+         stars[i].x -= .75;
+       }
      }
   } 
   

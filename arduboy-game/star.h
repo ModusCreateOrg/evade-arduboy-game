@@ -1,7 +1,7 @@
 
 struct Star {
 
-  int x;
+  float x;
   int y;
   int width;
   int height;
