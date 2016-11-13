@@ -15,8 +15,7 @@ void stopMusic() {
 
 void playMusic(int song) {
     Arduboy ab;
-
-   if (!ab.tunes.playing()) {
+    if (!ab.tunes.playing()) {
 
       if (song == 1 && currentSong != song) {
         stopMusic();
