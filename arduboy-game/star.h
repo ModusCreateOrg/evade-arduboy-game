@@ -1,12 +1,12 @@
+#ifndef STAR_H
+#define STAR_H
 
 struct Star {
-
   float x;
-  int y;
-  int width;
-  int height;
-  int layer;
-
+  byte y;
+  byte width;
+  byte height;
+  byte layer;
 
   void setValues() {
       x = random(250);
@@ -17,3 +17,4 @@ struct Star {
 
 };
 
+#endif

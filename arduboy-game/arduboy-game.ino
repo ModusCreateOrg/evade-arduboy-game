@@ -14,15 +14,13 @@
 // TODO highScore should be replaced with table in EEPROM
 unsigned int score, highScore = 0;
 byte livesRemaining = 4;
-int numStars = 30;
+byte numStars = 30;
 Star stars[30];
-
 
 // Placeholders 
 bool shouldPlayTone1,
      shouldPlayTone2,
      shouldPlayTone3;
-
 
 // Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
 Bullet playerBullets[MAX_PLAYER_BULLETS];
@@ -31,7 +29,6 @@ Bullet playerBullets[MAX_PLAYER_BULLETS];
 char textBuf[15];
 
 Player spaceShip;
-
 
 void printText(char *message, int x, int y, int textSize) {
   arduboy.setCursor(x, y);
@@ -60,12 +57,10 @@ byte titleScreen() {
   printText("CREDITS", 32, 50, 1);
   printText("SETTINGS", 78, 50, 1);
 
-  
   // TODO DRAW RECT
   arduboy.display();
 
-  while (totalDelay < ATTRACT_MODE_TIMEOUT) {
-  
+  while (totalDelay < ATTRACT_MODE_TIMEOUT) {  
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
       break;
     }
@@ -97,7 +92,6 @@ byte titleMenuLeftButton(byte selectedItem) {
      items.
   */
   switch (selectedItem) {
-
     case TITLE_SETTINGS:
       arduboy.drawRect(76, 47, 51, 13, 0);
       arduboy.drawRect(30, 47, 45, 13, 1);
@@ -115,7 +109,6 @@ byte titleMenuLeftButton(byte selectedItem) {
     default: break;
   }
 }
-
 
 byte titleMenuRightButton(byte selectedItem) {
   /**
@@ -191,7 +184,6 @@ void scrollCredits(int y, int arrsize, char* credits[], bool quit) {
   }
 }
 
-
 void settingsScreen() {
   // TODO, this is a placeholder
   long lastDebounceTime = 0;  // the last time the button was pressed
@@ -207,16 +199,13 @@ void settingsScreen() {
   arduboy.drawRect(17, 22, 35, 13, 1);
   arduboy.display();
 
-
   while (!exit_settings_menu) {
-
     if (arduboy.pressed(DOWN_BUTTON)) {
       if ( (millis() - lastDebounceTime) > debounceDelay) {
         selectedItem = settingMenuDownButton(selectedItem);
         lastDebounceTime = millis(); //set the current time
       }
     }
-
 
     if (arduboy.pressed(UP_BUTTON)) {
       if ( (millis() - lastDebounceTime) > debounceDelay) {
@@ -246,7 +235,6 @@ void settingsScreen() {
   }
 }
 
-
 byte settingMenuDownButton(byte selectedItem) {
   /**
      Handle clicks on the down button
@@ -273,7 +261,6 @@ byte settingMenuDownButton(byte selectedItem) {
   }
 }
 
-
 byte settingMenuUpButton(byte selectedItem) {
   /**
      Handle clicks on the up button
@@ -299,7 +286,6 @@ byte settingMenuUpButton(byte selectedItem) {
     default: break;
   }
 }
-
 
 void playGame() {
   // TODO, this is placeholder, should also use livesRemaining
@@ -430,8 +416,7 @@ void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
   arduboy.drawBitmap(x, y, bitmap, width, height, 1);
 }
 
-void gameOverScreen() {
-  
+void gameOverScreen() {  
   // TODO, this is placeholder
   arduboy.clear();
   printText("GAME OVER", 13, 28, 2);
@@ -451,19 +436,14 @@ void newHighScoreScreen() {
   delay(3000);
 }
 
-
 void createStarFieldVals() {
   for (int i = 0; i < numStars; i++) {
      stars[i].setValues();
   } 
 }
 
-
-void updateStarFieldVals() {
-
-  
+void updateStarFieldVals() { 
   for (int i = 0; i < numStars; i++) {
-    
      if (stars[i].x < -1) {
        stars[i].x = 128 + random(20);
        stars[i].y = random(100) + 10;
@@ -476,7 +456,6 @@ void updateStarFieldVals() {
        }
      }
   } 
-  
 }
 
 // Initialization runs once only
@@ -486,7 +465,6 @@ void setup() {
   spaceShip.set();
   createStarFieldVals();
 }
-
 
 // Main program loop
 void loop() {
