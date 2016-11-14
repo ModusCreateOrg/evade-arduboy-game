@@ -52,14 +52,10 @@ byte titleScreen() {
   byte selectedItem = TITLE_PLAY_GAME;
   unsigned short totalDelay = 0;
   long lastDebounceTime = millis();  // the last time the button was pressed
-
+  
   arduboy.clear();
-  printText("TITLE", 25, 20, 2);
+  draw(0, 0, title, 0);
   arduboy.drawRect(2, 47, 26, 13, 1);
-  printText("PLAY", 3, 50, 1);
-  printText("CREDITS", 32, 50, 1);
-  printText("SETTINGS", 78, 50, 1);
-
   arduboy.display();
 
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {
