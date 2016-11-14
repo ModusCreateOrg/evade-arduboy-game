@@ -324,7 +324,7 @@ void playGame() {
 }
 
 void drawStarLayer() {
-  for (int i = 0; i < numStars; i++) {
+  for (byte i = 0; i < numStars; i++) {
      arduboy.drawPixel(stars[i].x, stars[i].y, 3);
   }
 }
