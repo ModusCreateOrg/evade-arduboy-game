@@ -14,8 +14,6 @@ void stopMusic() {
 }
 //22,262 bytes
 
-
-
 void playMusic(int song) {
     Arduboy ab;
     
@@ -41,39 +39,22 @@ void playMusic(int song) {
     }
 }   
 
-
-
-
 // SFX (experimental)
-void playTone1() {
-  Arduboy ab;
-//  ab.tunes.tone(1318, 400);
-  ab.tunes.tone(800, 50);
-//  delay(120); 
-}
-
-void playTone2() {
+void sfx(byte tone) {
   Arduboy ab;
 
-  ab.tunes.tone(1318, 120);
-  delay(120); 
-  ab.tunes.tone(987, 400);
-
+  switch(tone) {
+    case 1:
+      ab.tunes.tone(800, 50);
+    break;
+    case 2:
+      ab.tunes.tone(1318, 120);
+    break;
+    case 3:
+      ab.tunes.tone(987, 400);
+    break;
+    case 4:
+      ab.tunes.tone(800, 50);
+    break;
+  }
 }
-
-
-void playTone3() {
-  Arduboy ab;
-  ab.tunes.tone(1500, 120);
-}
-
-void playTone4() {
-  Arduboy ab;
-  ab.tunes.tone(900, 120);
-}
-
-void playTone5() {
-  Arduboy ab;
-  ab.tunes.tone(987, 120);
-}
-

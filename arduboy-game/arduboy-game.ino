@@ -14,8 +14,8 @@
 // TODO highScore should be replaced with table in EEPROM
 unsigned int score, highScore = 0;
 byte livesRemaining = 4;
-int numStars = 30;
-Star stars[30];
+int numStars = 10;
+Star stars[10];
 
 
 // Placeholders 
@@ -331,7 +331,7 @@ void playGame() {
     // Play stage1 music
     playMusic(1);
     if (shouldPlayTone1) {
-      playTone1();
+      sfx(0x01);
       shouldPlayTone1 = false;
     }
   }
