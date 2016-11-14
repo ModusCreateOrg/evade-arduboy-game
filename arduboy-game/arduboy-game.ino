@@ -32,7 +32,7 @@ char textBuf[15];
 
 Player spaceShip;
 
-void printText(char *message, int x, int y, int textSize) {
+void printText(char *message, byte x, byte y, byte textSize) {
   arduboy.setCursor(x, y);
   arduboy.setTextSize(textSize);
   arduboy.print(message);
@@ -51,6 +51,7 @@ byte titleScreen() {
   byte selectedItem = TITLE_PLAY_GAME;
   unsigned short totalDelay = 0;
   long lastDebounceTime = 0;  // the last time the button was pressed
+  
   arduboy.clear();
   printText("TITLE", 25, 20, 2);
   arduboy.drawRect(2, 47, 26, 13, 1);
@@ -58,7 +59,6 @@ byte titleScreen() {
   printText("CREDITS", 32, 50, 1);
   printText("SETTINGS", 78, 50, 1);
 
-  // TODO DRAW RECT
   arduboy.display();
 
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {  
@@ -67,14 +67,14 @@ byte titleScreen() {
     }
 
     if (arduboy.pressed(LEFT_BUTTON)) {
-      if ( (millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
         selectedItem = titleMenuLeftButton(selectedItem);
         lastDebounceTime = millis(); //set the current time
       }
     }
 
     if (arduboy.pressed(RIGHT_BUTTON)) {
-      if ( (millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
         selectedItem = titleMenuRightButton(selectedItem);
         lastDebounceTime = millis(); //set the current time
       }
@@ -148,23 +148,22 @@ void highScoreScreen() {
 
 void creditsScreen() {
   // TODO, this is placeholder
-  char* credits[] = {"CREDITS", "p1", "p2", "p3", "p4", "p5", "p6"};
-  int arrsize = sizeof(credits) / sizeof(int);
-  int num_pass = 10;
-  int start = 5;
-  scrollCredits(start, arrsize, credits, false);
+  const char* credits[] = {"CREDITS", "p1", "p2", "p3", "p4", "p5", "p6"};
+  unsigned short arrsize = sizeof(credits) / sizeof(int);
+  scrollCredits(5, arrsize, credits, false);
   delay(1000);
 }
 
-void scrollCredits(int y, int arrsize, char* credits[], bool quit) {
+void scrollCredits(int y, unsigned short arrsize, char* credits[], bool quit) {
   /**
    * Recursive function for scrolling
    * creddits up screen
    */
-  int padding = 7;
-  int textSize = 1;
+  byte padding = 7;
+  byte textSize = 1;
+  
   arduboy.clear();
-  for (int i; i < arrsize; i++) {
+  for (unsigned short i = 0; i < arrsize; i++) {
     if (i == 0) {
       textSize = 2;
     } else {
