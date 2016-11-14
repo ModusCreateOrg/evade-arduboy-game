@@ -2,7 +2,8 @@
 #define STAR_H
 
 struct Star {
-  float x;
+  float x,
+        speed;
   byte y;
   byte width;
   byte height;
@@ -11,8 +12,21 @@ struct Star {
   void setValues() {
       x = random(250);
       y = random(75);
-      width = random(3);
-      height = random(3);
+      width = random(4);
+      height = 1;
+
+      // elongated vertically is weird.
+      if (height > width) {
+        height = width;
+      }
+
+      if (width > 1) {
+        speed = 1;
+      }
+      
+      else {
+        speed = .25;
+      }
   }
 
 };

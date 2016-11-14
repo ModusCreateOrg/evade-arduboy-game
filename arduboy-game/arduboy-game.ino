@@ -19,7 +19,7 @@ byte livesRemaining = 4;
 int numStars = 30;
 Star stars[30];
 
-// Placeholders 
+// Placeholders
 bool shouldPlayTone1,
      shouldPlayTone2,
      shouldPlayTone3;
@@ -45,14 +45,14 @@ void introScreen() {
   delay(250);
   playMusic(0);
 
-  delay(2800);
+  delay(2750);
 }
 
 byte titleScreen() {
   byte selectedItem = TITLE_PLAY_GAME;
   unsigned short totalDelay = 0;
   long lastDebounceTime = 0;  // the last time the button was pressed
-  
+
   arduboy.clear();
   printText("TITLE", 25, 20, 2);
   arduboy.drawRect(2, 47, 26, 13, 1);
@@ -62,7 +62,7 @@ byte titleScreen() {
 
   arduboy.display();
 
-  while (totalDelay < ATTRACT_MODE_TIMEOUT) {  
+  while (totalDelay < ATTRACT_MODE_TIMEOUT) {
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
       break;
     }
@@ -157,12 +157,12 @@ void creditsScreen() {
 
 void scrollCredits(int y, unsigned short arrsize, char* credits[], bool quit) {
   /**
-   * Recursive function for scrolling
-   * creddits up screen
-   */
+     Recursive function for scrolling
+     creddits up screen
+  */
   byte padding = 7;
   byte textSize = 1;
-  
+
   arduboy.clear();
   for (unsigned short i = 0; i < arrsize; i++) {
     if (i == 0) {
@@ -173,7 +173,7 @@ void scrollCredits(int y, unsigned short arrsize, char* credits[], bool quit) {
     printText(credits[i], 20, y + padding, textSize);
     arduboy.display();
     padding = padding + 15;
-    if ( i+1 == arrsize && y + padding < 0) {
+    if ( i + 1 == arrsize && y + padding < 0) {
       quit = true;
     }
   }
@@ -296,7 +296,7 @@ void playGame() {
 
   // Loop to simulate a game that ends with score being
   // close to value of randomScore
- while (score < randomScore) {
+  while (score < randomScore) {
     arduboy.clear();
     sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
@@ -326,7 +326,8 @@ void playGame() {
 
 void drawStarLayer() {
   for (byte i = 0; i < numStars; i++) {
-     arduboy.drawPixel(stars[i].x, stars[i].y, 3);
+//    arduboy.drawPixel(stars[i].x, stars[i].y, 1);
+    arduboy.drawRect(stars[i].x, stars[i].y, stars[i].width, stars[i].height, 1);
   }
 }
 
@@ -365,7 +366,7 @@ void drawPlayerShip() {
 
   if (arduboy.pressed(A_BUTTON)) {
     shouldPlayTone1 = true;
-    
+
     for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
       if (!playerBullets[i].isVisible) {
         playerBullets[i].set(spaceShip.x, spaceShip.y + (spaceShip.height / 2) - 1);
@@ -415,7 +416,7 @@ void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
   arduboy.drawBitmap(x, y, bitmap, width, height, 1);
 }
 
-void gameOverScreen() {  
+void gameOverScreen() {
   // TODO, this is placeholder
   arduboy.clear();
   printText("GAME OVER", 13, 28, 2);
@@ -437,24 +438,20 @@ void newHighScoreScreen() {
 
 void createStarFieldVals() {
   for (int i = 0; i < numStars; i++) {
-     stars[i].setValues();
-  } 
+    stars[i].setValues();
+  }
 }
 
-void updateStarFieldVals() { 
+void updateStarFieldVals() {
   for (int i = 0; i < numStars; i++) {
-     if (stars[i].x < -1) {
-       stars[i].x = 128 + random(20);
-       stars[i].y = random(100) + 10;
-     } else {
-       if (stars[i].width > 1) {
-         stars[i].x -= .25;
-       }
-       else {
-         stars[i].x -= .75;
-       }
-     }
-  } 
+    if (stars[i].x < -1) {
+      stars[i].x = 128 + random(20);
+      stars[i].y = random(100) + 10;
+    } 
+    else {
+        stars[i].x -= stars[i].speed;
+    }
+  }
 }
 
 // Initialization runs once only

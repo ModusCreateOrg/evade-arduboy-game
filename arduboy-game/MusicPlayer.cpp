@@ -3,7 +3,7 @@
 #include "Music.h"
 
 
-int currentSong = -1;
+int currentSong = 0;
 
 void stopMusic() {
     Arduboy ab;
@@ -12,7 +12,6 @@ void stopMusic() {
         ab.tunes.stopScore();
     }
 }
-//22,262 bytes
 
 void playMusic(int song) {
     Arduboy ab;
