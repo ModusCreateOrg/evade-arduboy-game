@@ -435,13 +435,13 @@ void newHighScoreScreen() {
 }
 
 void createStarFieldVals() {
-  for (int i = 0; i < numStars; i++) {
+  for (byte i = 0; i < numStars; i++) {
      stars[i].setValues();
   } 
 }
 
 void updateStarFieldVals() { 
-  for (int i = 0; i < numStars; i++) {
+  for (byte i = 0; i < numStars; i++) {
      if (stars[i].x < -1) {
        stars[i].x = 128 + random(20);
        stars[i].y = random(100) + 10;
