@@ -23,7 +23,6 @@ struct Star {
       if (width > 1) {
         speed = 1;
       }
-      
       else {
         speed = .25;
       }
