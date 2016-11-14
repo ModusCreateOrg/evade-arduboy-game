@@ -11,6 +11,8 @@
 #include "MusicPlayer.h"
 #include "star.h"
 
+#define DEBOUNCE_DELAY 100
+
 // TODO highScore should be replaced with table in EEPROM
 unsigned int score, highScore = 0;
 byte livesRemaining = 4;
@@ -49,7 +51,6 @@ byte titleScreen() {
   byte selectedItem = TITLE_PLAY_GAME;
   unsigned short totalDelay = 0;
   long lastDebounceTime = 0;  // the last time the button was pressed
-  long debounceDelay = 100;
   arduboy.clear();
   printText("TITLE", 25, 20, 2);
   arduboy.drawRect(2, 47, 26, 13, 1);
@@ -66,14 +67,14 @@ byte titleScreen() {
     }
 
     if (arduboy.pressed(LEFT_BUTTON)) {
-      if ( (millis() - lastDebounceTime) > debounceDelay) {
+      if ( (millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
         selectedItem = titleMenuLeftButton(selectedItem);
         lastDebounceTime = millis(); //set the current time
       }
     }
 
     if (arduboy.pressed(RIGHT_BUTTON)) {
-      if ( (millis() - lastDebounceTime) > debounceDelay) {
+      if ( (millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
         selectedItem = titleMenuRightButton(selectedItem);
         lastDebounceTime = millis(); //set the current time
       }
@@ -187,7 +188,6 @@ void scrollCredits(int y, int arrsize, char* credits[], bool quit) {
 void settingsScreen() {
   // TODO, this is a placeholder
   long lastDebounceTime = 0;  // the last time the button was pressed
-  long debounceDelay = 100;
   bool exit_settings_menu = false;
   byte selectedItem;
 
@@ -201,21 +201,21 @@ void settingsScreen() {
 
   while (!exit_settings_menu) {
     if (arduboy.pressed(DOWN_BUTTON)) {
-      if ( (millis() - lastDebounceTime) > debounceDelay) {
+      if ( (millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
         selectedItem = settingMenuDownButton(selectedItem);
         lastDebounceTime = millis(); //set the current time
       }
     }
 
     if (arduboy.pressed(UP_BUTTON)) {
-      if ( (millis() - lastDebounceTime) > debounceDelay) {
+      if ( (millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
         selectedItem = settingMenuUpButton(selectedItem);
         lastDebounceTime = millis(); //set the current time
       }
     }
 
     if (arduboy.pressed(A_BUTTON)) {
-      if ( (millis() - lastDebounceTime) > debounceDelay) {
+      if ( (millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
         switch (selectedItem) {
 
           case SETTINGS_EXIT:
