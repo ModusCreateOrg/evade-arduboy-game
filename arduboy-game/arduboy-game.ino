@@ -16,8 +16,8 @@
 // TODO highScore should be replaced with table in EEPROM
 unsigned int score, highScore = 0;
 byte livesRemaining = 4;
-int numStars = 10;
-Star stars[10];
+int numStars = 30;
+Star stars[30];
 
 // Placeholders 
 bool shouldPlayTone1,
@@ -42,9 +42,10 @@ void introScreen() {
   arduboy.clear();
   draw(0, 0, modusLogo, 0);
   arduboy.display();
+  delay(250);
   playMusic(0);
 
-  delay(3000);
+  delay(2800);
 }
 
 byte titleScreen() {
