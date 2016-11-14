@@ -12,41 +12,35 @@ void stopMusic() {
         ab.tunes.stopScore();
     }
 }
+//22,262 bytes
+
+
 
 void playMusic(int song) {
     Arduboy ab;
-    if (!ab.tunes.playing()) {
-
-
-      if (song == 0 && currentSong != song) {
-        stopMusic();
-        ab.tunes.playScore(titleSong);
-      }
-      else if (song == 1 && currentSong != song) {
-        stopMusic();
-        ab.tunes.playScore(stage1Music);
-      }
-      else if (song == 2 && currentSong != song) {
-        stopMusic();
-        ab.tunes.playScore(stage2Music);
-      }
-          
-      else if (song == 3 && currentSong != song) {
-        stopMusic();
-        ab.tunes.playScore(stage3Music);
-      }
-      else if (song == 4 && currentSong != song) {
-        stopMusic();
-        ab.tunes.playScore(bossMusic);
-      }
-      else if (song == 5 && currentSong != song) {
-        stopMusic();
-        ab.tunes.playScore(gameOverSong);
-      }
-
-    }
     
-}
+    if (!ab.tunes.playing() && currentSong != song) {
+      stopMusic();
+
+      unsigned char *music;
+      switch(song) {
+        case 0 :
+           song = titleMusic;
+        break;
+        case 1 :
+          song = stage1Music;
+        break;
+        case 4 :
+           song = bossMusic;
+        break;
+        case 5 :
+          song = gameOverMusic;
+        break;
+      }
+      ab.tunes.playScore(music);
+    }
+}   
+
 
 
 
