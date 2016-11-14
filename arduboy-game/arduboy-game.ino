@@ -16,13 +16,8 @@
 // TODO highScore should be replaced with table in EEPROM
 unsigned int score, highScore = 0;
 byte livesRemaining = 4;
-<<<<<<< HEAD
 int numStars = 10;
 Star stars[10];
-=======
-byte numStars = 30;
-Star stars[30];
->>>>>>> tidy-up-and-data-types
 
 // Placeholders 
 bool shouldPlayTone1,
