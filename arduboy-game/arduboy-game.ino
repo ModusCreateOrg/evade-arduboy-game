@@ -51,7 +51,7 @@ void introScreen() {
 byte titleScreen() {
   byte selectedItem = TITLE_PLAY_GAME;
   unsigned short totalDelay = 0;
-  long lastDebounceTime = 0;  // the last time the button was pressed
+  long lastDebounceTime = millis();  // the last time the button was pressed
 
   arduboy.clear();
   printText("TITLE", 25, 20, 2);
@@ -64,7 +64,11 @@ byte titleScreen() {
 
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
-      break;
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+        break;
+      } else {
+        lastDebounceTime = millis();
+      }
     }
 
     if (arduboy.pressed(LEFT_BUTTON)) {
@@ -292,7 +296,7 @@ void playGame() {
   score = 0;
   spaceShip.reset();
   // Random test to set score
-  unsigned int randomScore = 5000;//random(65000, 99999);
+  unsigned int randomScore = 1000;//random(65000, 99999);
 
   // Loop to simulate a game that ends with score being
   // close to value of randomScore
