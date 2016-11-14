@@ -9,10 +9,18 @@
 #include "enemy.h"
 #include "bitmaps.h"
 #include "MusicPlayer.h"
+#include "star.h"
 
 // TODO highScore should be replaced with table in EEPROM
 unsigned int score, highScore = 0;
 byte livesRemaining = 4;
+byte numStars = 30;
+Star stars[30];
+
+// Placeholders 
+bool shouldPlayTone1,
+     shouldPlayTone2,
+     shouldPlayTone3;
 
 // Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
 Bullet playerBullets[MAX_PLAYER_BULLETS];
@@ -32,6 +40,8 @@ void introScreen() {
   arduboy.clear();
   draw(0, 0, modusLogo, 0);
   arduboy.display();
+  playMusic(0);
+
   delay(3000);
 }
 
@@ -40,18 +50,17 @@ byte titleScreen() {
   unsigned short totalDelay = 0;
   long lastDebounceTime = 0;  // the last time the button was pressed
   long debounceDelay = 100;
-
   arduboy.clear();
   printText("TITLE", 25, 20, 2);
   arduboy.drawRect(2, 47, 26, 13, 1);
   printText("PLAY", 3, 50, 1);
   printText("CREDITS", 32, 50, 1);
   printText("SETTINGS", 78, 50, 1);
+
   // TODO DRAW RECT
   arduboy.display();
 
-  while (totalDelay < ATTRACT_MODE_TIMEOUT) {
-
+  while (totalDelay < ATTRACT_MODE_TIMEOUT) {  
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
       break;
     }
@@ -83,7 +92,6 @@ byte titleMenuLeftButton(byte selectedItem) {
      items.
   */
   switch (selectedItem) {
-
     case TITLE_SETTINGS:
       arduboy.drawRect(76, 47, 51, 13, 0);
       arduboy.drawRect(30, 47, 45, 13, 1);
@@ -101,7 +109,6 @@ byte titleMenuLeftButton(byte selectedItem) {
     default: break;
   }
 }
-
 
 byte titleMenuRightButton(byte selectedItem) {
   /**
@@ -132,7 +139,7 @@ byte titleMenuRightButton(byte selectedItem) {
 void highScoreScreen() {
   // TODO, this is placeholder
   arduboy.clear();
-  printText("HIGH SCORE", 5, 15, 1);
+  printText("HIGH SCORE ", 5, 15, 1);
   arduboy.print(highScore);
   arduboy.display();
   delay(3000);
@@ -177,7 +184,6 @@ void scrollCredits(int y, int arrsize, char* credits[], bool quit) {
   }
 }
 
-
 void settingsScreen() {
   // TODO, this is a placeholder
   long lastDebounceTime = 0;  // the last time the button was pressed
@@ -193,16 +199,13 @@ void settingsScreen() {
   arduboy.drawRect(17, 22, 35, 13, 1);
   arduboy.display();
 
-
   while (!exit_settings_menu) {
-
     if (arduboy.pressed(DOWN_BUTTON)) {
       if ( (millis() - lastDebounceTime) > debounceDelay) {
         selectedItem = settingMenuDownButton(selectedItem);
         lastDebounceTime = millis(); //set the current time
       }
     }
-
 
     if (arduboy.pressed(UP_BUTTON)) {
       if ( (millis() - lastDebounceTime) > debounceDelay) {
@@ -232,7 +235,6 @@ void settingsScreen() {
   }
 }
 
-
 byte settingMenuDownButton(byte selectedItem) {
   /**
      Handle clicks on the down button
@@ -258,7 +260,6 @@ byte settingMenuDownButton(byte selectedItem) {
     default: break;
   }
 }
-
 
 byte settingMenuUpButton(byte selectedItem) {
   /**
@@ -286,22 +287,21 @@ byte settingMenuUpButton(byte selectedItem) {
   }
 }
 
-
 void playGame() {
   // TODO, this is placeholder, should also use livesRemaining
   // to count down user lives
   score = 0;
   spaceShip.reset();
   // Random test to set score
-  unsigned int randomScore = random(65000, 99999);
+  unsigned int randomScore = 5000;//random(65000, 99999);
 
   // Loop to simulate a game that ends with score being
   // close to value of randomScore
-  while (score < randomScore) {
+ while (score < randomScore) {
     arduboy.clear();
     sprintf(textBuf, "SCORE %u", score);
     printText(textBuf, 0, 0, 1);
-    score += random(0, 50);
+    score += random(0, 2);
 
     drawPlayerShip();
     drawEnemies();
@@ -310,13 +310,25 @@ void playGame() {
       playerBullets[i].update();
     }
 
+    drawStarLayer();
     arduboy.display();
+    updateStarFieldVals();
 
     // Play stage1 music
     playMusic(1);
+    if (shouldPlayTone1) {
+      playTone1();
+      shouldPlayTone1 = false;
+    }
   }
 
   stopMusic();
+}
+
+void drawStarLayer() {
+  for (int i = 0; i < numStars; i++) {
+     arduboy.drawPixel(stars[i].x, stars[i].y, 3);
+  }
 }
 
 void drawPlayerShip() {
@@ -353,6 +365,8 @@ void drawPlayerShip() {
   }
 
   if (arduboy.pressed(A_BUTTON)) {
+    shouldPlayTone1 = true;
+    
     for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
       if (!playerBullets[i].isVisible) {
         playerBullets[i].set(spaceShip.x, spaceShip.y + (spaceShip.height / 2) - 1);
@@ -376,15 +390,15 @@ void drawPlayerShip() {
 
 void drawEnemies() {
   Enemy enemyType1;
-  enemyType1.set(82, 16, 1);
+  enemyType1.set(100, 16, 1);
   draw(enemyType1.x, enemyType1.y, enemyType1.bitmap, 0);
 
   Enemy enemyType2;
-  enemyType2.set(82, 48, 2);
+  enemyType2.set(100, 48, 2);
   draw(enemyType2.x, enemyType2.y, enemyType2.bitmap, 0);
 
   Enemy enemyType3;
-  enemyType3.set(56, 32, 3);
+  enemyType3.set(86, 32, 3);
   draw(enemyType3.x, enemyType3.y, enemyType3.bitmap, 0);
 }
 
@@ -402,8 +416,7 @@ void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
   arduboy.drawBitmap(x, y, bitmap, width, height, 1);
 }
 
-void gameOverScreen() {
-  
+void gameOverScreen() {  
   // TODO, this is placeholder
   arduboy.clear();
   printText("GAME OVER", 13, 28, 2);
@@ -423,13 +436,35 @@ void newHighScoreScreen() {
   delay(3000);
 }
 
+void createStarFieldVals() {
+  for (int i = 0; i < numStars; i++) {
+     stars[i].setValues();
+  } 
+}
+
+void updateStarFieldVals() { 
+  for (int i = 0; i < numStars; i++) {
+     if (stars[i].x < -1) {
+       stars[i].x = 128 + random(20);
+       stars[i].y = random(100) + 10;
+     } else {
+       if (stars[i].width > 1) {
+         stars[i].x -= .25;
+       }
+       else {
+         stars[i].x -= .75;
+       }
+     }
+  } 
+}
+
 // Initialization runs once only
 void setup() {
   arduboy.beginNoLogo();
   introScreen();
   spaceShip.set();
+  createStarFieldVals();
 }
-
 
 // Main program loop
 void loop() {

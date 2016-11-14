@@ -3,7 +3,7 @@
 #include "Music.h"
 
 
-int currentSong;
+int currentSong = -1;
 
 void stopMusic() {
     Arduboy ab;
@@ -15,10 +15,14 @@ void stopMusic() {
 
 void playMusic(int song) {
     Arduboy ab;
+    if (!ab.tunes.playing()) {
 
-   if (!ab.tunes.playing()) {
 
-      if (song == 1 && currentSong != song) {
+      if (song == 0 && currentSong != song) {
+        stopMusic();
+        ab.tunes.playScore(titleSong);
+      }
+      else if (song == 1 && currentSong != song) {
         stopMusic();
         ab.tunes.playScore(stage1Music);
       }
@@ -37,7 +41,7 @@ void playMusic(int song) {
       }
       else if (song == 5 && currentSong != song) {
         stopMusic();
-        ab.tunes.playScore(gameOver);
+        ab.tunes.playScore(gameOverSong);
       }
 
     }
@@ -49,9 +53,9 @@ void playMusic(int song) {
 // SFX (experimental)
 void playTone1() {
   Arduboy ab;
-  ab.tunes.tone(987, 120);
-  delay(120); 
-  ab.tunes.tone(1318, 400);
+//  ab.tunes.tone(1318, 400);
+  ab.tunes.tone(800, 50);
+//  delay(120); 
 }
 
 void playTone2() {
