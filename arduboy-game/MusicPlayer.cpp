@@ -25,16 +25,16 @@ void playMusic(int song) {
       unsigned char *music;
       switch(song) {
         case 0 :
-           song = titleMusic;
+           music = titleMusic;
         break;
         case 1 :
-          song = stage1Music;
+          music = stage1Music;
         break;
         case 4 :
-           song = bossMusic;
+           music = bossMusic;
         break;
         case 5 :
-          song = gameOverMusic;
+          music = gameOverMusic;
         break;
       }
       ab.tunes.playScore(music);
