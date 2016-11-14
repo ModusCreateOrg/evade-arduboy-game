@@ -200,23 +200,22 @@ void settingsScreen() {
 
   while (!exit_settings_menu) {
     if (arduboy.pressed(DOWN_BUTTON)) {
-      if ( (millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
         selectedItem = settingMenuDownButton(selectedItem);
         lastDebounceTime = millis(); //set the current time
       }
     }
 
     if (arduboy.pressed(UP_BUTTON)) {
-      if ( (millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
         selectedItem = settingMenuUpButton(selectedItem);
         lastDebounceTime = millis(); //set the current time
       }
     }
 
     if (arduboy.pressed(A_BUTTON)) {
-      if ( (millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
         switch (selectedItem) {
-
           case SETTINGS_EXIT:
             exit_settings_menu = true;
             break;
