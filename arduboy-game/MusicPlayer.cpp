@@ -3,7 +3,7 @@
 #include "Music.h"
 
 
-int currentSong = -1;
+int currentSong = 0;
 
 void stopMusic() {
     Arduboy ab;
@@ -15,71 +15,45 @@ void stopMusic() {
 
 void playMusic(int song) {
     Arduboy ab;
-    if (!ab.tunes.playing()) {
-
-
-      if (song == 0 && currentSong != song) {
-        stopMusic();
-        ab.tunes.playScore(titleSong);
-      }
-      else if (song == 1 && currentSong != song) {
-        stopMusic();
-        ab.tunes.playScore(stage1Music);
-      }
-      else if (song == 2 && currentSong != song) {
-        stopMusic();
-        ab.tunes.playScore(stage2Music);
-      }
-          
-      else if (song == 3 && currentSong != song) {
-        stopMusic();
-        ab.tunes.playScore(stage3Music);
-      }
-      else if (song == 4 && currentSong != song) {
-        stopMusic();
-        ab.tunes.playScore(bossMusic);
-      }
-      else if (song == 5 && currentSong != song) {
-        stopMusic();
-        ab.tunes.playScore(gameOverSong);
-      }
-
-    }
     
-}
+    if (!ab.tunes.playing() && currentSong != song) {
+      stopMusic();
 
-
+      unsigned char *music;
+      switch(song) {
+        case 0 :
+           music = titleMusic;
+        break;
+        case 1 :
+          music = stage1Music;
+        break;
+        case 4 :
+           music = bossMusic;
+        break;
+        case 5 :
+          music = gameOverMusic;
+        break;
+      }
+      ab.tunes.playScore(music);
+    }
+}   
 
 // SFX (experimental)
-void playTone1() {
-  Arduboy ab;
-//  ab.tunes.tone(1318, 400);
-  ab.tunes.tone(800, 50);
-//  delay(120); 
-}
-
-void playTone2() {
+void sfx(byte tone) {
   Arduboy ab;
 
-  ab.tunes.tone(1318, 120);
-  delay(120); 
-  ab.tunes.tone(987, 400);
-
+  switch(tone) {
+    case 1:
+      ab.tunes.tone(800, 50);
+    break;
+    case 2:
+      ab.tunes.tone(1318, 120);
+    break;
+    case 3:
+      ab.tunes.tone(987, 400);
+    break;
+    case 4:
+      ab.tunes.tone(800, 50);
+    break;
+  }
 }
-
-
-void playTone3() {
-  Arduboy ab;
-  ab.tunes.tone(1500, 120);
-}
-
-void playTone4() {
-  Arduboy ab;
-  ab.tunes.tone(900, 120);
-}
-
-void playTone5() {
-  Arduboy ab;
-  ab.tunes.tone(987, 120);
-}
-

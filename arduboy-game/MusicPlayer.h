@@ -9,11 +9,5 @@
 extern void playMusic(int song);
 extern void stopMusic();
 
-extern void playTone1();
-extern void playTone2();
-extern void playTone3();
-extern void playTone4();
-extern void playTone5();
-
-
+extern void sfx(byte tone);
 #endif
