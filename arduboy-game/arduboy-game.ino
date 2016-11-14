@@ -316,9 +316,15 @@ void playGame() {
     // Play stage1 music
     playMusic(1);
     if (shouldPlayTone1) {
-      sfx(0x01);
+      sfx(1);
       shouldPlayTone1 = false;
     }
+
+    if (shouldPlayTone2) {
+      sfx(2);
+      shouldPlayTone2 = false;
+    }
+    
   }
 
   stopMusic();
@@ -372,6 +378,13 @@ void drawPlayerShip() {
         playerBullets[i].set(spaceShip.x, spaceShip.y + (spaceShip.height / 2) - 1);
       }
     }
+  }
+
+  // Here to test out other SFX
+  if (arduboy.pressed(B_BUTTON)) {
+    shouldPlayTone2 = true;
+
+    
   }
 
   if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON)) {
