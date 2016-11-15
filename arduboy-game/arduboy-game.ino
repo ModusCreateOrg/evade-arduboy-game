@@ -18,7 +18,7 @@
 #define NUM_STARS 15
 ///1,782 bytes (69%)
 // TODO highScore should be replaced with table in EEPROM
-unsigned long score, highScore = 0;
+unsigned long inGameFrame, inGameAButtonLastPress, inGameBButtonLastPress, score, highScore = 0;
 byte livesRemaining = MAX_LIVES;
 
 //Star stars[NUM_STARS];
@@ -27,10 +27,6 @@ float starX[NUM_STARS];
 float starSpeed[NUM_STARS];
 byte starY[NUM_STARS];
 byte starWidth[NUM_STARS];
-
-
-// shouldPlayTone1 (0), shouldPlayTone2 (1)
-byte shouldPlayTone;
 
 bool musicOn = true;     
 
@@ -321,6 +317,9 @@ void printMusicOnOff() {
 }
 
 void playGame() {
+  inGameFrame = 0;
+  inGameAButtonLastPress = 0;
+  inGameBButtonLastPress = 0;
   score = 0;
   livesRemaining = MAX_LIVES;
   spaceShip.reset();
@@ -328,6 +327,7 @@ void playGame() {
   // This still has artificial game ending mechanisms in it...
   while (livesRemaining > 0) {  
     arduboy.clear();
+    inGameFrame++;
 
     drawScore();
 
@@ -352,14 +352,12 @@ void playGame() {
 
     // Play stage1 music
     playMusic(2);
-    if (shouldPlayTone1()) {
+    if (shouldPlayAButtonTone()) {
       sfx(1);
-      shouldPlayTone ^= 1 << 0;
     }
 
-    if (shouldPlayTone2()) {
+    if (shouldPlayBButtonTone()) {
       sfx(2);
-      shouldPlayTone ^= 1 << 1;
     }
 
     // TODO Replace dummy code that makes sure user dies
@@ -425,19 +423,29 @@ void drawPlayerShip() {
   }
 
   if (arduboy.pressed(A_BUTTON)) {
-    shouldPlayTone |= 1 << 0;
-
-    for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
-      if (!playerBullets[i].isVisible()) {
-        playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true);
-        break;
+    if (inGameAButtonLastPress < (inGameFrame - 75)) {
+      inGameAButtonLastPress = inGameFrame;
+      // Fire A weapon (single fire)
+      for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
+        if (!playerBullets[i].isVisible()) {
+          playerBullets[i].set(spaceShip.x, (spaceShip.y + (spaceShip.height / 2) - 1), true);
+        }
       }
     }
   }
 
   // Here to test out other SFX
   if (arduboy.pressed(B_BUTTON)) {
-    shouldPlayTone |= 1 << 1;
+    if (inGameBButtonLastPress < (inGameFrame - 15)) {
+      inGameBButtonLastPress = inGameFrame;
+      // Fire B weapon (rapid fire)
+      for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
+        if (!playerBullets[i].isVisible()) {
+          playerBullets[i].set(spaceShip.x, (spaceShip.y + (spaceShip.height / 2) - 1), true);
+          break;
+        }
+      }
+    }
   }
 
   if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON)) {
@@ -456,7 +464,7 @@ void drawPlayerShip() {
 
 void drawEnemies() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
-    if (enemies[i].health == 0) {
+    if ((enemies[i].health == 0) && (random(2000) == 0)) {
       byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
       byte enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
       enemies[i].set(enemyX, enemyY, (random(3) + 1));
@@ -550,12 +558,12 @@ void updateStarFieldVals() {
   }
 }
 
-boolean shouldPlayTone1() {
-  return shouldPlayTone & (1 << 0);
+boolean shouldPlayAButtonTone() {
+  return (inGameAButtonLastPress > (inGameFrame - 20));
 }
 
-boolean shouldPlayTone2() {
-  return shouldPlayTone & (1 << 1);
+boolean shouldPlayBButtonTone() {
+  return (inGameBButtonLastPress > (inGameFrame - 50));
 }
 
 // Initialization runs once only
