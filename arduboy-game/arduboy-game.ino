@@ -380,7 +380,7 @@ void drawPlayerShip() {
     if (arduboy.everyXFrames(9)) {
       spaceShip.frame++;
     }
-    if (spaceShip.frame  > 4) {
+    if (spaceShip.frame > 4) {
       spaceShip.frame = 4;
     }
   }
@@ -448,6 +448,7 @@ void gameOverScreen() {
   draw(0, 0, gameOver, 0);
   arduboy.display();
 
+  delay(100);
   // play game over tune
   playMusic(5);
   delay(3000);
