@@ -6,7 +6,7 @@
 #include <Arduino.h>
 #include <avr/pgmspace.h>
 
-extern void playMusic(int song);
+extern void playMusic(byte song);
 extern void stopMusic();
 
 extern void sfx(byte tone);
