@@ -324,7 +324,6 @@ void playGame() {
   livesRemaining = MAX_LIVES;
   spaceShip.reset();
 
-  // This still has artificial game ending mechanisms in it...
   while (livesRemaining > 0) {  
     arduboy.clear();
     inGameFrame++;
@@ -350,6 +349,8 @@ void playGame() {
     arduboy.display();
     updateStarFieldVals();
 
+    handleEnemyBullets();
+
     // Play stage1 music
     playMusic(2);
     if (shouldPlayAButtonTone()) {
@@ -358,11 +359,6 @@ void playGame() {
 
     if (shouldPlayBButtonTone()) {
       sfx(2);
-    }
-
-    // TODO Replace dummy code that makes sure user dies
-    if (score > 0 && score % 1000 == 0) {
-      livesRemaining--;
     }
   }
 
@@ -428,7 +424,7 @@ void drawPlayerShip() {
       // Fire A weapon (single fire)
       for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
         if (!playerBullets[i].isVisible()) {
-          playerBullets[i].set(spaceShip.x, (spaceShip.y + (spaceShip.height / 2) - 1), true);
+          playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true);
         }
       }
     }
@@ -441,7 +437,7 @@ void drawPlayerShip() {
       // Fire B weapon (rapid fire)
       for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
         if (!playerBullets[i].isVisible()) {
-          playerBullets[i].set(spaceShip.x, (spaceShip.y + (spaceShip.height / 2) - 1), true);
+          playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true);
           break;
         }
       }
@@ -475,7 +471,7 @@ void drawEnemies() {
       draw(enemies[i].x, enemies[i].y, enemies[i].bitmap, 0);
       
       if ((!enemyBullets[i].isVisible()) && (random(1000) == 0)) {
-        enemyBullets[i].set(enemies[i].x, (enemies[i].y + (enemies[i].height / 2) - 1), false);
+        enemyBullets[i].set(enemies[i].x, (enemies[i].y + (16 / 2) - 1), false);
       }
     }
   }
@@ -493,6 +489,20 @@ void draw(byte x, byte y, const uint8_t *bitmap, uint8_t frame) {
     bitmap += frame * frame_offset;
   }
   arduboy.drawBitmap(x, y, bitmap, width, height, 1);
+}
+
+void handleEnemyBullets() {
+  for (byte i = 0; i < MAX_ENEMIES; i++) {
+    if ((enemyBullets[i].isVisible()) &&
+        (enemyBullets[i].posX >= spaceShip.x) &&
+        (enemyBullets[i].posX <= (spaceShip.x + (16 / 2))) &&
+        (enemyBullets[i].posY >= spaceShip.y) &&
+        (enemyBullets[i].posY <= (spaceShip.y + (16 / 2)))) {
+          // Hit Player
+          enemyBullets[i].hide();
+          livesRemaining--;
+        }
+  }
 }
 
 void gameOverScreen() {

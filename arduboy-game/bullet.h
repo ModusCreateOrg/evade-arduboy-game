@@ -30,12 +30,12 @@ struct Bullet {
         if (isMovingRight()) {
           posX += speedX;
           if (posX > arduboy.width()) {
-            options ^= 1 << 0;
+            hide();
           }
         } else {
           posX -= speedX;
           if (posX < 0) {
-            options ^= 1 << 0;
+            hide();
           }
         }
       }
@@ -53,6 +53,12 @@ struct Bullet {
 
     boolean isMovingRight() {
       return options & (1 << 1);
+    }
+
+    void hide() {
+      if (isVisible()) {
+        options ^= 1 << 0;
+      }
     }
 };
 
