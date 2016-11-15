@@ -15,7 +15,11 @@ void stopMusic() {
 
 void playMusic(byte song) {
     Arduboy ab;
+<<<<<<< HEAD
+//    return;
+=======
 
+>>>>>>> 4688602ed62d0da48405234622955c25eacb21a2
     if (!ab.tunes.playing() && currentSong != song) {
       stopMusic();
 
