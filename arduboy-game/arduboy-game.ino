@@ -14,7 +14,7 @@
 #define DEBOUNCE_DELAY 100
 #define MAX_LIVES 4
 #define NUM_STARS 30
-
+///1,782 bytes (69%)
 // TODO highScore should be replaced with table in EEPROM
 unsigned long score, highScore = 0;
 byte livesRemaining = MAX_LIVES;
@@ -502,6 +502,7 @@ void createStarFieldVals() {
 void updateStarFieldVals() {
   for (byte i = 0; i < NUM_STARS; i++) {
     if (stars[i].x < -1) {
+      stars[i].setValues();
       stars[i].x = 128 + random(20);
       stars[i].y = random(10, 64);
     } 
