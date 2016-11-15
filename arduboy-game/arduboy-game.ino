@@ -13,19 +13,13 @@
 
 #define DEBOUNCE_DELAY 100
 #define MAX_LIVES 4
-#define NUM_STARS 30
 
 // TODO highScore should be replaced with table in EEPROM
 unsigned long score, highScore = 0;
 byte livesRemaining = MAX_LIVES;
-Star stars[NUM_STARS];
+Star stars[STAR_COUNT];
 
-// Placeholders
-bool shouldPlayTone1,
-     shouldPlayTone2,
-     shouldPlayTone3;
-
-bool musicOn = true;     
+byte shouldPlayTone;
 
 // Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
 Bullet playerBullets[MAX_PLAYER_BULLETS];
@@ -342,14 +336,14 @@ void playGame() {
 
     // Play stage1 music
     playMusic(1);
-    if (shouldPlayTone1) {
+    if (shouldPlayTone1()) {
       sfx(1);
-      shouldPlayTone1 = false;
+      shouldPlayTone ^= 1 << 0;
     }
 
-    if (shouldPlayTone2) {
+    if (shouldPlayTone2()) {
       sfx(2);
-      shouldPlayTone2 = false;
+      shouldPlayTone ^= 1 << 1;
     }
 
     // TODO Replace dummy code that makes sure user dies
@@ -365,9 +359,8 @@ void drawScore() {
   sprintf(textBuf, "%06d", score);
   printText(textBuf, 0, 0, 1);
 }
-
 void drawStarLayer() {
-  for (byte i = 0; i < NUM_STARS; i++) {
+  for (byte i = 0; i < STAR_COUNT; i++) {
     //arduboy.drawPixel(stars[i].x, stars[i].y, 1);
     arduboy.drawRect(stars[i].x, stars[i].y, stars[i].width, stars[i].height, 1);
   }
@@ -413,7 +406,7 @@ void drawPlayerShip() {
   }
 
   if (arduboy.pressed(A_BUTTON)) {
-    shouldPlayTone1 = true;
+    shouldPlayTone |= 1 << 0;
 
     for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
       if (!playerBullets[i].isVisible) {
@@ -424,7 +417,7 @@ void drawPlayerShip() {
 
   // Here to test out other SFX
   if (arduboy.pressed(B_BUTTON)) {
-    shouldPlayTone2 = true;    
+    shouldPlayTone |= 1 << 1;
   }
 
   if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON)) {
@@ -446,7 +439,7 @@ void drawEnemies() {
     if (enemies[i].health == 0) {
       int enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
       int enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
-      enemies[i].set(enemyX, enemyY, (i + 1));
+      enemies[i].set(enemyX, enemyY, (random(3) + 1));
     } else {
       enemies[i].move();
     }
@@ -491,13 +484,13 @@ void newHighScoreScreen() {
 }
 
 void createStarFieldVals() {
-  for (byte i = 0; i < NUM_STARS; i++) {
+  for (byte i = 0; i < STAR_COUNT; i++) {
      stars[i].setValues();
   } 
 }
 
 void updateStarFieldVals() {
-  for (byte i = 0; i < NUM_STARS; i++) {
+  for (byte i = 0; i < STAR_COUNT; i++) {
     if (stars[i].x < -1) {
       stars[i].x = 128 + random(20);
       stars[i].y = random(100) + 10;
@@ -506,6 +499,14 @@ void updateStarFieldVals() {
         stars[i].x -= stars[i].speed;
     }
   }
+}
+
+boolean shouldPlayTone1() {
+  return shouldPlayTone & (1 << 0);
+}
+
+boolean shouldPlayTone2() {
+  return shouldPlayTone & (1 << 1);
 }
 
 // Initialization runs once only
