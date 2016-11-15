@@ -5,12 +5,12 @@
 #include "globals.h"
 
 struct Player {
-  int x;
-  int y;
-  int width;
-  int height;
+  byte x;
+  byte y;
+  byte width;
+  byte height;
   int frame;
-  int health;
+  byte health;
 
   void set() {
     x = 2;

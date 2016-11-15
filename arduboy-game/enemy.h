@@ -10,7 +10,6 @@ struct Enemy {
   byte y;
   byte width;
   byte height;
-  byte frame;
   byte health;
   byte type;
   byte direction;
