@@ -30,6 +30,9 @@ bool musicOn = true;
 // Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
 Bullet playerBullets[MAX_PLAYER_BULLETS];
 
+// Enemies array
+Enemy enemies[MAX_ENEMIES];
+
 // General purpose text buffer for string concatenations etc
 char textBuf[15];
 
@@ -359,6 +362,7 @@ void drawScore() {
   sprintf(textBuf, "%06d", score);
   printText(textBuf, 0, 0, 1);
 }
+
 void drawStarLayer() {
   for (byte i = 0; i < numStars; i++) {
     //arduboy.drawPixel(stars[i].x, stars[i].y, 1);
@@ -373,16 +377,16 @@ void drawLives() {
 }
 
 void drawPlayerShip() {
-  if (arduboy.pressed(RIGHT_BUTTON) && (spaceShip.x < MAX_SHIP_X)) {
+  if (arduboy.pressed(RIGHT_BUTTON) && (spaceShip.x < MAX_PLAYER_SHIP_X)) {
     spaceShip.x++;
   }
 
-  if (arduboy.pressed(LEFT_BUTTON) && (spaceShip.x > MIN_SHIP_X)) {
+  if (arduboy.pressed(LEFT_BUTTON) && (spaceShip.x > MIN_PLAYER_SHIP_X)) {
     spaceShip.x--;
   }
 
   if (arduboy.pressed(UP_BUTTON)) {
-    if (spaceShip.y > MIN_SHIP_X) {
+    if (spaceShip.y > MIN_PLAYER_SHIP_X) {
       spaceShip.y--;
     }
     if (arduboy.everyXFrames(9)) {
@@ -435,17 +439,17 @@ void drawPlayerShip() {
 }
 
 void drawEnemies() {
-  Enemy enemyType1;
-  enemyType1.set(100, 16, 1);
-  draw(enemyType1.x, enemyType1.y, enemyType1.bitmap, 0);
-
-  Enemy enemyType2;
-  enemyType2.set(100, 48, 2);
-  draw(enemyType2.x, enemyType2.y, enemyType2.bitmap, 0);
-
-  Enemy enemyType3;
-  enemyType3.set(86, 32, 3);
-  draw(enemyType3.x, enemyType3.y, enemyType3.bitmap, 0);
+  for (byte i = 0; i < MAX_ENEMIES; i++) {
+    if (enemies[i].health == 0) {
+      int enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
+      int enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
+      enemies[i].set(enemyX, enemyY, (i + 1));
+    } else {
+      enemies[i].move();
+    }
+    
+    draw(enemies[i].x, enemies[i].y, enemies[i].bitmap, 0);
+  }
 }
 
 void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
