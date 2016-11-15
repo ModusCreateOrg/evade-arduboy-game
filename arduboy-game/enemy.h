@@ -13,8 +13,8 @@ struct Enemy {
   int frame;
   int health;
   int type;
-  int isMovingLeft;
-  int isMovingDown;
+  boolean isMovingLeft;
+  boolean isMovingDown;
   const uint8_t *bitmap;
 
   void set(int _x, int _y, int _type) {
@@ -23,8 +23,8 @@ struct Enemy {
     width = 16;
     height = 16;
     type = _type;
-    isMovingLeft = random(2);
-    isMovingDown = random(2);
+    isMovingLeft = random(2) ? true : false;
+    isMovingDown = random(2) ? true : false;
 
     switch(type) {
       case 1:
