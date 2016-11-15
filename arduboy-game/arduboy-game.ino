@@ -18,12 +18,8 @@
 // TODO highScore should be replaced with table in EEPROM
 unsigned long score, highScore = 0;
 byte livesRemaining = MAX_LIVES;
-<<<<<<< HEAD
-byte numStars = 15;
-Star stars[15];
-=======
+
 Star stars[NUM_STARS];
->>>>>>> develop
 
 // Placeholders
 bool shouldPlayTone1,
@@ -346,7 +342,7 @@ void playGame() {
     updateStarFieldVals();
 
     // Play stage1 music
-    playMusic(1);
+    playMusic(2);
     if (shouldPlayTone1) {
       sfx(1);
       shouldPlayTone1 = false;
@@ -483,7 +479,7 @@ void gameOverScreen() {
 
   delay(100);
   // play game over tune
-  playMusic(5);
+  playMusic(4);
   delay(3000);
   stopMusic();
   delay(2000);

@@ -3,7 +3,7 @@
 #include "Music.h"
 
 
-int currentSong = -1;
+byte currentSong = 0;
 
 void stopMusic() {
     Arduboy ab;
@@ -15,22 +15,22 @@ void stopMusic() {
 
 void playMusic(byte song) {
     Arduboy ab;
-    
+//    return;
     if (!ab.tunes.playing() && currentSong != song) {
       stopMusic();
 
       unsigned char *music;
       switch(song) {
-        case 0 :
+        case 1 :
            music = titleMusic;
         break;
-        case 1 :
+        case 2 :
           music = stage1Music;
         break;
-        case 4 :
+        case 3 :
            music = bossMusic;
         break;
-        case 5 :
+        case 4 :
           music = gameOverMusic;
         break;
       }
