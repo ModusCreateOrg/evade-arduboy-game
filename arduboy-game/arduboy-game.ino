@@ -13,19 +13,17 @@
 
 #define DEBOUNCE_DELAY 100
 #define MAX_LIVES 4
-#define NUM_STARS 30
 
 // TODO highScore should be replaced with table in EEPROM
 unsigned long score, highScore = 0;
 byte livesRemaining = MAX_LIVES;
-Star stars[NUM_STARS];
+int numStars = 30;
+Star stars[30];
 
 // Placeholders
 bool shouldPlayTone1,
      shouldPlayTone2,
      shouldPlayTone3;
-
-bool musicOn = true;     
 
 // Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
 Bullet playerBullets[MAX_PLAYER_BULLETS];
@@ -48,9 +46,6 @@ void introScreen() {
   arduboy.clear();
   draw(0, 0, modusLogo, 0);
   arduboy.display();
-
-  arduboy.initRandomSeed();
-  
   delay(250);
   playMusic(0);
 
@@ -158,29 +153,26 @@ void highScoreScreen() {
 
 void creditsScreen() {
   // TODO, this is placeholder
-  const char* credits[] = {"CREDITS", "Jay Garcia", "Simon Prickett", "Stan Bershadskiy", "Andrew Owen", 
-                           "Andy Dennis", "Timothy Eagan", "Drew Griffith", "JD Jones", 
-                           "Jon Van Dalen", "Lucas Still", "Matt McCants"};
+  const char* credits[] = {"CREDITS", "p1", "p2", "p3", "p4", "p5", "p6"};
   unsigned short arrsize = sizeof(credits) / sizeof(int);
-  scrollCredits(4, arrsize, credits, false);
+  scrollCredits(5, arrsize, credits, false);
+  delay(1000);
 }
 
 void scrollCredits(int y, unsigned short arrsize, char* credits[], bool quit) {
   /**
      Recursive function for scrolling
-     credits up screen
+     creddits up screen
   */
   byte padding = 7;
   byte textSize = 1;
-  int origY = y;
+
   arduboy.clear();
   for (unsigned short i = 0; i < arrsize; i++) {
     if (i == 0) {
       textSize = 2;
-      y = y - 4;
     } else {
       textSize = 1;
-      y = origY;
     }
     printText(credits[i], 20, y + padding, textSize);
     arduboy.display();
@@ -198,14 +190,14 @@ void scrollCredits(int y, unsigned short arrsize, char* credits[], bool quit) {
 }
 
 void settingsScreen() {
-
-  long lastDebounceTime = millis();  // the last time the button was pressed
+  // TODO, this is a placeholder
+  long lastDebounceTime = 0;  // the last time the button was pressed
   bool exit_settings_menu = false;
   byte selectedItem;
 
   arduboy.clear();
   printText("SETTINGS", 20, 5, 2);
-  printMusicOnOff();
+  printText("SOUND", 20, 25, 1);
   printText("RESET HIGHSCORE", 20, 37, 1);
   printText("EXIT", 20, 49, 1);
   arduboy.drawRect(17, 22, 35, 13, 1);
@@ -233,11 +225,6 @@ void settingsScreen() {
             exit_settings_menu = true;
             break;
 
-          case SETTINGS_SOUND:
-            musicOn = !musicOn;
-            printMusicOnOff();
-            break;
-            
           case SETTINGS_RESET_HIGH_SCORE:
             highScore = 0;
             exit_settings_menu = true;
@@ -303,17 +290,6 @@ byte settingMenuUpButton(byte selectedItem) {
   }
 }
 
-void printMusicOnOff() {
-  if(musicOn) {
-    printText("SOUND  ON ", 20, 25, 1);
-    arduboy.drawRect(17, 22, 35, 13, 1);
-  } else {
-    printText("SOUND  OFF", 20, 25, 1);
-    arduboy.drawRect(17, 22, 35, 13, 1);
-  }
-  arduboy.display();
-}
-
 void playGame() {
   score = 0;
   livesRemaining = MAX_LIVES;
@@ -365,9 +341,8 @@ void drawScore() {
   sprintf(textBuf, "%06d", score);
   printText(textBuf, 0, 0, 1);
 }
-
 void drawStarLayer() {
-  for (byte i = 0; i < NUM_STARS; i++) {
+  for (byte i = 0; i < numStars; i++) {
     //arduboy.drawPixel(stars[i].x, stars[i].y, 1);
     arduboy.drawRect(stars[i].x, stars[i].y, stars[i].width, stars[i].height, 1);
   }
@@ -446,7 +421,7 @@ void drawEnemies() {
     if (enemies[i].health == 0) {
       int enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
       int enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
-      enemies[i].set(enemyX, enemyY, (i + 1));
+      enemies[i].set(enemyX, enemyY, (random(3) + 1));
     } else {
       enemies[i].move();
     }
@@ -491,13 +466,13 @@ void newHighScoreScreen() {
 }
 
 void createStarFieldVals() {
-  for (byte i = 0; i < NUM_STARS; i++) {
+  for (byte i = 0; i < numStars; i++) {
      stars[i].setValues();
   } 
 }
 
 void updateStarFieldVals() {
-  for (byte i = 0; i < NUM_STARS; i++) {
+  for (byte i = 0; i < numStars; i++) {
     if (stars[i].x < -1) {
       stars[i].x = 128 + random(20);
       stars[i].y = random(100) + 10;
