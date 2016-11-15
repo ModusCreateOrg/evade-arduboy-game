@@ -29,13 +29,15 @@ byte starY[NUM_STARS];
 byte starWidth[NUM_STARS];
 
 
+// shouldPlayTone1 (0), shouldPlayTone2 (1)
 byte shouldPlayTone;
 
 bool musicOn = true;     
 
 // Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
 Bullet playerBullets[MAX_PLAYER_BULLETS];
-  
+Bullet enemyBullets[MAX_ENEMIES];
+
 // Enemies array
 Enemy enemies[MAX_ENEMIES];
 
@@ -338,6 +340,10 @@ void playGame() {
       playerBullets[i].draw();
       playerBullets[i].update();
     }
+    for (byte i = 0; i < MAX_ENEMIES; i++) {
+      enemyBullets[i].draw();
+      enemyBullets[i].update();
+    }
 
     drawStarLayer();
     drawLives();
@@ -422,8 +428,9 @@ void drawPlayerShip() {
     shouldPlayTone |= 1 << 0;
 
     for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
-      if (!playerBullets[i].isVisible) {
-        playerBullets[i].set(spaceShip.x, spaceShip.y + (16 / 2) - 1);
+      if (!playerBullets[i].isVisible()) {
+        playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true);
+        break;
       }
     }
   }
@@ -453,11 +460,16 @@ void drawEnemies() {
       byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
       byte enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
       enemies[i].set(enemyX, enemyY, (random(3) + 1));
-    } else {
-      enemies[i].move();
     }
     
-    draw(enemies[i].x, enemies[i].y, enemies[i].bitmap, 0);
+    if (enemies[i].health > 0) {
+      enemies[i].move();
+      draw(enemies[i].x, enemies[i].y, enemies[i].bitmap, 0);
+      
+      if ((!enemyBullets[i].isVisible()) && (random(1000) == 0)) {
+        enemyBullets[i].set(enemies[i].x, (enemies[i].y + (enemies[i].height / 2) - 1), false);
+      }
+    }
   }
 }
 

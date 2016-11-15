@@ -12,6 +12,7 @@ struct Enemy {
 //  byte height;
   byte health;
   byte type;
+  // isMovingLeft (0), isMovingDown (1)
   byte direction;
   const uint8_t *bitmap;
 
@@ -39,6 +40,7 @@ struct Enemy {
         break;
       default:
         bitmap = enemy1;
+        health = 5;
     }
   }
 
