@@ -25,7 +25,7 @@ bool shouldPlayTone1,
      shouldPlayTone2,
      shouldPlayTone3;
 
-bool musicOnOff = true;     
+bool musicOn = true;     
 
 // Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
 Bullet playerBullets[MAX_PLAYER_BULLETS];
@@ -193,7 +193,7 @@ void scrollCredits(int y, unsigned short arrsize, char* credits[], bool quit) {
 
 void settingsScreen() {
 
-  long lastDebounceTime = 0;  // the last time the button was pressed
+  long lastDebounceTime = millis();  // the last time the button was pressed
   bool exit_settings_menu = false;
   byte selectedItem;
 
@@ -228,7 +228,7 @@ void settingsScreen() {
             break;
 
           case SETTINGS_SOUND:
-            musicOnOff = !musicOnOff;
+            musicOn = !musicOn;
             printMusicOnOff();
             break;
             
@@ -298,7 +298,7 @@ byte settingMenuUpButton(byte selectedItem) {
 }
 
 void printMusicOnOff() {
-  if(musicOnOff) {
+  if(musicOn) {
     printText("SOUND  ON ", 20, 25, 1);
     arduboy.drawRect(17, 22, 35, 13, 1);
   } else {
