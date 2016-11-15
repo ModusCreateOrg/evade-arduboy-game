@@ -150,13 +150,11 @@ void highScoreScreen() {
 
 void creditsScreen() {
   // TODO, this is placeholder
-  playMusic(1);
   const char* credits[] = {"CREDITS", "Jay Garcia", "Simon Prickett", "Stan Bershadskiy", "Andrew Owen", 
                            "Andy Dennis", "Timothy Eagan", "Drew Griffith", "JD Jones", 
                            "Jon Van Dalen", "Lucas Still", "Matt McCants"};
   unsigned short arrsize = sizeof(credits) / sizeof(int);
   scrollCredits(4, arrsize, credits, false);
-  stopMusic();
 }
 
 void scrollCredits(int y, unsigned short arrsize, char* credits[], bool quit) {
