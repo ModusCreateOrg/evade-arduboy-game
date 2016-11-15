@@ -12,10 +12,11 @@
 #include "star.h"
 
 #define DEBOUNCE_DELAY 100
+#define MAX_LIVES 4
 
 // TODO highScore should be replaced with table in EEPROM
-unsigned int score, highScore = 0;
-byte livesRemaining = 4;
+unsigned long score, highScore = 0;
+byte livesRemaining = MAX_LIVES;
 int numStars = 30;
 Star stars[30];
 
@@ -51,20 +52,20 @@ void introScreen() {
 byte titleScreen() {
   byte selectedItem = TITLE_PLAY_GAME;
   unsigned short totalDelay = 0;
-  long lastDebounceTime = 0;  // the last time the button was pressed
-
+  long lastDebounceTime = millis();  // the last time the button was pressed
+  
   arduboy.clear();
-  printText("TITLE", 25, 20, 2);
+  draw(0, 0, title, 0);
   arduboy.drawRect(2, 47, 26, 13, 1);
-  printText("PLAY", 3, 50, 1);
-  printText("CREDITS", 32, 50, 1);
-  printText("SETTINGS", 78, 50, 1);
-
   arduboy.display();
 
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
-      break;
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+        break;
+      } else {
+        lastDebounceTime = millis();
+      }
     }
 
     if (arduboy.pressed(LEFT_BUTTON)) {
@@ -287,20 +288,18 @@ byte settingMenuUpButton(byte selectedItem) {
 }
 
 void playGame() {
-  // TODO, this is placeholder, should also use livesRemaining
-  // to count down user lives
   score = 0;
+  livesRemaining = MAX_LIVES;
   spaceShip.reset();
-  // Random test to set score
-  unsigned int randomScore = 5000;//random(65000, 99999);
 
-  // Loop to simulate a game that ends with score being
-  // close to value of randomScore
-  while (score < randomScore) {
+  // This still has artificial game ending mechanisms in it...
+  while (livesRemaining > 0) {  
     arduboy.clear();
-    sprintf(textBuf, "SCORE %u", score);
-    printText(textBuf, 0, 0, 1);
-    score += random(0, 2);
+
+    drawScore();
+
+    // TODO implement proper scoring
+    score++;
 
     drawPlayerShip();
     drawEnemies();
@@ -310,6 +309,7 @@ void playGame() {
     }
 
     drawStarLayer();
+    drawLives();
     arduboy.display();
     updateStarFieldVals();
 
@@ -324,16 +324,30 @@ void playGame() {
       sfx(2);
       shouldPlayTone2 = false;
     }
-    
+
+    // TODO Replace dummy code that makes sure user dies
+    if (score > 0 && score % 1000 == 0) {
+      livesRemaining--;
+    }
   }
 
   stopMusic();
 }
 
+void drawScore() {
+  sprintf(textBuf, "%06d", score);
+  printText(textBuf, 0, 0, 1);
+}
 void drawStarLayer() {
   for (byte i = 0; i < numStars; i++) {
-//    arduboy.drawPixel(stars[i].x, stars[i].y, 1);
+    //arduboy.drawPixel(stars[i].x, stars[i].y, 1);
     arduboy.drawRect(stars[i].x, stars[i].y, stars[i].width, stars[i].height, 1);
+  }
+}
+
+void drawLives() {
+  for (byte i = 0; i < MAX_LIVES; i++) {
+    draw(120 - (i * 10), 0, (i < livesRemaining ? heart : unfilledHeart) , 0);
   }
 }
 
@@ -382,9 +396,7 @@ void drawPlayerShip() {
 
   // Here to test out other SFX
   if (arduboy.pressed(B_BUTTON)) {
-    shouldPlayTone2 = true;
-
-    
+    shouldPlayTone2 = true;    
   }
 
   if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON)) {
@@ -432,13 +444,14 @@ void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
 void gameOverScreen() {
   // TODO, this is placeholder
   arduboy.clear();
-  printText("GAME OVER", 13, 28, 2);
+  draw(0, 0, gameOver, 0);
   arduboy.display();
 
   // play game over tune
   playMusic(5);
   delay(3000);
   stopMusic();
+  delay(2000);
 }
 
 void newHighScoreScreen() {
@@ -450,13 +463,13 @@ void newHighScoreScreen() {
 }
 
 void createStarFieldVals() {
-  for (int i = 0; i < numStars; i++) {
-    stars[i].setValues();
-  }
+  for (byte i = 0; i < numStars; i++) {
+     stars[i].setValues();
+  } 
 }
 
 void updateStarFieldVals() {
-  for (int i = 0; i < numStars; i++) {
+  for (byte i = 0; i < numStars; i++) {
     if (stars[i].x < -1) {
       stars[i].x = 128 + random(20);
       stars[i].y = random(100) + 10;
