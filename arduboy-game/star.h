@@ -2,30 +2,28 @@
 #define STAR_H
 
 struct Star {
-  float x,
-        speed;
+  float x;
+  float speed;
+  
   byte y;
   byte width;
-  byte height;
   byte layer;
 
   void setValues() {
       x = random(250);
       y = random(75);
-      width = random(4);
-      height = 1;
+      width = random(1, 4);
 
-      // elongated vertically is weird.
-      if (height > width) {
-        height = width;
+      if (width >= 3) {
+        speed = random(75, 95) * 0.01f;
       }
-
-      if (width > 1) {
-        speed = 1;
+      else if (width >= 2) {
+        speed = random(35, 40) * 0.01f;
       }
       else {
-        speed = .25;
+        speed = random(15, 25) * 0.01f;
       }
+//      serial
   }
 
 };

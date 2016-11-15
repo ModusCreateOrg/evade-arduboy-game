@@ -17,8 +17,8 @@
 // TODO highScore should be replaced with table in EEPROM
 unsigned long score, highScore = 0;
 byte livesRemaining = MAX_LIVES;
-int numStars = 30;
-Star stars[30];
+byte numStars = 15;
+Star stars[15];
 
 // Placeholders
 bool shouldPlayTone1,
@@ -341,7 +341,8 @@ void drawScore() {
 void drawStarLayer() {
   for (byte i = 0; i < numStars; i++) {
     //arduboy.drawPixel(stars[i].x, stars[i].y, 1);
-    arduboy.drawRect(stars[i].x, stars[i].y, stars[i].width, stars[i].height, 1);
+//    arduboy.drawRect(stars[i].x, stars[i].y, stars[i].width, stars[i].height, 1);
+    arduboy.drawFastHLine(stars[i].x, stars[i].y, stars[i].width, 1);
   }
 }
 
@@ -472,7 +473,7 @@ void updateStarFieldVals() {
   for (byte i = 0; i < numStars; i++) {
     if (stars[i].x < -1) {
       stars[i].x = 128 + random(20);
-      stars[i].y = random(100) + 10;
+      stars[i].y = random(10, 64);
     } 
     else {
         stars[i].x -= stars[i].speed;
