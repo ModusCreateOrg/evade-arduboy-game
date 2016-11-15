@@ -6,25 +6,24 @@
 #include "bitmaps.h"
 
 struct Enemy {
-  int x;
-  int y;
-  int width;
-  int height;
-  int frame;
-  int health;
-  int type;
-  boolean isMovingLeft;
-  boolean isMovingDown;
+  byte x;
+  byte y;
+  byte width;
+  byte height;
+  byte frame;
+  byte health;
+  byte type;
+  byte direction;
   const uint8_t *bitmap;
 
-  void set(int _x, int _y, int _type) {
+  void set(byte _x, byte _y, byte _type) {
     x = _x;
     y = _y;
     width = 16;
     height = 16;
     type = _type;
-    isMovingLeft = random(2) ? true : false;
-    isMovingDown = random(2) ? true : false;
+    direction |= random(2) << 0;
+    direction |= random(2) << 1;
 
     switch(type) {
       case 1:
@@ -48,8 +47,8 @@ struct Enemy {
     if (random(10) == 0) {
       changeDirection();
       
-      int newX = x + (isMovingLeft ? -1 : 1);
-      int newY = y + (isMovingDown ? -1 : 1);
+      int newX = x + (isMovingLeft() ? -1 : 1);
+      int newY = y + (isMovingDown() ? -1 : 1);
       
       if ((newX >= MIN_ENEMY_SHIP_X) && (newX <= MAX_ENEMY_SHIP_X)) {
         x = newX;
@@ -62,11 +61,19 @@ struct Enemy {
 
   void changeDirection() {
     if (random(10) == 0) {
-      isMovingLeft = isMovingLeft ? 0 : 1;
+      direction ^= 1 << 0;
     }
     if (random(10) == 0) {
-      isMovingDown = isMovingDown ? 0 : 1;
+      direction ^= 1 << 1;
     }
+  }
+
+  boolean isMovingLeft() {
+    return direction & (1 << 0);
+  }
+
+  boolean isMovingDown() {
+    return direction & (1 << 1);
   }
 };
 
