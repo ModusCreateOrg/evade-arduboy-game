@@ -9,16 +9,23 @@
 #include "enemy.h"
 #include "bitmaps.h"
 #include "MusicPlayer.h"
-#include "star.h"
+//#include "star.h"
 
 #define DEBOUNCE_DELAY 100
 #define MAX_LIVES 4
-#define NUM_STARS 30
-
+#define NUM_STARS 15
+///1,782 bytes (69%)
 // TODO highScore should be replaced with table in EEPROM
 unsigned long score, highScore = 0;
 byte livesRemaining = MAX_LIVES;
-Star stars[NUM_STARS];
+
+//Star stars[NUM_STARS];
+
+float starX[NUM_STARS];
+float starSpeed[NUM_STARS];
+byte starY[NUM_STARS];
+byte starWidth[NUM_STARS];
+
 
 // Placeholders
 bool shouldPlayTone1,
@@ -341,7 +348,7 @@ void playGame() {
     updateStarFieldVals();
 
     // Play stage1 music
-    playMusic(1);
+    playMusic(2);
     if (shouldPlayTone1) {
       sfx(1);
       shouldPlayTone1 = false;
@@ -369,7 +376,9 @@ void drawScore() {
 void drawStarLayer() {
   for (byte i = 0; i < NUM_STARS; i++) {
     //arduboy.drawPixel(stars[i].x, stars[i].y, 1);
-    arduboy.drawRect(stars[i].x, stars[i].y, stars[i].width, stars[i].height, 1);
+//    arduboy.drawRect(stars[i].x, stars[i].y, stars[i].width, stars[i].height, 1);
+//    arduboy.drawFastHLine(stars[i].x, stars[i].y, stars[i].width, 1);
+    arduboy.drawFastHLine(starX[i], starY[i], starWidth[i], 1);
   }
 }
 
@@ -407,7 +416,7 @@ void drawPlayerShip() {
     if (arduboy.everyXFrames(9)) {
       spaceShip.frame++;
     }
-    if (spaceShip.frame  > 4) {
+    if (spaceShip.frame > 4) {
       spaceShip.frame = 4;
     }
   }
@@ -475,8 +484,9 @@ void gameOverScreen() {
   draw(0, 0, gameOver, 0);
   arduboy.display();
 
+  delay(100);
   // play game over tune
-  playMusic(5);
+  playMusic(4);
   delay(3000);
   stopMusic();
   delay(2000);
@@ -492,18 +502,41 @@ void newHighScoreScreen() {
 
 void createStarFieldVals() {
   for (byte i = 0; i < NUM_STARS; i++) {
-     stars[i].setValues();
+//     stars[i].setValues();
+      setStarValuesForIndex(i);
   } 
+}
+
+void setStarValuesForIndex(byte i) {
+  starX[i] = random(250);
+  starY[i] = random(75);
+  starWidth[i] = random(1, 4);
+
+  if (starWidth[i] >= 3) {
+    starSpeed[i] = random(75, 95) * 0.01f;
+  }
+  else if (starWidth[i] >= 2) {
+    starSpeed[i] = random(35, 40) * 0.01f;
+  }
+  else {
+    starSpeed[i] = random(15, 25) * 0.01f;
+  }
 }
 
 void updateStarFieldVals() {
   for (byte i = 0; i < NUM_STARS; i++) {
-    if (stars[i].x < -1) {
-      stars[i].x = 128 + random(20);
-      stars[i].y = random(100) + 10;
+    if (starX[i] < -1) {
+//      stars[i].setValues();
+//      stars[i].x = 128 + random(20);
+//      stars[i].y = random(10, 64);
+      setStarValuesForIndex(i);
+      starX[i] = 128 + random(20);
+      starY[i] = random(10, 64);
+      
     } 
     else {
-        stars[i].x -= stars[i].speed;
+//        stars[i].x -= stars[i].speed;
+      starX[i] -= starSpeed[i];
     }
   }
 }
