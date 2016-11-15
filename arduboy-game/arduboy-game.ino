@@ -444,13 +444,14 @@ void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
 void gameOverScreen() {
   // TODO, this is placeholder
   arduboy.clear();
-  printText("GAME OVER", 13, 28, 2);
+  draw(0, 0, gameOver, 0);
   arduboy.display();
 
   // play game over tune
   playMusic(5);
   delay(3000);
   stopMusic();
+  delay(2000);
 }
 
 void newHighScoreScreen() {
