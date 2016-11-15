@@ -54,7 +54,6 @@ void introScreen() {
   
   delay(250);
   playMusic(0);
-
   delay(2750);
 }
 
@@ -419,7 +418,7 @@ void drawPlayerShip() {
 
     for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
       if (!playerBullets[i].isVisible) {
-        playerBullets[i].set(spaceShip.x, spaceShip.y + (spaceShip.size / 2) - 1);
+        playerBullets[i].set(spaceShip.x, spaceShip.y + (16 / 2) - 1);
       }
     }
   }
