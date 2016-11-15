@@ -15,6 +15,9 @@ struct Star {
       width = random(4);
       height = 1;
 
+      if (width == 0) {
+        width = 1;
+      }
       // elongated vertically is weird.
       if (height > width) {
         height = width;
