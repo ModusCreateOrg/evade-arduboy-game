@@ -164,9 +164,9 @@ void highScoreScreen() {
 
 void creditsScreen() {
   // TODO, this is placeholder
-  const char* credits[] = {"CREDITS", "Jay Garcia", "Simon Prickett", "Stan Bershadskiy", "Andrew Owen", 
-                           "Andy Dennis", "Timothy Eagan", "Drew Griffith", "JD Jones", 
-                           "Jon Van Dalen", "Lucas Still", "Matt McCants"};
+  const char* credits[] = {"CREDITS", "Captain: Jay Garcia", "Medic: Simon Prickett", "Lt: Stan Bershadskiy", "Helmsman: Andrew Owen", 
+                           "Hologram: Andy Dennis", "Gunner: Timothy Eagan", "Tech: Drew Griffith", "Loadmaster: JD Jones", 
+                           "Purser: Jon Van Dalen", "Mechanic: Lucas Still", "Comms: Matt McCants"};
   unsigned short arrsize = sizeof(credits) / sizeof(int);
   scrollCredits(4, arrsize, credits, false);
 }
@@ -188,7 +188,7 @@ void scrollCredits(int y, unsigned short arrsize, char* credits[], bool quit) {
       textSize = 1;
       y = origY;
     }
-    printText(credits[i], 20, y + padding, textSize);
+    printText(credits[i], 2, y + padding, textSize);
     arduboy.display();
     padding = padding + 15;
     if ( i + 1 == arrsize && y + padding < 0) {
