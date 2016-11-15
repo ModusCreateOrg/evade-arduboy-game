@@ -341,6 +341,7 @@ void drawScore() {
   sprintf(textBuf, "%06d", score);
   printText(textBuf, 0, 0, 1);
 }
+
 void drawStarLayer() {
   for (byte i = 0; i < numStars; i++) {
     //arduboy.drawPixel(stars[i].x, stars[i].y, 1);
