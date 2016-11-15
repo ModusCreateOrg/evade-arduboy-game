@@ -8,8 +8,8 @@
 struct Enemy {
   byte x;
   byte y;
-  byte width;
-  byte height;
+//  byte width;
+//  byte height;
   byte frame;
   byte health;
   byte type;
@@ -19,8 +19,8 @@ struct Enemy {
   void set(byte _x, byte _y, byte _type) {
     x = _x;
     y = _y;
-    width = 16;
-    height = 16;
+//    width = 16;
+//    height = 16;
     type = _type;
     direction |= random(2) << 0;
     direction |= random(2) << 1;

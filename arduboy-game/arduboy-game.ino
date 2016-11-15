@@ -30,7 +30,7 @@ bool musicOn = true;
 
 // Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
 Bullet playerBullets[MAX_PLAYER_BULLETS];
-
+  
 // Enemies array
 Enemy enemies[MAX_ENEMIES];
 
@@ -53,7 +53,7 @@ void introScreen() {
   arduboy.initRandomSeed();
   
   delay(250);
-  playMusic(0);
+  playMusic(1);
   delay(2750);
 }
 
@@ -445,8 +445,8 @@ void drawPlayerShip() {
 void drawEnemies() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
     if (enemies[i].health == 0) {
-      int enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
-      int enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
+      byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
+      byte enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
       enemies[i].set(enemyX, enemyY, (i + 1));
     } else {
       enemies[i].move();
