@@ -298,7 +298,7 @@ byte settingMenuUpButton(byte selectedItem) {
 }
 
 void printMusicOnOff() {
-  if(musicOnOff == true) {
+  if(musicOnOff) {
     printText("SOUND  ON ", 20, 25, 1);
     arduboy.drawRect(17, 22, 35, 13, 1);
   } else {
