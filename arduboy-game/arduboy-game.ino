@@ -13,12 +13,12 @@
 
 #define DEBOUNCE_DELAY 100
 #define MAX_LIVES 4
+#define NUM_STARS 30
 
 // TODO highScore should be replaced with table in EEPROM
 unsigned long score, highScore = 0;
 byte livesRemaining = MAX_LIVES;
-int numStars = 30;
-Star stars[30];
+Star stars[NUM_STARS];
 
 // Placeholders
 bool shouldPlayTone1,
@@ -364,7 +364,7 @@ void drawScore() {
 }
 
 void drawStarLayer() {
-  for (byte i = 0; i < numStars; i++) {
+  for (byte i = 0; i < NUM_STARS; i++) {
     //arduboy.drawPixel(stars[i].x, stars[i].y, 1);
     arduboy.drawRect(stars[i].x, stars[i].y, stars[i].width, stars[i].height, 1);
   }
@@ -488,13 +488,13 @@ void newHighScoreScreen() {
 }
 
 void createStarFieldVals() {
-  for (byte i = 0; i < numStars; i++) {
+  for (byte i = 0; i < NUM_STARS; i++) {
      stars[i].setValues();
   } 
 }
 
 void updateStarFieldVals() {
-  for (byte i = 0; i < numStars; i++) {
+  for (byte i = 0; i < NUM_STARS; i++) {
     if (stars[i].x < -1) {
       stars[i].x = 128 + random(20);
       stars[i].y = random(100) + 10;
