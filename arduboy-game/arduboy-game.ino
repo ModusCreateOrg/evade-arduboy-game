@@ -48,6 +48,9 @@ void introScreen() {
   arduboy.clear();
   draw(0, 0, modusLogo, 0);
   arduboy.display();
+
+  arduboy.initRandomSeed();
+  
   delay(250);
   playMusic(0);
 
