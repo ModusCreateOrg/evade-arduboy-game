@@ -23,7 +23,6 @@ struct Star {
       else {
         speed = random(15, 25) * 0.01f;
       }
-//      serial
   }
 
 };

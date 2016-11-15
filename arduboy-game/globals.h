@@ -7,10 +7,16 @@
 #include "Arduboy.h"
 
 // Define limits that ship movement is bounded by
-#define MIN_SHIP_X 2
-#define MAX_SHIP_X 75
 #define MIN_SHIP_Y 2
 #define MAX_SHIP_Y 48
+
+// Define limits that player ship movement is bounded by
+#define MIN_PLAYER_SHIP_X 2
+#define MAX_PLAYER_SHIP_X 75
+
+// Define limits that enemy ship movement is bounded by
+#define MIN_ENEMY_SHIP_X 92
+#define MAX_ENEMY_SHIP_X 112
 
 // Time before title screen flips to high score screen
 #define ATTRACT_MODE_TIMEOUT 10000
@@ -28,6 +34,8 @@
 
 
 #define MAX_PLAYER_BULLETS 8
+
+#define MAX_ENEMIES 3
 
 Arduboy arduboy;
 

@@ -12,7 +12,7 @@ struct Bullet {
     byte posX;
     byte posY;
     byte damage;
-    int speedX;
+    byte speedX;
     boolean isVisible;
 
     void set(byte x, byte y) {
