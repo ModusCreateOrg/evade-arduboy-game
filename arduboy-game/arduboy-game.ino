@@ -29,10 +29,7 @@ byte starY[NUM_STARS];
 byte starWidth[NUM_STARS];
 
 
-// Placeholders
-bool shouldPlayTone1,
-     shouldPlayTone2,
-     shouldPlayTone3;
+byte shouldPlayTone;
 
 bool musicOn = true;     
 
@@ -349,14 +346,14 @@ void playGame() {
 
     // Play stage1 music
     playMusic(2);
-    if (shouldPlayTone1) {
+    if (shouldPlayTone1()) {
       sfx(1);
-      shouldPlayTone1 = false;
+      shouldPlayTone ^= 1 << 0;
     }
 
-    if (shouldPlayTone2) {
+    if (shouldPlayTone2()) {
       sfx(2);
-      shouldPlayTone2 = false;
+      shouldPlayTone ^= 1 << 1;
     }
 
     // TODO Replace dummy code that makes sure user dies
@@ -422,7 +419,7 @@ void drawPlayerShip() {
   }
 
   if (arduboy.pressed(A_BUTTON)) {
-    shouldPlayTone1 = true;
+    shouldPlayTone |= 1 << 0;
 
     for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
       if (!playerBullets[i].isVisible) {
@@ -433,7 +430,7 @@ void drawPlayerShip() {
 
   // Here to test out other SFX
   if (arduboy.pressed(B_BUTTON)) {
-    shouldPlayTone2 = true;    
+    shouldPlayTone |= 1 << 1;
   }
 
   if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON)) {
@@ -455,7 +452,7 @@ void drawEnemies() {
     if (enemies[i].health == 0) {
       byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
       byte enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
-      enemies[i].set(enemyX, enemyY, (i + 1));
+      enemies[i].set(enemyX, enemyY, (random(3) + 1));
     } else {
       enemies[i].move();
     }
@@ -539,6 +536,14 @@ void updateStarFieldVals() {
       starX[i] -= starSpeed[i];
     }
   }
+}
+
+boolean shouldPlayTone1() {
+  return shouldPlayTone & (1 << 0);
+}
+
+boolean shouldPlayTone2() {
+  return shouldPlayTone & (1 << 1);
 }
 
 // Initialization runs once only

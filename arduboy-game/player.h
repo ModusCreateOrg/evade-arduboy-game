@@ -9,21 +9,21 @@ struct Player {
   byte y;
 //  byte size;
   int frame;
-//  int health;
+  byte health;
 
   void set() {
     x = 2;
     y = 32;
     frame = 2;
 //    size = 16;
-//    health = 100;
+    health = 100;
   }
 
   void reset() {
     x = 2;
     y = 32;
     frame = 2;
-//    health = 100;
+    health = 100;
   }
 };
 
