@@ -1,6 +1,23 @@
 #ifndef MESSAGECATALOG_H
 #define MESSAGECATALOG_H
 
+// High Score screen
+
+PROGMEM const char highScoreTitle[] = { "HI SCORES" };
+
+// New High Score screen
+
+PROGMEM const char newHighScoreTitle[] = { "NEW HIGH SCORE" };
+
+// Settings screen
+
+PROGMEM const char settingsTitle[] = { "SETTINGS" };
+PROGMEM const char settingsResetHighScore[] = { "RESET HIGH SCORE" };
+PROGMEM const char settingsExit[] = { "EXIT" };
+PROGMEM const char settingsSoundOn[] = { "SOUND  ON " };
+
+// Credits screen
+
 #define NUM_CREDITS 12
 
 PROGMEM const char credits0[] = "CREDITS";
