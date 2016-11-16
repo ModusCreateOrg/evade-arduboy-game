@@ -69,7 +69,11 @@ void playMusic(byte song) {
         case 4 :
           music = gameOverMusic;
         break;
+        case 5 : 
+          music = mainMusic;
+        break;
       }
+      
       arduboy.tunes.playScore(music);
     }
 }   
@@ -78,10 +82,10 @@ void playMusic(byte song) {
 void sfx(byte tone) {
   switch(tone) {
     case 1:
-      arduboy.tunes.tone(800, 50);
+      arduboy.tunes.tone(820, 10);
     break;
     case 2:
-      arduboy.tunes.tone(1318, 120);
+      arduboy.tunes.tone(750, 50);
     break;
     case 3:
       arduboy.tunes.tone(987, 400);
@@ -120,6 +124,7 @@ byte titleScreen() {
   arduboy.drawRect(2, 47, 26, 13, 1);
   arduboy.display();
 
+  playMusic(5);
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
       if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
