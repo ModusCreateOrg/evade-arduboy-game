@@ -10,35 +10,26 @@
 #include "enemy.h"
 #include "bitmaps.h"
 #include "MusicPlayer.h"
-//#include "star.h"
 #include <avr/pgmspace.h>
 
 #define DEBOUNCE_DELAY 100
 #define MAX_LIVES 4
 #define NUM_STARS 15
-///1,782 bytes (69%)
 // TODO highScore should be replaced with table in EEPROM
-unsigned long score, highScore = 0;
+unsigned long inGameFrame, inGameAButtonLastPress, inGameBButtonLastPress, score, highScore = 0;
 byte livesRemaining = MAX_LIVES;
-
-//Star stars[NUM_STARS];
 
 float starX[NUM_STARS];
 float starSpeed[NUM_STARS];
 byte starY[NUM_STARS];
 byte starWidth[NUM_STARS];
 
-
-// Placeholders
-bool shouldPlayTone1,
-     shouldPlayTone2,
-     shouldPlayTone3;
-
 bool musicOn = true;     
 
-// Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
+// Bullet arrays
 Bullet playerBullets[MAX_PLAYER_BULLETS];
-  
+Bullet enemyBullets[MAX_ENEMIES];
+
 // Enemies array
 Enemy enemies[MAX_ENEMIES];
 
@@ -322,18 +313,18 @@ void printMusicOnOff() {
 }
 
 void playGame() {
+  inGameFrame = 0;
+  inGameAButtonLastPress = 0;
+  inGameBButtonLastPress = 0;
   score = 0;
   livesRemaining = MAX_LIVES;
   spaceShip.reset();
 
-  // This still has artificial game ending mechanisms in it...
   while (livesRemaining > 0) {  
     arduboy.clear();
+    inGameFrame++;
 
     drawScore();
-
-    // TODO implement proper scoring
-    score++;
 
     drawPlayerShip();
     drawEnemies();
@@ -341,27 +332,27 @@ void playGame() {
       playerBullets[i].draw();
       playerBullets[i].update();
     }
+    for (byte i = 0; i < MAX_ENEMIES; i++) {
+      enemyBullets[i].draw();
+      enemyBullets[i].update();
+    }
 
     drawStarLayer();
     drawLives();
     arduboy.display();
     updateStarFieldVals();
 
+    handlePlayerBullets();
+    handleEnemyBullets();
+
     // Play stage1 music
     playMusic(2);
-    if (shouldPlayTone1) {
+    if (shouldPlayAButtonTone()) {
       sfx(1);
-      shouldPlayTone1 = false;
     }
 
-    if (shouldPlayTone2) {
+    if (shouldPlayBButtonTone()) {
       sfx(2);
-      shouldPlayTone2 = false;
-    }
-
-    // TODO Replace dummy code that makes sure user dies
-    if (score > 0 && score % 1000 == 0) {
-      livesRemaining--;
     }
   }
 
@@ -375,9 +366,6 @@ void drawScore() {
 
 void drawStarLayer() {
   for (byte i = 0; i < NUM_STARS; i++) {
-    //arduboy.drawPixel(stars[i].x, stars[i].y, 1);
-//    arduboy.drawRect(stars[i].x, stars[i].y, stars[i].width, stars[i].height, 1);
-//    arduboy.drawFastHLine(stars[i].x, stars[i].y, stars[i].width, 1);
     arduboy.drawFastHLine(starX[i], starY[i], starWidth[i], 1);
   }
 }
@@ -422,18 +410,30 @@ void drawPlayerShip() {
   }
 
   if (arduboy.pressed(A_BUTTON)) {
-    shouldPlayTone1 = true;
-
-    for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
-      if (!playerBullets[i].isVisible) {
-        playerBullets[i].set(spaceShip.x, spaceShip.y + (16 / 2) - 1);
+    if (inGameAButtonLastPress < (inGameFrame - 75)) {
+      inGameAButtonLastPress = inGameFrame;
+      // Fire A weapon (single fire)
+      for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
+        if (!playerBullets[i].isVisible()) {
+          playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true, 100);
+          break;
+        }
       }
     }
   }
 
   // Here to test out other SFX
   if (arduboy.pressed(B_BUTTON)) {
-    shouldPlayTone2 = true;    
+    if (inGameBButtonLastPress < (inGameFrame - 15)) {
+      inGameBButtonLastPress = inGameFrame;
+      // Fire B weapon (rapid fire)
+      for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
+        if (!playerBullets[i].isVisible()) {
+          playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true, 5);
+          break;
+        }
+      }
+    }
   }
 
   if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON)) {
@@ -452,15 +452,20 @@ void drawPlayerShip() {
 
 void drawEnemies() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
-    if (enemies[i].health == 0) {
+    if ((enemies[i].health <= 0) && (random(1000) == 0)) {
       byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
       byte enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
-      enemies[i].set(enemyX, enemyY, (i + 1));
-    } else {
-      enemies[i].move();
+      enemies[i].set(enemyX, enemyY, (random(3) + 1));
     }
     
-    draw(enemies[i].x, enemies[i].y, enemies[i].bitmap, 0);
+    if (enemies[i].health > 0) {
+      enemies[i].move();
+      draw(enemies[i].x, enemies[i].y, enemies[i].bitmap, 0);
+      
+      if ((!enemyBullets[i].isVisible()) && (random(1000) == 0)) {
+        enemyBullets[i].set(enemies[i].x, (enemies[i].y + (16 / 2) - 1), false, 1);
+      }
+    }
   }
 }
 
@@ -476,6 +481,42 @@ void draw(byte x, byte y, const uint8_t *bitmap, uint8_t frame) {
     bitmap += frame * frame_offset;
   }
   arduboy.drawBitmap(x, y, bitmap, width, height, 1);
+}
+
+void handleEnemyBullets() {
+  for (byte i = 0; i < MAX_ENEMIES; i++) {
+    if ((enemyBullets[i].isVisible()) &&
+        (enemyBullets[i].posX >= spaceShip.x) &&
+        (enemyBullets[i].posX <= (spaceShip.x + 16)) &&
+        (enemyBullets[i].posY >= spaceShip.y) &&
+        (enemyBullets[i].posY <= (spaceShip.y + 16))) {
+          // Hit Player
+          enemyBullets[i].hide();
+          livesRemaining--;
+        }
+  }
+}
+
+void handlePlayerBullets() {
+  for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
+    if (playerBullets[i].isVisible()) {
+      for (byte j = 0; j < MAX_ENEMIES; j++) {
+        if ((enemies[j].health > 0) &&
+            (playerBullets[i].posX >= enemies[j].x) &&
+            (playerBullets[i].posX <= (enemies[j].x + 16)) &&
+            (playerBullets[i].posY >= enemies[j].y) &&
+            (playerBullets[i].posY <= (enemies[j].y + 16))) {
+              // Hit Enemy
+              playerBullets[i].hide();
+              enemies[j].health -= playerBullets[i].damage;
+
+              if (enemies[j].health <= 0) {
+                score += 100;
+              }
+            }
+      }
+    }
+  }
 }
 
 void gameOverScreen() {
@@ -502,7 +543,6 @@ void newHighScoreScreen() {
 
 void createStarFieldVals() {
   for (byte i = 0; i < NUM_STARS; i++) {
-//     stars[i].setValues();
       setStarValuesForIndex(i);
   } 
 }
@@ -526,19 +566,23 @@ void setStarValuesForIndex(byte i) {
 void updateStarFieldVals() {
   for (byte i = 0; i < NUM_STARS; i++) {
     if (starX[i] < -1) {
-//      stars[i].setValues();
-//      stars[i].x = 128 + random(20);
-//      stars[i].y = random(10, 64);
       setStarValuesForIndex(i);
       starX[i] = 128 + random(20);
       starY[i] = random(10, 64);
       
     } 
     else {
-//        stars[i].x -= stars[i].speed;
       starX[i] -= starSpeed[i];
     }
   }
+}
+
+boolean shouldPlayAButtonTone() {
+  return (inGameAButtonLastPress > (inGameFrame - 20));
+}
+
+boolean shouldPlayBButtonTone() {
+  return (inGameBButtonLastPress > (inGameFrame - 50));
 }
 
 // Initialization runs once only

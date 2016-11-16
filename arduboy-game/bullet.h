@@ -13,29 +13,51 @@ struct Bullet {
     byte posY;
     byte damage;
     byte speedX;
-    boolean isVisible;
+    // Visibility (0), Direction (1)
+    byte options;
 
-    void set(byte x, byte y) {
+    void set(byte x, byte y, boolean firedByPlayer, byte _damage) {
       posX = x;
       posY = y;
-      damage = 1;
-      speedX = 3;
-      isVisible = true;
+      damage = _damage;
+      speedX = firedByPlayer ? 3 : 1;
+      options |= 1 << 0;
+      options |= firedByPlayer << 1;
     }
 
     void update() {
-      if (isVisible) {
-        posX += speedX;
-        
-        if (posX > arduboy.width()) {
-          isVisible = false;
+      if (isVisible()) {
+        if (isMovingRight()) {
+          posX += speedX;
+          if (posX > arduboy.width()) {
+            hide();
+          }
+        } else {
+          posX -= speedX;
+          if (posX <= 0) {
+            hide();
+          }
         }
       }
     }
 
     void draw() {
-      if (isVisible) {
+      if (isVisible()) {
         arduboy.fillRect(posX, posY, 2, 2, 1);
+      }
+    }
+
+    boolean isVisible() {
+      return options & (1 << 0);
+    }
+
+    boolean isMovingRight() {
+      return options & (1 << 1);
+    }
+
+    void hide() {
+      if (isVisible()) {
+        options ^= 1 << 0;
       }
     }
 };

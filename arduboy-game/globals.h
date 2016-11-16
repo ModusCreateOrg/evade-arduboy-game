@@ -32,9 +32,7 @@
 #define SETTINGS_RESET_HIGH_SCORE 1
 #define SETTINGS_EXIT 2
 
-
 #define MAX_PLAYER_BULLETS 8
-
 #define MAX_ENEMIES 3
 
 Arduboy arduboy;
