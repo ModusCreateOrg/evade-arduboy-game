@@ -616,13 +616,16 @@ void setStarValuesForIndex(byte i) {
   starWidth[i] = random(1, 4);
 
   if (starWidth[i] >= 3) {
-    starSpeed[i] = random(75, 95) * 0.01f;
+//    starSpeed[i] = random(75, 95) * 0.01f;
+    starSpeed[i] = random(30, 40) * 0.01f;
   }
   else if (starWidth[i] >= 2) {
-    starSpeed[i] = random(35, 40) * 0.01f;
+//    starSpeed[i] = random(35, 40) * 0.01f;   
+    starSpeed[i] = random(18, 25) * 0.01f;
   }
   else {
-    starSpeed[i] = random(15, 25) * 0.01f;
+//    starSpeed[i] = random(15, 25) * 0.01f;
+    starSpeed[i] = random(7, 12) * 0.01f;
   }
 }
 
