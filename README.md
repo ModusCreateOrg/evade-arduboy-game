@@ -25,7 +25,7 @@ Tabs can be renamed and deleted from this menu.
 When you plug a device into your USB port you need to set the *Port* from the
 *Tools* menu.
 
-In addition to the above you also need to select the *Board* as Arduboy (explained in the Arduboy library guide).
+In addition to the above you also need to select the *Board* as Arduboy (explained in the Arduboy library guide).  If you don't see Arduboy, use Arduino Leonardo instead.
 
 The *Tick* icon can be used to verify the code prior to uploading. The *Arrow* button uploads the sketch to
 the device.  
@@ -38,4 +38,5 @@ the device.
 * [Some documentation for Arduboy Library](https://asmcbain.net/projects/arduboy/docs/1.2/api/index.html#arduboy)
 * [Image Encoding Utility](http://www.andrewlowndes.co.uk/blog/graphics/arduboy-image-converter)
 * [Reset Procedure if you brick device](https://www.youtube.com/watch?v=l1ifTSq0VK4)
+* [Information about Memory](https://www.arduino.cc/en/Tutorial/Memory) we are space constrained and need to pay attention to this
 * [Information on use of PROGMEM](https://www.arduino.cc/en/Reference/PROGMEM)
