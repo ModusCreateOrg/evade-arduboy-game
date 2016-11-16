@@ -592,16 +592,95 @@ void gameOverScreen() {
   delay(2000);
 }
 
+void drawHighScoreEntryCursor(byte pos) {
+  arduboy.fillRect(44, 62, 10, 2, (pos == 0 ? 1 : 0));
+  arduboy.fillRect(56, 62, 10, 2, (pos == 1 ? 1 : 0));
+  arduboy.fillRect(68, 62, 10, 2, (pos == 2 ? 1 : 0));
+}
+
 void newHighScoreScreen() {
-  // TODO, this is placeholder
+  long lastDebounceTime = millis();
+  bool allDone = false;
+  byte currPos = 0;
+  byte currInitials[] = { 65, 65, 65};
+  
   arduboy.clear();
   printText("NEW HI!", 24, 1, 2);
   sprintf(textBuf, "%06d", score);
   printText(textBuf, 28, 22, 2);
-  printText("AAA", 44, 45, 2);
-  arduboy.fillRect(44, 62, 9, 2, 1);
+  sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
+  printText(textBuf, 44, 45, 2);
+  drawHighScoreEntryCursor(currPos);
+
   arduboy.display();
-  delay(3000);
+
+  while(! allDone) {
+    if (arduboy.pressed(A_BUTTON)) {
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+        // Advance right or finish entering initials
+        if (currPos < 2) {
+          currPos++;
+          drawHighScoreEntryCursor(currPos);
+          arduboy.display();
+        } else {
+          allDone = true;
+        }
+        lastDebounceTime = millis();
+      }
+    }
+   
+    if (arduboy.pressed(LEFT_BUTTON)) {
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+        // Only do something if we are not already on leftmost one
+        if (currPos > 0) {
+          currPos--;
+          drawHighScoreEntryCursor(currPos);
+          arduboy.display();
+        }
+        lastDebounceTime = millis();
+      }    
+    }
+  
+    if (arduboy.pressed(RIGHT_BUTTON)) {
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+        // Only do something if we are not already on rightmost one
+        if (currPos < 2) {
+          currPos++;
+          drawHighScoreEntryCursor(currPos);
+          arduboy.display();
+        }
+        lastDebounceTime = millis();
+      }
+    }
+
+    if (arduboy.pressed(UP_BUTTON)) {
+       if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+          if (currInitials[currPos] == 96) {
+            currInitials[currPos] = 32;
+          } else {
+            currInitials[currPos]++;
+          }
+          sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
+          printText(textBuf, 44, 45, 2);
+          arduboy.display();
+          lastDebounceTime = millis();
+       }
+    }
+
+    if (arduboy.pressed(DOWN_BUTTON)) {
+       if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+          if (currInitials[currPos] == 32) {
+            currInitials[currPos] = 96;
+          } else {
+            currInitials[currPos]--;
+          }
+          sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
+          printText(textBuf, 44, 45, 2);
+          arduboy.display();
+          lastDebounceTime = millis();
+       }     
+    }
+  }
 }
 
 void createStarFieldVals() {
