@@ -12,7 +12,7 @@
 
 // Define limits that player ship movement is bounded by
 #define MIN_PLAYER_SHIP_X 2
-#define MAX_PLAYER_SHIP_X 75
+#define MAX_PLAYER_SHIP_X 27 // allows 16 for ship width
 
 // Define limits that enemy ship movement is bounded by
 #define MIN_ENEMY_SHIP_X 92
