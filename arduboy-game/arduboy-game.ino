@@ -217,17 +217,18 @@ void highScoreScreen() {
   printText("3.  000000  AAA", 15, 45, 1);
   printText("4.  000000  AAA", 15, 57, 1);
   arduboy.display();
-
   while (totalDelay < 4000) {
-    delay(15);
-    totalDelay += 15;
-
     if (arduboy.pressed(UP_BUTTON) || arduboy.pressed(DOWN_BUTTON) || arduboy.pressed(LEFT_BUTTON) || arduboy.pressed(RIGHT_BUTTON) || arduboy.pressed(A_BUTTON)  || arduboy.pressed(B_BUTTON)) {
       if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
         totalDelay = 4000;
         lastDebounceTime = millis();
       }
-    }  
+    }
+    
+    if (totalDelay < 4000) {
+      delay(15);
+      totalDelay += 15;
+    }
   }  
 }
 
