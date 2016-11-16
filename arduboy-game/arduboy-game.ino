@@ -8,6 +8,7 @@
 #include "player.h"
 #include "bullet.h"
 #include "enemy.h"
+#include "boss.h"
 #include "bitmaps.h"
 #include "Music.h"
 #include <stddef.h>
@@ -381,7 +382,10 @@ void playGame() {
     drawScore();
 
     drawPlayerShip();
-    drawEnemies();
+    // testing purposes, need AI
+//    drawEnemies();
+    drawBosses();
+    
     for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
       playerBullets[i].draw();
       playerBullets[i].update();
@@ -523,7 +527,29 @@ void drawEnemies() {
   }
 }
 
+<<<<<<< Updated upstream
 void draw(byte x, byte y, const uint8_t *bitmap, uint8_t frame) {
+=======
+void drawEnemy(int x, int y, int type) {
+  Enemy enemy;
+  enemy.set(x, y, type);
+  draw(enemy.x, enemy.y, enemy.bitmap, 0);
+}
+
+
+void drawBosses() {
+  drawBoss(69, 6, 1);
+  drawBoss(96, 24, 2); 
+}
+
+void drawBoss(int x, int y, int type) {
+  Boss boss;
+  boss.set(x, y, type);
+  draw(boss.x, boss.y, boss.bitmap, 0);
+  
+}
+void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
+>>>>>>> Stashed changes
   unsigned int frame_offset;
   uint8_t width = pgm_read_byte(bitmap);
   uint8_t height = pgm_read_byte(++bitmap);
