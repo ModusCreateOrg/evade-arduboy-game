@@ -429,7 +429,7 @@ void drawPlayerShip() {
       // Fire B weapon (rapid fire)
       for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
         if (!playerBullets[i].isVisible()) {
-          playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true, 1);
+          playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true, 5);
           break;
         }
       }
@@ -501,16 +501,16 @@ void handlePlayerBullets() {
   for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
     if (playerBullets[i].isVisible()) {
       for (byte j = 0; j < MAX_ENEMIES; j++) {
-        if ((enemies[i].health > 0) &&
-            (playerBullets[i].posX >= enemies[i].x) &&
-            (playerBullets[i].posX <= (enemies[i].x + 16)) &&
-            (playerBullets[i].posY >= enemies[i].y) &&
-            (playerBullets[i].posY <= (enemies[i].y + 16))) {
+        if ((enemies[j].health > 0) &&
+            (playerBullets[i].posX >= enemies[j].x) &&
+            (playerBullets[i].posX <= (enemies[j].x + 16)) &&
+            (playerBullets[i].posY >= enemies[j].y) &&
+            (playerBullets[i].posY <= (enemies[j].y + 16))) {
               // Hit Enemy
               playerBullets[i].hide();
-              enemies[i].health -= playerBullets[i].damage;
+              enemies[j].health -= playerBullets[i].damage;
 
-              if (enemies[i].health <= 0) {
+              if (enemies[j].health <= 0) {
                 score += 100;
               }
             }

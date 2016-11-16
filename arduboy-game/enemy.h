@@ -24,19 +24,19 @@ struct Enemy {
     switch(type) {
       case 1:
         bitmap = enemy1;
-        health = 5;
+        health = 25;
         break;
       case 2:
         bitmap = enemy2;
-        health = 10;
+        health = 50;
         break;
       case 3:
         bitmap = enemy3;
-        health = 15;
+        health = 100;
         break;
       default:
         bitmap = enemy1;
-        health = 5;
+        health = 25;
     }
   }
 
