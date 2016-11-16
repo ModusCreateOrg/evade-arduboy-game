@@ -536,7 +536,11 @@ void gameOverScreen() {
 void newHighScoreScreen() {
   // TODO, this is placeholder
   arduboy.clear();
-  printText("NEW HIGHSCORE", 4, 25, 1);
+  printText("NEW HI!", 24, 1, 2);
+  sprintf(textBuf, "%06d", score);
+  printText(textBuf, 28, 22, 2);
+  printText("AAA", 44, 45, 2);
+  arduboy.fillRect(44, 62, 9, 2, 1);
   arduboy.display();
   delay(3000);
 }
