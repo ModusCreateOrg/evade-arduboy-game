@@ -10,18 +10,14 @@
 #include "enemy.h"
 #include "bitmaps.h"
 #include "MusicPlayer.h"
-//#include "star.h"
 #include <avr/pgmspace.h>
 
 #define DEBOUNCE_DELAY 100
 #define MAX_LIVES 4
 #define NUM_STARS 15
-///1,782 bytes (69%)
 // TODO highScore should be replaced with table in EEPROM
 unsigned long inGameFrame, inGameAButtonLastPress, inGameBButtonLastPress, score, highScore = 0;
 byte livesRemaining = MAX_LIVES;
-
-//Star stars[NUM_STARS];
 
 float starX[NUM_STARS];
 float starSpeed[NUM_STARS];
@@ -30,7 +26,7 @@ byte starWidth[NUM_STARS];
 
 bool musicOn = true;     
 
-// Bullets array - We may need a playerBullets and enemyBullets at some point and a MAX global int for each
+// Bullet arrays
 Bullet playerBullets[MAX_PLAYER_BULLETS];
 Bullet enemyBullets[MAX_ENEMIES];
 
@@ -370,9 +366,6 @@ void drawScore() {
 
 void drawStarLayer() {
   for (byte i = 0; i < NUM_STARS; i++) {
-    //arduboy.drawPixel(stars[i].x, stars[i].y, 1);
-//    arduboy.drawRect(stars[i].x, stars[i].y, stars[i].width, stars[i].height, 1);
-//    arduboy.drawFastHLine(stars[i].x, stars[i].y, stars[i].width, 1);
     arduboy.drawFastHLine(starX[i], starY[i], starWidth[i], 1);
   }
 }
@@ -419,7 +412,7 @@ void drawPlayerShip() {
   if (arduboy.pressed(A_BUTTON)) {
     if (inGameAButtonLastPress < (inGameFrame - 75)) {
       inGameAButtonLastPress = inGameFrame;
-      // Fire A weapon (rapid fire)
+      // Fire A weapon (single fire)
       for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
         if (!playerBullets[i].isVisible()) {
           playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true, 100);
@@ -433,7 +426,7 @@ void drawPlayerShip() {
   if (arduboy.pressed(B_BUTTON)) {
     if (inGameBButtonLastPress < (inGameFrame - 15)) {
       inGameBButtonLastPress = inGameFrame;
-      // Fire B weapon (single fire)
+      // Fire B weapon (rapid fire)
       for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
         if (!playerBullets[i].isVisible()) {
           playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true, 1);
@@ -550,7 +543,6 @@ void newHighScoreScreen() {
 
 void createStarFieldVals() {
   for (byte i = 0; i < NUM_STARS; i++) {
-//     stars[i].setValues();
       setStarValuesForIndex(i);
   } 
 }
@@ -574,16 +566,12 @@ void setStarValuesForIndex(byte i) {
 void updateStarFieldVals() {
   for (byte i = 0; i < NUM_STARS; i++) {
     if (starX[i] < -1) {
-//      stars[i].setValues();
-//      stars[i].x = 128 + random(20);
-//      stars[i].y = random(10, 64);
       setStarValuesForIndex(i);
       starX[i] = 128 + random(20);
       starY[i] = random(10, 64);
       
     } 
     else {
-//        stars[i].x -= stars[i].speed;
       starX[i] -= starSpeed[i];
     }
   }
