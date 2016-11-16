@@ -6,6 +6,7 @@
 
 #include "Arduboy.h"
 #include "globals.h"
+#include "bitmaps.h"
 
 struct Bullet {
   public:
@@ -43,6 +44,10 @@ struct Bullet {
 
     void draw() {
       if (isVisible()) {
+        if (isMovingRight()) {
+ 
+          drawBitmap(posX, posY, playerBulletA, 0);
+        }
         arduboy.fillRect(posX, posY, 2, 2, 1);
       }
     }
