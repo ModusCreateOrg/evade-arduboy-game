@@ -46,7 +46,7 @@ void printText(char *message, byte x, byte y, byte textSize) {
 
 void introScreen() {
   arduboy.clear();
-  draw(0, 0, modusLogo, 0);
+  draw(2, 8, modusLogo, 0);
   arduboy.display();
 
   arduboy.initRandomSeed();
