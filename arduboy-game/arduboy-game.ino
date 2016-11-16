@@ -596,7 +596,7 @@ void newHighScoreScreen() {
 
     if (arduboy.pressed(UP_BUTTON)) {
        if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
-          if (currInitials[currPos] == 126) {
+          if (currInitials[currPos] == 96) {
             currInitials[currPos] = 32;
           } else {
             currInitials[currPos]++;
@@ -611,7 +611,7 @@ void newHighScoreScreen() {
     if (arduboy.pressed(DOWN_BUTTON)) {
        if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
           if (currInitials[currPos] == 32) {
-            currInitials[currPos] = 126;
+            currInitials[currPos] = 96;
           } else {
             currInitials[currPos]--;
           }
