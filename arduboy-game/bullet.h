@@ -34,7 +34,7 @@ struct Bullet {
           }
         } else {
           posX -= speedX;
-          if (posX < 0) {
+          if (posX <= 0) {
             hide();
           }
         }
