@@ -16,10 +16,10 @@ struct Bullet {
     // Visibility (0), Direction (1)
     byte options;
 
-    void set(byte x, byte y, boolean firedByPlayer) {
+    void set(byte x, byte y, boolean firedByPlayer, byte _damage) {
       posX = x;
       posY = y;
-      damage = 1;
+      damage = _damage;
       speedX = firedByPlayer ? 3 : 1;
       options |= 1 << 0;
       options |= firedByPlayer << 1;

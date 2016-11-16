@@ -8,7 +8,7 @@
 struct Enemy {
   byte x;
   byte y;
-  byte health;
+  int health;
   byte type;
   // isMovingLeft (0), isMovingDown (1)
   byte direction;
@@ -24,19 +24,19 @@ struct Enemy {
     switch(type) {
       case 1:
         bitmap = enemy1;
-        health = 1;
+        health = 5;
         break;
       case 2:
         bitmap = enemy2;
-        health = 2;
+        health = 10;
         break;
       case 3:
         bitmap = enemy3;
-        health = 3;
+        health = 15;
         break;
       default:
         bitmap = enemy1;
-        health = 1;
+        health = 5;
     }
   }
 

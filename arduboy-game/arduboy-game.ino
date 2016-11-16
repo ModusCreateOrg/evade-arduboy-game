@@ -330,9 +330,6 @@ void playGame() {
 
     drawScore();
 
-    // TODO implement proper scoring
-    score++;
-
     drawPlayerShip();
     drawEnemies();
     for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
@@ -349,6 +346,7 @@ void playGame() {
     arduboy.display();
     updateStarFieldVals();
 
+    handlePlayerBullets();
     handleEnemyBullets();
 
     // Play stage1 music
@@ -421,10 +419,11 @@ void drawPlayerShip() {
   if (arduboy.pressed(A_BUTTON)) {
     if (inGameAButtonLastPress < (inGameFrame - 75)) {
       inGameAButtonLastPress = inGameFrame;
-      // Fire A weapon (single fire)
+      // Fire A weapon (rapid fire)
       for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
         if (!playerBullets[i].isVisible()) {
-          playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true);
+          playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true, 100);
+          break;
         }
       }
     }
@@ -434,10 +433,10 @@ void drawPlayerShip() {
   if (arduboy.pressed(B_BUTTON)) {
     if (inGameBButtonLastPress < (inGameFrame - 15)) {
       inGameBButtonLastPress = inGameFrame;
-      // Fire B weapon (rapid fire)
+      // Fire B weapon (single fire)
       for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
         if (!playerBullets[i].isVisible()) {
-          playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true);
+          playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true, 1);
           break;
         }
       }
@@ -460,7 +459,7 @@ void drawPlayerShip() {
 
 void drawEnemies() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
-    if ((enemies[i].health == 0) && (random(2000) == 0)) {
+    if ((enemies[i].health <= 0) && (random(1000) == 0)) {
       byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
       byte enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
       enemies[i].set(enemyX, enemyY, (random(3) + 1));
@@ -471,7 +470,7 @@ void drawEnemies() {
       draw(enemies[i].x, enemies[i].y, enemies[i].bitmap, 0);
       
       if ((!enemyBullets[i].isVisible()) && (random(1000) == 0)) {
-        enemyBullets[i].set(enemies[i].x, (enemies[i].y + (16 / 2) - 1), false);
+        enemyBullets[i].set(enemies[i].x, (enemies[i].y + (16 / 2) - 1), false, 1);
       }
     }
   }
@@ -495,13 +494,35 @@ void handleEnemyBullets() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
     if ((enemyBullets[i].isVisible()) &&
         (enemyBullets[i].posX >= spaceShip.x) &&
-        (enemyBullets[i].posX <= (spaceShip.x + (16 / 2))) &&
+        (enemyBullets[i].posX <= (spaceShip.x + 16)) &&
         (enemyBullets[i].posY >= spaceShip.y) &&
-        (enemyBullets[i].posY <= (spaceShip.y + (16 / 2)))) {
+        (enemyBullets[i].posY <= (spaceShip.y + 16))) {
           // Hit Player
           enemyBullets[i].hide();
           livesRemaining--;
         }
+  }
+}
+
+void handlePlayerBullets() {
+  for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
+    if (playerBullets[i].isVisible()) {
+      for (byte j = 0; j < MAX_ENEMIES; j++) {
+        if ((enemies[i].health > 0) &&
+            (playerBullets[i].posX >= enemies[i].x) &&
+            (playerBullets[i].posX <= (enemies[i].x + 16)) &&
+            (playerBullets[i].posY >= enemies[i].y) &&
+            (playerBullets[i].posY <= (enemies[i].y + 16))) {
+              // Hit Enemy
+              playerBullets[i].hide();
+              enemies[i].health -= playerBullets[i].damage;
+
+              if (enemies[i].health <= 0) {
+                score += 100;
+              }
+            }
+      }
+    }
   }
 }
 
