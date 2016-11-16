@@ -69,7 +69,11 @@ void playMusic(byte song) {
         case 4 :
           music = gameOverMusic;
         break;
+        case 5 : 
+          music = mainMusic;
+        break;
       }
+      
       arduboy.tunes.playScore(music);
     }
 }   
@@ -78,10 +82,10 @@ void playMusic(byte song) {
 void sfx(byte tone) {
   switch(tone) {
     case 1:
-      arduboy.tunes.tone(800, 50);
+      arduboy.tunes.tone(820, 10);
     break;
     case 2:
-      arduboy.tunes.tone(1318, 120);
+      arduboy.tunes.tone(750, 50);
     break;
     case 3:
       arduboy.tunes.tone(987, 400);
@@ -120,6 +124,7 @@ byte titleScreen() {
   arduboy.drawRect(2, 47, 26, 13, 1);
   arduboy.display();
 
+  playMusic(5);
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
       if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
@@ -611,13 +616,16 @@ void setStarValuesForIndex(byte i) {
   starWidth[i] = random(1, 4);
 
   if (starWidth[i] >= 3) {
-    starSpeed[i] = random(75, 95) * 0.01f;
+//    starSpeed[i] = random(75, 95) * 0.01f;
+    starSpeed[i] = random(30, 40) * 0.01f;
   }
   else if (starWidth[i] >= 2) {
-    starSpeed[i] = random(35, 40) * 0.01f;
+//    starSpeed[i] = random(35, 40) * 0.01f;   
+    starSpeed[i] = random(18, 25) * 0.01f;
   }
   else {
-    starSpeed[i] = random(15, 25) * 0.01f;
+//    starSpeed[i] = random(15, 25) * 0.01f;
+    starSpeed[i] = random(7, 12) * 0.01f;
   }
 }
 
