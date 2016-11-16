@@ -125,6 +125,7 @@ byte titleScreen() {
   arduboy.display();
 
   playMusic(5);
+  
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
       if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
@@ -186,7 +187,6 @@ byte titleMenuRightButton(byte selectedItem) {
      items.
   */
   switch (selectedItem) {
-
     case TITLE_PLAY_GAME:
       arduboy.drawRect(2, 47, 26, 13, 0);
       arduboy.drawRect(30, 47, 45, 13, 1);
@@ -207,6 +207,9 @@ byte titleMenuRightButton(byte selectedItem) {
 
 void highScoreScreen() {
   // TODO, this is placeholder 
+  long lastDebounceTime = millis();
+  unsigned short totalDelay = 0;
+
   arduboy.clear();
   printText("HI SCORES", 8, 1, 2);
   printText("1.  000000  AAA", 15, 21, 1);
@@ -214,7 +217,19 @@ void highScoreScreen() {
   printText("3.  000000  AAA", 15, 45, 1);
   printText("4.  000000  AAA", 15, 57, 1);
   arduboy.display();
-  delay(4000);
+  while (totalDelay < 4000) {
+    if (arduboy.pressed(UP_BUTTON) || arduboy.pressed(DOWN_BUTTON) || arduboy.pressed(LEFT_BUTTON) || arduboy.pressed(RIGHT_BUTTON) || arduboy.pressed(A_BUTTON)  || arduboy.pressed(B_BUTTON)) {
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+        totalDelay = 4000;
+        lastDebounceTime = millis();
+      }
+    }
+    
+    if (totalDelay < 4000) {
+      delay(15);
+      totalDelay += 15;
+    }
+  }  
 }
 
 void creditsScreen() {
@@ -255,7 +270,6 @@ void scrollCredits(int y, bool quit) {
 }
 
 void settingsScreen() {
-
   long lastDebounceTime = millis();  // the last time the button was pressed
   bool exit_settings_menu = false;
   byte selectedItem;
@@ -742,8 +756,6 @@ void setup() {
 void loop() {
   byte result;
 
-  // TODO alternate between titleScreen and highScoreScreen on a timer
-  // until user pressed a button
   result = titleScreen();
 
   switch (result) {
