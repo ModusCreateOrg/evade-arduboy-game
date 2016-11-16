@@ -25,7 +25,7 @@ Tabs can be renamed and deleted from this menu.
 When you plug a device into your USB port you need to set the *Port* from the
 *Tools* menu.
 
-In addition to the above you also need to select the *Board* as Arduboy (explained in the Arduboy library guide).
+In addition to the above you also need to select the *Board* as Arduboy (explained in the Arduboy library guide).  If you don't see Arduboy, use Arduino Leonardo instead.
 
 The *Tick* icon can be used to verify the code prior to uploading. The *Arrow* button uploads the sketch to
 the device.  
