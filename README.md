@@ -39,3 +39,4 @@ the device.
 * [Image Encoding Utility](http://www.andrewlowndes.co.uk/blog/graphics/arduboy-image-converter)
 * [Reset Procedure if you brick device](https://www.youtube.com/watch?v=l1ifTSq0VK4)
 * [Information about Memory](https://www.arduino.cc/en/Tutorial/Memory) we are space constrained and need to pay attention to this
+* [Information on use of PROGMEM](https://www.arduino.cc/en/Reference/PROGMEM)
