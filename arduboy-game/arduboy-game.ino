@@ -70,7 +70,11 @@ void playMusic(byte song) {
         case 4 :
           music = gameOverMusic;
         break;
+        case 5 : 
+          music = mainMusic;
+        break;
       }
+      
       arduboy.tunes.playScore(music);
     }
 }   
@@ -79,10 +83,10 @@ void playMusic(byte song) {
 void sfx(byte tone) {
   switch(tone) {
     case 1:
-      arduboy.tunes.tone(800, 50);
+      arduboy.tunes.tone(820, 10);
     break;
     case 2:
-      arduboy.tunes.tone(1318, 120);
+      arduboy.tunes.tone(750, 50);
     break;
     case 3:
       arduboy.tunes.tone(987, 400);
@@ -121,6 +125,8 @@ byte titleScreen() {
   arduboy.drawRect(2, 47, 26, 13, 1);
   arduboy.display();
 
+  playMusic(5);
+  
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
       if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
@@ -182,7 +188,6 @@ byte titleMenuRightButton(byte selectedItem) {
      items.
   */
   switch (selectedItem) {
-
     case TITLE_PLAY_GAME:
       arduboy.drawRect(2, 47, 26, 13, 0);
       arduboy.drawRect(30, 47, 45, 13, 1);
@@ -203,6 +208,9 @@ byte titleMenuRightButton(byte selectedItem) {
 
 void highScoreScreen() {
   // TODO, this is placeholder 
+  long lastDebounceTime = millis();
+  unsigned short totalDelay = 0;
+
   arduboy.clear();
   printText("HI SCORES", 8, 1, 2);
   printText("1.  000000  AAA", 15, 21, 1);
@@ -210,7 +218,19 @@ void highScoreScreen() {
   printText("3.  000000  AAA", 15, 45, 1);
   printText("4.  000000  AAA", 15, 57, 1);
   arduboy.display();
-  delay(4000);
+  while (totalDelay < 4000) {
+    if (arduboy.pressed(UP_BUTTON) || arduboy.pressed(DOWN_BUTTON) || arduboy.pressed(LEFT_BUTTON) || arduboy.pressed(RIGHT_BUTTON) || arduboy.pressed(A_BUTTON)  || arduboy.pressed(B_BUTTON)) {
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+        totalDelay = 4000;
+        lastDebounceTime = millis();
+      }
+    }
+    
+    if (totalDelay < 4000) {
+      delay(15);
+      totalDelay += 15;
+    }
+  }  
 }
 
 void creditsScreen() {
@@ -251,7 +271,6 @@ void scrollCredits(int y, bool quit) {
 }
 
 void settingsScreen() {
-
   long lastDebounceTime = millis();  // the last time the button was pressed
   bool exit_settings_menu = false;
   byte selectedItem;
@@ -613,16 +632,95 @@ void gameOverScreen() {
   delay(2000);
 }
 
+void drawHighScoreEntryCursor(byte pos) {
+  arduboy.fillRect(44, 62, 10, 2, (pos == 0 ? 1 : 0));
+  arduboy.fillRect(56, 62, 10, 2, (pos == 1 ? 1 : 0));
+  arduboy.fillRect(68, 62, 10, 2, (pos == 2 ? 1 : 0));
+}
+
 void newHighScoreScreen() {
-  // TODO, this is placeholder
+  long lastDebounceTime = millis();
+  bool allDone = false;
+  byte currPos = 0;
+  byte currInitials[] = { 65, 65, 65};
+  
   arduboy.clear();
   printText("NEW HI!", 24, 1, 2);
   sprintf(textBuf, "%06d", score);
   printText(textBuf, 28, 22, 2);
-  printText("AAA", 44, 45, 2);
-  arduboy.fillRect(44, 62, 9, 2, 1);
+  sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
+  printText(textBuf, 44, 45, 2);
+  drawHighScoreEntryCursor(currPos);
+
   arduboy.display();
-  delay(3000);
+
+  while(! allDone) {
+    if (arduboy.pressed(A_BUTTON)) {
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+        // Advance right or finish entering initials
+        if (currPos < 2) {
+          currPos++;
+          drawHighScoreEntryCursor(currPos);
+          arduboy.display();
+        } else {
+          allDone = true;
+        }
+        lastDebounceTime = millis();
+      }
+    }
+   
+    if (arduboy.pressed(LEFT_BUTTON)) {
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+        // Only do something if we are not already on leftmost one
+        if (currPos > 0) {
+          currPos--;
+          drawHighScoreEntryCursor(currPos);
+          arduboy.display();
+        }
+        lastDebounceTime = millis();
+      }    
+    }
+  
+    if (arduboy.pressed(RIGHT_BUTTON)) {
+      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+        // Only do something if we are not already on rightmost one
+        if (currPos < 2) {
+          currPos++;
+          drawHighScoreEntryCursor(currPos);
+          arduboy.display();
+        }
+        lastDebounceTime = millis();
+      }
+    }
+
+    if (arduboy.pressed(UP_BUTTON)) {
+       if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+          if (currInitials[currPos] == 96) {
+            currInitials[currPos] = 32;
+          } else {
+            currInitials[currPos]++;
+          }
+          sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
+          printText(textBuf, 44, 45, 2);
+          arduboy.display();
+          lastDebounceTime = millis();
+       }
+    }
+
+    if (arduboy.pressed(DOWN_BUTTON)) {
+       if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+          if (currInitials[currPos] == 32) {
+            currInitials[currPos] = 96;
+          } else {
+            currInitials[currPos]--;
+          }
+          sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
+          printText(textBuf, 44, 45, 2);
+          arduboy.display();
+          lastDebounceTime = millis();
+       }     
+    }
+  }
 }
 
 void createStarFieldVals() {
@@ -637,13 +735,16 @@ void setStarValuesForIndex(byte i) {
   starWidth[i] = random(1, 4);
 
   if (starWidth[i] >= 3) {
-    starSpeed[i] = random(75, 95) * 0.01f;
+//    starSpeed[i] = random(75, 95) * 0.01f;
+    starSpeed[i] = random(30, 40) * 0.01f;
   }
   else if (starWidth[i] >= 2) {
-    starSpeed[i] = random(35, 40) * 0.01f;
+//    starSpeed[i] = random(35, 40) * 0.01f;   
+    starSpeed[i] = random(18, 25) * 0.01f;
   }
   else {
-    starSpeed[i] = random(15, 25) * 0.01f;
+//    starSpeed[i] = random(15, 25) * 0.01f;
+    starSpeed[i] = random(7, 12) * 0.01f;
   }
 }
 
@@ -681,8 +782,6 @@ void setup() {
 void loop() {
   byte result;
 
-  // TODO alternate between titleScreen and highScoreScreen on a timer
-  // until user pressed a button
   result = titleScreen();
 
   switch (result) {
