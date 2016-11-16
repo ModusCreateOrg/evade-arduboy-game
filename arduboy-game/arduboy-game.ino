@@ -9,7 +9,11 @@
 #include "bullet.h"
 #include "enemy.h"
 #include "bitmaps.h"
-#include "MusicPlayer.h"
+#include "Music.h"
+#include <stddef.h>
+#include <inttypes.h>
+#include <Arduino.h>
+#include <avr/pgmspace.h>
 #include <avr/pgmspace.h>
 
 #define DEBOUNCE_DELAY 100
@@ -25,6 +29,7 @@ byte starY[NUM_STARS];
 byte starWidth[NUM_STARS];
 
 bool musicOn = true;     
+byte currentSong = 0;
 
 // Bullet arrays
 Bullet playerBullets[MAX_PLAYER_BULLETS];
@@ -37,6 +42,55 @@ Enemy enemies[MAX_ENEMIES];
 char textBuf[25];
 
 Player spaceShip;
+
+void stopMusic() {
+    Arduboy ab;
+
+    if (ab.tunes.playing()) {
+        ab.tunes.stopScore();
+    }
+}
+
+void playMusic(byte song) {
+    if (!arduboy.tunes.playing() && currentSong != song) {
+      stopMusic();
+
+      unsigned char *music;
+      switch(song) {
+        case 1 :
+           music = titleMusic;
+        break;
+        case 2 :
+          music = stage1Music;
+        break;
+        case 3 :
+           music = bossMusic;
+        break;
+        case 4 :
+          music = gameOverMusic;
+        break;
+      }
+      arduboy.tunes.playScore(music);
+    }
+}   
+
+// SFX (experimental)
+void sfx(byte tone) {
+  switch(tone) {
+    case 1:
+      arduboy.tunes.tone(800, 50);
+    break;
+    case 2:
+      arduboy.tunes.tone(1318, 120);
+    break;
+    case 3:
+      arduboy.tunes.tone(987, 400);
+    break;
+    case 4:
+      arduboy.tunes.tone(800, 50);
+    break;
+  }
+}
 
 void printText(char *message, byte x, byte y, byte textSize) {
   arduboy.setCursor(x, y);
