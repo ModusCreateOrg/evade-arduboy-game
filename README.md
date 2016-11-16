@@ -38,3 +38,4 @@ the device.
 * [Some documentation for Arduboy Library](https://asmcbain.net/projects/arduboy/docs/1.2/api/index.html#arduboy)
 * [Image Encoding Utility](http://www.andrewlowndes.co.uk/blog/graphics/arduboy-image-converter)
 * [Reset Procedure if you brick device](https://www.youtube.com/watch?v=l1ifTSq0VK4)
+* [Information on use of PROGMEM](https://www.arduino.cc/en/Reference/PROGMEM)

@@ -4,12 +4,14 @@
 
 #include "Arduboy.h"
 #include "globals.h"
+#include "messagecatalog.h"
 #include "player.h"
 #include "bullet.h"
 #include "enemy.h"
 #include "bitmaps.h"
 #include "MusicPlayer.h"
 //#include "star.h"
+#include <avr/pgmspace.h>
 
 #define DEBOUNCE_DELAY 100
 #define MAX_LIVES 4
@@ -40,8 +42,8 @@ Bullet playerBullets[MAX_PLAYER_BULLETS];
 // Enemies array
 Enemy enemies[MAX_ENEMIES];
 
-// General purpose text buffer for string concatenations etc
-char textBuf[15];
+// General purpose text buffer for string concatenation and read from progmem
+char textBuf[25];
 
 Player spaceShip;
 
@@ -154,24 +156,22 @@ byte titleMenuRightButton(byte selectedItem) {
 }
 
 void highScoreScreen() {
-  // TODO, this is placeholder
+  // TODO, this is placeholder 
   arduboy.clear();
-  printText("HIGH SCORE ", 5, 15, 1);
-  arduboy.print(highScore);
+  printText("HI SCORES", 8, 1, 2);
+  printText("1.  000000  AAA", 15, 21, 1);
+  printText("2.  000000  AAA", 15, 33, 1);
+  printText("3.  000000  AAA", 15, 45, 1);
+  printText("4.  000000  AAA", 15, 57, 1);
   arduboy.display();
-  delay(3000);
+  delay(4000);
 }
 
 void creditsScreen() {
-  // TODO, this is placeholder
-  const char* credits[] = {"CREDITS", "Captain: Jay Garcia", "Medic: Simon Prickett", "Lt: Stan Bershadskiy", "Helmsman: Andrew Owen", 
-                           "Hologram: Andy Dennis", "Gunner: Timothy Eagan", "Tech: Drew Griffith", "Loadmaster: JD Jones", 
-                           "Purser: Jon Van Dalen", "Mechanic: Lucas Still", "Comms: Matt McCants"};
-  unsigned short arrsize = sizeof(credits) / sizeof(int);
-  scrollCredits(4, arrsize, credits, false);
+  scrollCredits(4, false);
 }
 
-void scrollCredits(int y, unsigned short arrsize, char* credits[], bool quit) {
+void scrollCredits(int y, bool quit) {
   /**
      Recursive function for scrolling
      credits up screen
@@ -180,7 +180,7 @@ void scrollCredits(int y, unsigned short arrsize, char* credits[], bool quit) {
   byte textSize = 1;
   int origY = y;
   arduboy.clear();
-  for (unsigned short i = 0; i < arrsize; i++) {
+  for (unsigned short i = 0; i < NUM_CREDITS; i++) {
     if (i == 0) {
       textSize = 2;
       y = y - 4;
@@ -188,10 +188,11 @@ void scrollCredits(int y, unsigned short arrsize, char* credits[], bool quit) {
       textSize = 1;
       y = origY;
     }
-    printText(credits[i], 2, y + padding, textSize);
+    strcpy_P(textBuf, (char*)pgm_read_word(&(credits[i])));
+    printText(textBuf, 2, y + padding, textSize);
     arduboy.display();
     padding = padding + 15;
-    if ( i + 1 == arrsize && y + padding < 0) {
+    if ( i + 1 == NUM_CREDITS && y + padding < 0) {
       quit = true;
     }
   }
@@ -199,7 +200,7 @@ void scrollCredits(int y, unsigned short arrsize, char* credits[], bool quit) {
   y = y - 15;
 
   if (!quit) {
-    scrollCredits(y, arrsize, credits, quit);
+    scrollCredits(y, quit);
   }
 }
 
@@ -463,7 +464,7 @@ void drawEnemies() {
   }
 }
 
-void draw(int x, int y, const uint8_t *bitmap, uint8_t frame) {
+void draw(byte x, byte y, const uint8_t *bitmap, uint8_t frame) {
   unsigned int frame_offset;
   uint8_t width = pgm_read_byte(bitmap);
   uint8_t height = pgm_read_byte(++bitmap);
