@@ -671,7 +671,7 @@ byte isNewHighScore() {
   return NOT_NEW_HI_SCORE;
 }
 
-void newHighScoreScreen() {
+void newHighScoreScreen(byte newHiPos) {
   long lastDebounceTime = millis();
   bool allDone = false;
   byte currPos = 0;
@@ -754,6 +754,9 @@ void newHighScoreScreen() {
        }     
     }
   }
+
+  // Store the new high score, newHiPos == 0 is highest score
+  // TODO
 }
 
 void createStarFieldVals() {
@@ -813,7 +816,7 @@ void setup() {
 
 // Main program loop
 void loop() {
-  byte result;
+  byte result, newHiScorePos;
 
   result = titleScreen();
 
@@ -826,9 +829,9 @@ void loop() {
       gameOverScreen();
       // TODO high score should be checked against a set of high scores
       // in the EEPROM
-      if (isNewHighScore() != NOT_NEW_HI_SCORE) {
-        newHighScoreScreen();
-        // TODO save high score
+      newHiScorePos = isNewHighScore();
+      if (newHiScorePos != NOT_NEW_HI_SCORE) {
+        newHighScoreScreen(newHiScorePos);
       }
 
       highScoreScreen();
