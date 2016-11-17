@@ -104,7 +104,7 @@ void printText(char *message, byte x, byte y, byte textSize) {
 
 void introScreen() {
   arduboy.clear();
-  draw(2, 8, modusLogo, 0);
+  drawBitmap(2, 8, modusLogo, 0);
   arduboy.display();
 
   arduboy.initRandomSeed();
@@ -120,7 +120,7 @@ byte titleScreen() {
   long lastDebounceTime = millis();  // the last time the button was pressed
   
   arduboy.clear();
-  draw(0, 0, title, 0);
+  drawBitmap(0, 0, title, 0);
   arduboy.drawRect(2, 47, 26, 13, 1);
   arduboy.display();
 
@@ -445,7 +445,7 @@ void drawStarLayer() {
 
 void drawLives() {
   for (byte i = 0; i < MAX_LIVES; i++) {
-    draw(120 - (i * 10), 0, (i < livesRemaining ? heart : unfilledHeart) , 0);
+    drawBitmap(120 - (i * 10), 0, (i < livesRemaining ? heart : unfilledHeart) , 0);
   }
 }
 
@@ -488,7 +488,7 @@ void drawPlayerShip() {
       // Fire A weapon (single fire)
       for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
         if (!playerBullets[i].isVisible()) {
-          playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true, 100);
+          playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, 100);
           break;
         }
       }
@@ -502,7 +502,7 @@ void drawPlayerShip() {
       // Fire B weapon (rapid fire)
       for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
         if (!playerBullets[i].isVisible()) {
-          playerBullets[i].set(spaceShip.x, (spaceShip.y + (16 / 2) - 1), true, 5);
+          playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, 5);
           break;
         }
       }
@@ -520,7 +520,7 @@ void drawPlayerShip() {
     }
   }
 
-  draw(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
+  drawBitmap(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
 }
 
 void drawEnemies() {
@@ -533,27 +533,13 @@ void drawEnemies() {
     
     if (enemies[i].health > 0) {
       enemies[i].move();
-      draw(enemies[i].x, enemies[i].y, enemies[i].bitmap, 0);
+      drawBitmap(enemies[i].x, enemies[i].y, enemies[i].bitmap, 0);
       
       if ((!enemyBullets[i].isVisible()) && (random(1000) == 0)) {
         enemyBullets[i].set(enemies[i].x, (enemies[i].y + (16 / 2) - 1), false, 1);
       }
     }
   }
-}
-
-void draw(byte x, byte y, const uint8_t *bitmap, uint8_t frame) {
-  unsigned int frame_offset;
-  uint8_t width = pgm_read_byte(bitmap);
-  uint8_t height = pgm_read_byte(++bitmap);
-
-  bitmap++;
-  if (frame > 0) {
-    frame_offset = (width * ( height / 8 + ( height % 8 == 0 ? 0 : 1)));
-    // sprite plus mask uses twice as much space for each frame
-    bitmap += frame * frame_offset;
-  }
-  arduboy.drawBitmap(x, y, bitmap, width, height, 1);
 }
 
 void handleEnemyBullets() {
@@ -595,7 +581,7 @@ void handlePlayerBullets() {
 void gameOverScreen() {
   // TODO, this is placeholder
   arduboy.clear();
-  draw(0, 0, gameOver, 0);
+  drawBitmap(0, 0, gameOver, 0);
   arduboy.display();
 
   delay(100);
