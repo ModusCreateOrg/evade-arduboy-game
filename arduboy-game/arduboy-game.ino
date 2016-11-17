@@ -459,7 +459,7 @@ void drawPlayerShip() {
   }
 
   if (arduboy.pressed(UP_BUTTON)) {
-    if (spaceShip.y > MIN_PLAYER_SHIP_X) {
+    if (spaceShip.y > MIN_SHIP_Y) {
       spaceShip.y--;
     }
     if (arduboy.everyXFrames(9)) {
