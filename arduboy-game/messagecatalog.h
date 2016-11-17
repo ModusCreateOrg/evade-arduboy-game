@@ -30,7 +30,7 @@ PROGMEM const char credits6[] = "Gunner: Timothy Eagan";
 PROGMEM const char credits7[] = "Tech: Drew Griffith"; 
 PROGMEM const char credits8[] = "Loadmaster: JD Jones"; 
 PROGMEM const char credits9[] = "Purser: Jon Van Dalen"; 
-PROGMEM const char credits10[] = "Mechanic: Lucas Still"; 
+PROGMEM const char credits10[] = "Ngnrng: Lucas Still"; 
 PROGMEM const char credits11[] = "Comms: Matt McCants";
 
 PROGMEM const char * const credits[] = {
