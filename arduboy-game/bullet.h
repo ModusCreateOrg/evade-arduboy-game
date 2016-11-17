@@ -49,8 +49,9 @@ struct Bullet {
       if (isVisible()) {
         if (isMovingRight()) {
           drawBitmap(posX, posY, (damage == A_BULLET_DAMAGE ? playerBulletA : playerBulletB), 0);
+        } else {
+          drawBitmap(posX, posY, enemyBullet, 0);
         }
-        arduboy.fillRect(posX, posY, 2, 2, 1);
       }
     }
 
