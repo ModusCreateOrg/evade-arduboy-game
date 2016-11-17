@@ -25,15 +25,18 @@ struct Boss {
         bitmap = boss1;
         width = 59;
         height = 53;
+        health = 100;
         break;
       case 2:
         bitmap = boss2;
         width = 32;
         height = 16;
+        health = 200;
         break;
       default:
-        width = 64;
-        height = 64;
+        width = 59;
+        height = 53;
+        health = 100;
         bitmap = enemy1;
     }
   }
