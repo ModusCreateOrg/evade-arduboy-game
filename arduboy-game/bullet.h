@@ -8,6 +8,9 @@
 #include "globals.h"
 #include "bitmaps.h"
 
+#define A_BULLET_DAMAGE 100
+#define B_BULLET_DAMAGE 5
+
 struct Bullet {
   public:
     byte posX;
@@ -45,8 +48,7 @@ struct Bullet {
     void draw() {
       if (isVisible()) {
         if (isMovingRight()) {
- 
-          drawBitmap(posX, posY, playerBulletA, 0);
+          drawBitmap(posX, posY, (damage == A_BULLET_DAMAGE ? playerBulletA : playerBulletB), 0);
         }
         arduboy.fillRect(posX, posY, 2, 2, 1);
       }

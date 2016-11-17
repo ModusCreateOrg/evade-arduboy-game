@@ -488,7 +488,7 @@ void drawPlayerShip() {
       // Fire A weapon (single fire)
       for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
         if (!playerBullets[i].isVisible()) {
-          playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, 100);
+          playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE);
           break;
         }
       }
@@ -502,7 +502,7 @@ void drawPlayerShip() {
       // Fire B weapon (rapid fire)
       for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
         if (!playerBullets[i].isVisible()) {
-          playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, 5);
+          playerBullets[i].set(spaceShip.x, (spaceShip.y + 7), true, B_BULLET_DAMAGE);
           break;
         }
       }
