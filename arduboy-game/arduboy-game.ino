@@ -19,6 +19,8 @@
 #define DEBOUNCE_DELAY 100
 #define MAX_LIVES 4
 #define NUM_STARS 15
+#define NOT_NEW_HI_SCORE 5
+
 // TODO highScoreTable should be replaced with table in EEPROM
 char *highScoreTable = "AAA000400BBB000300CCC000200DDD000100";
 
@@ -657,8 +659,16 @@ void drawHighScoreEntryCursor(byte pos) {
   arduboy.fillRect(68, 62, 10, 2, (pos == 2 ? 1 : 0));
 }
 
-boolean isNewHighScore() {
-  return true;
+byte isNewHighScore() {
+  char hiScore[7];
+  hiScore[6] = '\0';
+  for (byte i = 0; i < 4; i++) {
+    strncpy(hiScore, highScoreTable + (((9 * i) + 3) * sizeof(char)), 6);
+    if (score > strtol(hiScore, NULL, 10)) {
+       return i;
+    }
+  }
+  return NOT_NEW_HI_SCORE;
 }
 
 void newHighScoreScreen() {
@@ -816,7 +826,7 @@ void loop() {
       gameOverScreen();
       // TODO high score should be checked against a set of high scores
       // in the EEPROM
-      if (isNewHighScore()) {
+      if (isNewHighScore() != NOT_NEW_HI_SCORE) {
         newHighScoreScreen();
         // TODO save high score
       }
