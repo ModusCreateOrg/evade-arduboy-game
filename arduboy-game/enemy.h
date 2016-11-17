@@ -9,39 +9,36 @@ struct Enemy {
   byte x;
   byte y;
   int health;
-  byte type;
+  byte difficulty;
   // isMovingLeft (0), isMovingDown (1)
   byte direction;
   const uint8_t *bitmap;
 
-  void set(byte _x, byte _y, byte _type) {
+  void set(byte _x, byte _y) {
     x = _x;
     y = _y;
-    type = _type;
     direction |= random(2) << 0;
     direction |= random(2) << 1;
 
-    switch(type) {
-      case 1:
-        bitmap = enemy1;
-        health = 25;
-        break;
-      case 2:
-        bitmap = enemy2;
-        health = 50;
-        break;
-      case 3:
-        bitmap = enemy3;
-        health = 100;
-        break;
-      default:
-        bitmap = enemy1;
-        health = 25;
+    byte typeRando = random(10);
+
+    if (typeRando == 0) {
+      bitmap = enemy3;
+      health = 500;
+      difficulty = 4;
+    } else if (typeRando < 5) {
+      bitmap = enemy2;
+      health = 150;
+      difficulty = 2;
+    } else {
+      bitmap = enemy1;
+      health = 25;
+      difficulty = 1;
     }
   }
 
   void move() {
-    if (random(10) == 0) {
+    if (random(10 / difficulty) == 0) {
       changeDirection();
       
       int newX = x + (isMovingLeft() ? -1 : 1);
@@ -57,12 +54,16 @@ struct Enemy {
   }
 
   void changeDirection() {
-    if (random(10) == 0) {
+    if (random(30) == 0) {
       direction ^= 1 << 0;
     }
     if (random(10) == 0) {
       direction ^= 1 << 1;
     }
+  }
+
+  boolean doFire() {
+    return random(1000 / difficulty) == 0;
   }
 
   boolean isMovingLeft() {

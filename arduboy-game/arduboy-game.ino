@@ -545,17 +545,17 @@ void drawPlayerShip() {
 
 void drawEnemies() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
-    if ((enemies[i].health <= 0) && (random(1000) == 0)) {
+    if ((enemies[i].health <= 0) && (random(700) == 0)) {
       byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
       byte enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
-      enemies[i].set(enemyX, enemyY, (random(3) + 1));
+      enemies[i].set(enemyX, enemyY);
     }
     
     if (enemies[i].health > 0) {
       enemies[i].move();
       drawBitmap(enemies[i].x, enemies[i].y, enemies[i].bitmap, 0);
       
-      if ((!enemyBullets[i].isVisible()) && (random(1000) == 0)) {
+      if ((!enemyBullets[i].isVisible()) && (enemies[i].doFire())) {
         enemyBullets[i].set(enemies[i].x, (enemies[i].y + (16 / 2) - 1), false, 1);
       }
     }
@@ -563,9 +563,12 @@ void drawEnemies() {
 }
 
 void drawBoss(int x, int y, int type) {
-  boss.set(x, y, type);
+  if (!isBossAlive) {
+    boss.set(x, y, type);
+    isBossAlive = true;
+  }
+  
   drawBitmap(boss.x, boss.y, boss.bitmap, 0);
-  isBossAlive = true;
 }
 
 void handleEnemyBullets() {
@@ -591,12 +594,14 @@ void handlePlayerBullets() {
             (playerBullets[i].posX <= (boss.x + boss.width)) &&
             (playerBullets[i].posY >= boss.y) &&
             (playerBullets[i].posY <= (boss.y + boss.height))) {
+              // Hit Boss
               playerBullets[i].hide();
               boss.health -= playerBullets[i].damage;
+              
               if (boss.health <= 0) {
-                score += 100;
-              } else {
+                // Killed Boss
                 isBossAlive = false;
+                score += 500;
               }
             }
       } else {
@@ -611,6 +616,7 @@ void handlePlayerBullets() {
                 enemies[j].health -= playerBullets[i].damage;
   
                 if (enemies[j].health <= 0) {
+                  // Killed Enemy
                   score += 100;
                 }
               }
