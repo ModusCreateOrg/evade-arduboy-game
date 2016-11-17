@@ -8,6 +8,7 @@
 #include "player.h"
 #include "bullet.h"
 #include "enemy.h"
+#include "boss.h"
 #include "bitmaps.h"
 #include "Music.h"
 #include <stddef.h>
@@ -37,6 +38,11 @@ Bullet enemyBullets[MAX_ENEMIES];
 
 // Enemies array
 Enemy enemies[MAX_ENEMIES];
+
+// Boss
+Boss boss;
+
+bool isBossAlive;
 
 // General purpose text buffer for string concatenation and read from progmem
 char textBuf[25];
@@ -400,7 +406,21 @@ void playGame() {
     drawScore();
 
     drawPlayerShip();
-    drawEnemies();
+    
+    if(!isBossAlive) {
+      drawEnemies();  
+    }
+
+    if(score > 0) {
+      if(score % 3000 == 0) {
+        drawBoss(69, 6, 1);
+      } else if(score % 5000 == 0) {
+        drawBoss(96, 24, 2);
+      } else if(isBossAlive) {
+        drawBoss(boss.x, boss.y, boss.type);  
+      }
+    }
+    
     for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
       playerBullets[i].draw();
       playerBullets[i].update();
@@ -542,6 +562,12 @@ void drawEnemies() {
   }
 }
 
+void drawBoss(int x, int y, int type) {
+  boss.set(x, y, type);
+  drawBitmap(boss.x, boss.y, boss.bitmap, 0);
+  isBossAlive = true;
+}
+
 void handleEnemyBullets() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
     if ((enemyBullets[i].isVisible()) &&
@@ -559,21 +585,38 @@ void handleEnemyBullets() {
 void handlePlayerBullets() {
   for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
     if (playerBullets[i].isVisible()) {
-      for (byte j = 0; j < MAX_ENEMIES; j++) {
-        if ((enemies[j].health > 0) &&
-            (playerBullets[i].posX >= enemies[j].x) &&
-            (playerBullets[i].posX <= (enemies[j].x + 16)) &&
-            (playerBullets[i].posY >= enemies[j].y) &&
-            (playerBullets[i].posY <= (enemies[j].y + 16))) {
-              // Hit Enemy
+      if(isBossAlive) {
+        if((boss.health > 0) &&
+            (playerBullets[i].posX >= boss.x) &&
+            (playerBullets[i].posX <= (boss.x + boss.width)) &&
+            (playerBullets[i].posY >= boss.y) &&
+            (playerBullets[i].posY <= (boss.y + boss.height))) {
               playerBullets[i].hide();
-              enemies[j].health -= playerBullets[i].damage;
-
-              if (enemies[j].health <= 0) {
+              boss.health -= playerBullets[i].damage;
+              if (boss.health <= 0) {
                 score += 100;
+              } else {
+                isBossAlive = false;
               }
             }
+      } else {
+        for (byte j = 0; j < MAX_ENEMIES; j++) {
+          if ((enemies[j].health > 0) &&
+              (playerBullets[i].posX >= enemies[j].x) &&
+              (playerBullets[i].posX <= (enemies[j].x + 16)) &&
+              (playerBullets[i].posY >= enemies[j].y) &&
+              (playerBullets[i].posY <= (enemies[j].y + 16))) {
+                // Hit Enemy
+                playerBullets[i].hide();
+                enemies[j].health -= playerBullets[i].damage;
+  
+                if (enemies[j].health <= 0) {
+                  score += 100;
+                }
+              }
+          }
       }
+      
     }
   }
 }
