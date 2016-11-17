@@ -19,8 +19,10 @@
 #define DEBOUNCE_DELAY 100
 #define MAX_LIVES 4
 #define NUM_STARS 15
-// TODO highScore should be replaced with table in EEPROM
-unsigned long inGameFrame, inGameAButtonLastPress, inGameBButtonLastPress, score, highScore = 0;
+// TODO highScoreTable should be replaced with table in EEPROM
+char *highScoreTable = "AAA000400BBB000300CCC000200DDD000100";
+
+unsigned long inGameFrame, inGameAButtonLastPress, inGameBButtonLastPress, score;
 byte livesRemaining = MAX_LIVES;
 
 float starX[NUM_STARS];
@@ -214,13 +216,21 @@ void highScoreScreen() {
   // TODO, this is placeholder 
   long lastDebounceTime = millis();
   unsigned short totalDelay = 0;
+  char hiInitials[4];
+  char hiScore[7];
 
   arduboy.clear();
   printText("HI SCORES", 8, 1, 2);
-  printText("1.  000000  AAA", 15, 21, 1);
-  printText("2.  000000  AAA", 15, 33, 1);
-  printText("3.  000000  AAA", 15, 45, 1);
-  printText("4.  000000  AAA", 15, 57, 1);
+
+  for (byte i = 0; i < 4; i++) {
+    strncpy(hiInitials, highScoreTable + ((9 * i) * sizeof(char)), 3);
+    hiInitials[3] = '\0';
+    strncpy(hiScore, highScoreTable + (((9 * i) + 3) * sizeof(char)), 6);
+    hiScore[6] = '\0';
+    sprintf(textBuf, "%d.  %s  %s", i + 1, hiScore, hiInitials);
+    printText(textBuf, 15, 21 + (12 * i), 1);
+  }
+
   arduboy.display();
   while (totalDelay < 4000) {
     if (arduboy.pressed(UP_BUTTON) || arduboy.pressed(DOWN_BUTTON) || arduboy.pressed(LEFT_BUTTON) || arduboy.pressed(RIGHT_BUTTON) || arduboy.pressed(A_BUTTON)  || arduboy.pressed(B_BUTTON)) {
@@ -315,7 +325,7 @@ void settingsScreen() {
             break;
             
           case SETTINGS_RESET_HIGH_SCORE:
-            highScore = 0;
+            highScoreTable = "AAA000400BBB000300CCC000200DDD000100";
             exit_settings_menu = true;
             break;
 
@@ -647,6 +657,10 @@ void drawHighScoreEntryCursor(byte pos) {
   arduboy.fillRect(68, 62, 10, 2, (pos == 2 ? 1 : 0));
 }
 
+boolean isNewHighScore() {
+  return true;
+}
+
 void newHighScoreScreen() {
   long lastDebounceTime = millis();
   bool allDone = false;
@@ -802,9 +816,9 @@ void loop() {
       gameOverScreen();
       // TODO high score should be checked against a set of high scores
       // in the EEPROM
-      if (score > highScore) {
+      if (isNewHighScore()) {
         newHighScoreScreen();
-        highScore = score;
+        // TODO save high score
       }
 
       highScoreScreen();
