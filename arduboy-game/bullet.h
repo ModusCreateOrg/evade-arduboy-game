@@ -8,8 +8,8 @@
 #include "globals.h"
 #include "bitmaps.h"
 
-#define A_BULLET_DAMAGE 100
-#define B_BULLET_DAMAGE 5
+#define A_BULLET_DAMAGE 75
+#define B_BULLET_DAMAGE 10
 
 struct Bullet {
   public:
