@@ -45,6 +45,11 @@ PROGMEM const unsigned char playerBulletB [] = {
   0x06, 0x00, 0x08, 0x02,
 };
 
+PROGMEM const unsigned char enemyBullet [] = {
+  5, 6,
+  0x0C, 0x12, 0x2D, 0x00, 0x0C,
+};
+
 PROGMEM const unsigned char modusLogo[] = {
   124, 51,
     
