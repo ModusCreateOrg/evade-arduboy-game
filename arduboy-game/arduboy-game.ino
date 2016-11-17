@@ -15,7 +15,6 @@
 #include <inttypes.h>
 #include <Arduino.h>
 #include <avr/pgmspace.h>
-#include <avr/pgmspace.h>
 
 #define DEBOUNCE_DELAY 100
 #define MAX_LIVES 4
@@ -30,7 +29,7 @@ byte starY[NUM_STARS];
 byte starWidth[NUM_STARS];
 
 bool musicOn = true;     
-byte currentSong = 0;
+byte currentSong = 255;
 
 // Bullet arrays
 Bullet playerBullets[MAX_PLAYER_BULLETS];
@@ -398,7 +397,8 @@ void playGame() {
   score = 0;
   livesRemaining = MAX_LIVES;
   spaceShip.reset();
-
+  stopMusic();
+  
   while (livesRemaining > 0) {  
     arduboy.clear();
     inGameFrame++;
