@@ -654,9 +654,8 @@ void handlePlayerBullets() {
 }
 
 void gameOverScreen() {
-  // TODO, this is placeholder
   arduboy.clear();
-  drawBitmap(0, 0, gameOver, 0);
+  drawBitmap(0, 8, gameOver, 0);
   arduboy.display();
 
   delay(100);
