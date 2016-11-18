@@ -494,10 +494,9 @@ void drawPlayerShip() {
       spaceShip.y--;
     }
     if (arduboy.everyXFrames(9)) {
-      spaceShip.frame--;
-    }
-    if (spaceShip.frame < 0) {
-      spaceShip.frame = 0;
+      if (spaceShip.frame > 0) {
+        spaceShip.frame--;
+      }
     }
   }
 
@@ -592,6 +591,7 @@ void handleEnemyBullets() {
           // Hit Player
           enemyBullets[i].hide();
           livesRemaining--;
+          spaceShip.reset();
         }
   }
 }

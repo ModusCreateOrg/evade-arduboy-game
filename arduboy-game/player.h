@@ -7,7 +7,7 @@
 struct Player {
   byte x;
   byte y;
-  int frame;
+  byte frame;
 
   void set() {
     x = 2;
