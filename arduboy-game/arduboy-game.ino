@@ -554,7 +554,7 @@ void drawPlayerShip() {
     drawBitmap(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
   } else {
     arduboy.drawCircle(spaceShip.x, spaceShip.y, spaceShip.dying , 1);
-    if (spaceShip.dying < 35) {
+    if (spaceShip.dying < 65) {
       spaceShip.dying++;
     } else {
       livesRemaining--;
@@ -574,9 +574,11 @@ void drawEnemies() {
     if (enemies[i].health > 0) {
       enemies[i].move();
       drawBitmap(enemies[i].x, enemies[i].y, enemies[i].bitmap, 0);
-      
-      if ((!enemyBullets[i].isVisible()) && (enemies[i].doFire())) {
-        enemyBullets[i].set(enemies[i].x, (enemies[i].y + (16 / 2) - 1), false, 1);
+
+      if (spaceShip.dying == 0) {
+        if ((!enemyBullets[i].isVisible()) && (enemies[i].doFire())) {
+          enemyBullets[i].set(enemies[i].x, (enemies[i].y + (16 / 2) - 1), false, 1);
+        }
       }
     }
   }
