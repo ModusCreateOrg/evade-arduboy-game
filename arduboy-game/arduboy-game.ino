@@ -476,7 +476,9 @@ void drawStarLayer() {
 
 void drawLives() {
   for (byte i = 0; i < MAX_LIVES; i++) {
-    drawBitmap(120 - (i * 10), 0, (i < livesRemaining ? heart : unfilledHeart) , 0);
+    if (i < livesRemaining) {
+      drawBitmap(120 - (i * 10), 0, livesShip , 0);
+    }
   }
 }
 
