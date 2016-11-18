@@ -528,7 +528,7 @@ void drawPlayerShip() {
   
     // Here to test out other SFX
     if (arduboy.pressed(B_BUTTON)) {
-      if (inGameBButtonLastPress < (inGameFrame - 40)) {
+      if (inGameBButtonLastPress < (inGameFrame - 55)) {
         inGameBButtonLastPress = inGameFrame;
         // Fire B weapon (rapid fire)
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
