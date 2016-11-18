@@ -61,7 +61,7 @@ void stopMusic() {
 }
 
 void playMusic(byte song) {
-    if (!arduboy.tunes.playing() && currentSong != song) {
+    if (!arduboy.tunes.playing() && currentSong != song && musicOn) {
       stopMusic();
 
       unsigned char *music;
@@ -450,12 +450,14 @@ void playGame() {
     handleEnemyBullets();
 
     // Play stage1 music
-    playMusic(2);
-    if (shouldPlayAButtonTone()) {
+    if(musicOn) {
+      playMusic(2);
+    }
+    if (shouldPlayAButtonTone() && musicOn) {
       sfx(1);
     }
 
-    if (shouldPlayBButtonTone()) {
+    if (shouldPlayBButtonTone() && musicOn) {
       sfx(2);
     }
   }
@@ -662,7 +664,9 @@ void gameOverScreen() {
 
   delay(100);
   // play game over tune
-  playMusic(4);
+  if(musicOn) {
+    playMusic(4);
+  }
   delay(3000);
   stopMusic();
   delay(2000);
