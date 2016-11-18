@@ -481,76 +481,86 @@ void drawLives() {
 }
 
 void drawPlayerShip() {
-  if (arduboy.pressed(RIGHT_BUTTON) && (spaceShip.x < MAX_PLAYER_SHIP_X)) {
-    spaceShip.x++;
-  }
-
-  if (arduboy.pressed(LEFT_BUTTON) && (spaceShip.x > MIN_PLAYER_SHIP_X)) {
-    spaceShip.x--;
-  }
-
-  if (arduboy.pressed(UP_BUTTON)) {
-    if (spaceShip.y > MIN_SHIP_Y) {
-      spaceShip.y--;
+  if (spaceShip.dying == 0) {
+    if (arduboy.pressed(RIGHT_BUTTON) && (spaceShip.x < MAX_PLAYER_SHIP_X)) {
+      spaceShip.x++;
     }
-    if (arduboy.everyXFrames(9)) {
-      if (spaceShip.frame > 0) {
-        spaceShip.frame--;
+  
+    if (arduboy.pressed(LEFT_BUTTON) && (spaceShip.x > MIN_PLAYER_SHIP_X)) {
+      spaceShip.x--;
+    }
+  
+    if (arduboy.pressed(UP_BUTTON)) {
+      if (spaceShip.y > MIN_SHIP_Y) {
+        spaceShip.y--;
       }
-    }
-  }
-
-  if (arduboy.pressed(DOWN_BUTTON)) {
-    if (spaceShip.y < MAX_SHIP_Y)  {
-      spaceShip.y++;
-    }
-    if (arduboy.everyXFrames(9)) {
-      spaceShip.frame++;
-    }
-    if (spaceShip.frame > 4) {
-      spaceShip.frame = 4;
-    }
-  }
-
-  if (arduboy.pressed(A_BUTTON)) {
-    if (inGameAButtonLastPress < (inGameFrame - 75)) {
-      inGameAButtonLastPress = inGameFrame;
-      // Fire A weapon (single fire)
-      for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
-        if (!playerBullets[i].isVisible()) {
-          playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE);
-          break;
+      if (arduboy.everyXFrames(9)) {
+        if (spaceShip.frame > 0) {
+          spaceShip.frame--;
         }
       }
     }
-  }
-
-  // Here to test out other SFX
-  if (arduboy.pressed(B_BUTTON)) {
-    if (inGameBButtonLastPress < (inGameFrame - 40)) {
-      inGameBButtonLastPress = inGameFrame;
-      // Fire B weapon (rapid fire)
-      for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
-        if (!playerBullets[i].isVisible()) {
-          playerBullets[i].set(spaceShip.x, (spaceShip.y + 7), true, B_BULLET_DAMAGE);
-          break;
-        }
+  
+    if (arduboy.pressed(DOWN_BUTTON)) {
+      if (spaceShip.y < MAX_SHIP_Y)  {
+        spaceShip.y++;
       }
-    }
-  }
-
-  if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON)) {
-    if (arduboy.everyXFrames(12)) {
-      if (spaceShip.frame > 2) {
-        spaceShip.frame--;
-      }
-      if (spaceShip.frame < 2) {
+      if (arduboy.everyXFrames(9)) {
         spaceShip.frame++;
       }
+      if (spaceShip.frame > 4) {
+        spaceShip.frame = 4;
+      }
+    }
+  
+    if (arduboy.pressed(A_BUTTON)) {
+      if (inGameAButtonLastPress < (inGameFrame - 75)) {
+        inGameAButtonLastPress = inGameFrame;
+        // Fire A weapon (single fire)
+        for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
+          if (!playerBullets[i].isVisible()) {
+            playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE);
+            break;
+          }
+        }
+      }
+    }
+  
+    // Here to test out other SFX
+    if (arduboy.pressed(B_BUTTON)) {
+      if (inGameBButtonLastPress < (inGameFrame - 40)) {
+        inGameBButtonLastPress = inGameFrame;
+        // Fire B weapon (rapid fire)
+        for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
+          if (!playerBullets[i].isVisible()) {
+            playerBullets[i].set(spaceShip.x, (spaceShip.y + 7), true, B_BULLET_DAMAGE);
+            break;
+          }
+        }
+      }
+    }
+  
+    if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON)) {
+      if (arduboy.everyXFrames(12)) {
+        if (spaceShip.frame > 2) {
+          spaceShip.frame--;
+        }
+        if (spaceShip.frame < 2) {
+          spaceShip.frame++;
+        }
+      }
+    }
+
+    drawBitmap(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
+  } else {
+    arduboy.drawCircle(spaceShip.x, spaceShip.y, spaceShip.dying , 1);
+    if (spaceShip.dying < 35) {
+      spaceShip.dying++;
+    } else {
+      livesRemaining--;
+      spaceShip.reset();
     }
   }
-
-  drawBitmap(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
 }
 
 void drawEnemies() {
@@ -590,8 +600,11 @@ void handleEnemyBullets() {
         (enemyBullets[i].posY <= (spaceShip.y + 16))) {
           // Hit Player
           enemyBullets[i].hide();
-          livesRemaining--;
-          spaceShip.reset();
+
+          // Doesn't count if player was already dying
+          if (spaceShip.dying == 0) {
+            spaceShip.dying = 1;
+          }
         }
   }
 }
