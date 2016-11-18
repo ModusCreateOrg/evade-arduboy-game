@@ -327,7 +327,6 @@ void settingsScreen() {
             break;
             
           case SETTINGS_RESET_HIGH_SCORE:
-            highScoreTable = "AAA000400BBB000300CCC000200DDD000100";
             exit_settings_menu = true;
             break;
 
@@ -674,7 +673,7 @@ byte isNewHighScore() {
 void newHighScoreScreen(byte newHiPos) {
   long lastDebounceTime = millis();
   bool allDone = false;
-  byte currPos = 0;
+  unsigned short currPos = 0;
   byte currInitials[] = { 65, 65, 65};
   
   arduboy.clear();
@@ -756,7 +755,19 @@ void newHighScoreScreen(byte newHiPos) {
   }
 
   // Store the new high score, newHiPos == 0 is highest score
-  // TODO
+  sprintf(textBuf, "%c%c%c%06d", currInitials[0], currInitials[1], currInitials[2], score);
+
+  if (newHiPos < 3) {
+    // shuffle existing results around
+    for (currPos = 26; currPos > (9 * newHiPos); currPos--) {
+      highScoreTable[currPos + 9] = highScoreTable[currPos];
+    }
+  }
+
+  // then copy new result into correct place
+  for (currPos = 0; currPos < 9; currPos++) {
+    highScoreTable[currPos + ((9 * newHiPos) * sizeof(char))] = textBuf[currPos];
+  }
 }
 
 void createStarFieldVals() {
