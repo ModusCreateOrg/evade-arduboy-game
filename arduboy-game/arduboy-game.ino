@@ -19,8 +19,12 @@
 #define DEBOUNCE_DELAY 100
 #define MAX_LIVES 4
 #define NUM_STARS 15
-// TODO highScore should be replaced with table in EEPROM
-unsigned long inGameFrame, inGameAButtonLastPress, inGameBButtonLastPress, score, highScore = 0;
+#define NOT_NEW_HI_SCORE 5
+
+// TODO highScoreTable should be replaced with table in EEPROM
+char *highScoreTable = "AAA000400BBB000300CCC000200DDD000100";
+
+unsigned long inGameFrame, inGameAButtonLastPress, inGameBButtonLastPress, score;
 byte livesRemaining = MAX_LIVES;
 
 float starX[NUM_STARS];
@@ -214,13 +218,21 @@ void highScoreScreen() {
   // TODO, this is placeholder 
   long lastDebounceTime = millis();
   unsigned short totalDelay = 0;
+  char hiInitials[4];
+  char hiScore[7];
 
   arduboy.clear();
   printText("HI SCORES", 8, 1, 2);
-  printText("1.  000000  AAA", 15, 21, 1);
-  printText("2.  000000  AAA", 15, 33, 1);
-  printText("3.  000000  AAA", 15, 45, 1);
-  printText("4.  000000  AAA", 15, 57, 1);
+
+  for (byte i = 0; i < 4; i++) {
+    strncpy(hiInitials, highScoreTable + ((9 * i) * sizeof(char)), 3);
+    hiInitials[3] = '\0';
+    strncpy(hiScore, highScoreTable + (((9 * i) + 3) * sizeof(char)), 6);
+    hiScore[6] = '\0';
+    sprintf(textBuf, "%d.  %s  %s", i + 1, hiScore, hiInitials);
+    printText(textBuf, 15, 21 + (12 * i), 1);
+  }
+
   arduboy.display();
   while (totalDelay < 4000) {
     if (arduboy.pressed(UP_BUTTON) || arduboy.pressed(DOWN_BUTTON) || arduboy.pressed(LEFT_BUTTON) || arduboy.pressed(RIGHT_BUTTON) || arduboy.pressed(A_BUTTON)  || arduboy.pressed(B_BUTTON)) {
@@ -315,7 +327,6 @@ void settingsScreen() {
             break;
             
           case SETTINGS_RESET_HIGH_SCORE:
-            highScore = 0;
             exit_settings_menu = true;
             break;
 
@@ -647,10 +658,22 @@ void drawHighScoreEntryCursor(byte pos) {
   arduboy.fillRect(68, 62, 10, 2, (pos == 2 ? 1 : 0));
 }
 
-void newHighScoreScreen() {
+byte isNewHighScore() {
+  char hiScore[7];
+  hiScore[6] = '\0';
+  for (byte i = 0; i < 4; i++) {
+    strncpy(hiScore, highScoreTable + (((9 * i) + 3) * sizeof(char)), 6);
+    if (score > strtol(hiScore, NULL, 10)) {
+       return i;
+    }
+  }
+  return NOT_NEW_HI_SCORE;
+}
+
+void newHighScoreScreen(byte newHiPos) {
   long lastDebounceTime = millis();
   bool allDone = false;
-  byte currPos = 0;
+  unsigned short currPos = 0;
   byte currInitials[] = { 65, 65, 65};
   
   arduboy.clear();
@@ -730,6 +753,21 @@ void newHighScoreScreen() {
        }     
     }
   }
+
+  // Store the new high score, newHiPos == 0 is highest score
+  sprintf(textBuf, "%c%c%c%06d", currInitials[0], currInitials[1], currInitials[2], score);
+
+  if (newHiPos < 3) {
+    // shuffle existing results around
+    for (currPos = 26; currPos > (9 * newHiPos); currPos--) {
+      highScoreTable[currPos + 9] = highScoreTable[currPos];
+    }
+  }
+
+  // then copy new result into correct place
+  for (currPos = 0; currPos < 9; currPos++) {
+    highScoreTable[currPos + ((9 * newHiPos) * sizeof(char))] = textBuf[currPos];
+  }
 }
 
 void createStarFieldVals() {
@@ -789,7 +827,7 @@ void setup() {
 
 // Main program loop
 void loop() {
-  byte result;
+  byte result, newHiScorePos;
 
   result = titleScreen();
 
@@ -802,9 +840,9 @@ void loop() {
       gameOverScreen();
       // TODO high score should be checked against a set of high scores
       // in the EEPROM
-      if (score > highScore) {
-        newHighScoreScreen();
-        highScore = score;
+      newHiScorePos = isNewHighScore();
+      if (newHiScorePos != NOT_NEW_HI_SCORE) {
+        newHighScoreScreen(newHiScorePos);
       }
 
       highScoreScreen();
