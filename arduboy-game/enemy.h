@@ -10,6 +10,7 @@ struct Enemy {
   byte y;
   int health;
   byte difficulty;
+  byte dying;
   // isMovingLeft (0), isMovingDown (1)
   byte direction;
   const uint8_t *bitmap;
@@ -17,6 +18,8 @@ struct Enemy {
   void set(byte _x, byte _y) {
     x = _x;
     y = _y;
+    dying = 0;
+    
     direction |= random(2) << 0;
     direction |= random(2) << 1;
 
@@ -63,7 +66,8 @@ struct Enemy {
   }
 
   boolean doFire() {
-    return random(1000 / difficulty) == 0;
+    // Enemy can't fire whilst dying
+    return (dying == 0 ? random(1000 / difficulty) == 0 : false);
   }
 
   boolean isMovingLeft() {
