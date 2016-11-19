@@ -450,9 +450,9 @@ void playGame() {
     handleEnemyBullets();
 
     // Play stage1 music
-    if(musicOn) {
-      playMusic(2);
-    }
+  
+    playMusic(2);
+ 
     if (shouldPlayAButtonTone() && musicOn) {
       sfx(1);
     }
@@ -664,9 +664,9 @@ void gameOverScreen() {
 
   delay(100);
   // play game over tune
-  if(musicOn) {
-    playMusic(4);
-  }
+
+  playMusic(4);
+  
   delay(3000);
   stopMusic();
   delay(2000);
