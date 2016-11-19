@@ -24,7 +24,7 @@
 // TODO highScoreTable should be replaced with table in EEPROM
 char *highScoreTable = "AAA000400BBB000300CCC000200DDD000100";
 
-unsigned long inGameFrame, inGameAButtonLastPress, inGameBButtonLastPress, inGameLastDeath, score;
+unsigned long inGameAButtonLastPress, inGameBButtonLastPress, inGameLastDeath, score;
 byte livesRemaining = MAX_LIVES;
 
 float starX[NUM_STARS];
@@ -434,16 +434,18 @@ void playGame() {
 
     if (!isBossAlive) {
       if ((score >= 5000) && (!spawnedBossOne)) {
-        drawBoss(69, 6, 1);
+        boss.set((arduboy.width() + 1), 10, 1);
         spawnedBossOne = true;
+        isBossAlive = true;
       } else if ((score >= 12000) && (!spawnedBossTwo)) {
-        drawBoss(96, 24, 2);
+        boss.set((arduboy.width() + 1), 24, 2);
         spawnedBossTwo = true;
+        isBossAlive = true;
       }
     }
     
     if (isBossAlive) {
-      drawBoss(boss.x, boss.y, boss.type); 
+      boss.update();
     } else {
       updateEnemies();
     }
@@ -601,15 +603,6 @@ void updateEnemies() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
     enemies[i].update();
   }
-}
-
-void drawBoss(int x, int y, int type) {
-  if (!isBossAlive) {
-    boss.set(x, y, type);
-    isBossAlive = true;
-  }
-  
-  drawBitmap(boss.x, boss.y, boss.bitmap, 0);
 }
 
 void handleEnemyBullets() {

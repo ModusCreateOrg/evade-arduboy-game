@@ -73,8 +73,8 @@ struct Enemy {
     if (random(10 / difficulty) == 0) {
       changeDirection();
       
-      int newX = x + (isMovingLeft() ? -1 : 1);
-      int newY = y + (isMovingDown() ? -1 : 1);
+      byte newX = x + (isMovingLeft() ? -1 : 1);
+      byte newY = y + (isMovingDown() ? -1 : 1);
       
       if ((newX >= MIN_ENEMY_SHIP_X) && (newX <= MAX_ENEMY_SHIP_X)) {
         x = newX;
