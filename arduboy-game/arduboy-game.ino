@@ -413,7 +413,7 @@ void playGame() {
   boolean spawnedBossOne = false;
   boolean spawnedBossTwo = false;
   
-  while (livesRemaining > 0) {  
+  while (livesRemaining > 0) {
     arduboy.clear();
     inGameFrame++;
 

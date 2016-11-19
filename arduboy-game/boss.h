@@ -100,10 +100,12 @@ struct Boss {
   void fire(byte bulletIndex) {
     if (type == 1) {
       bullets[bulletIndex].set(x, random(MIN_SHIP_Y, (MAX_SHIP_Y + 8)), false, 1, 0.4, false);
-    } else if (random(600) == 0) {
-      bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.5, true);
-    } else if (random(100) == 0) {
-      bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.8, false);
+    } else if ((inGameFrame % 50 == 0) && (random(2) == 0)) {
+      if (random(4) == 0) {
+        bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.6, true);
+      } else {
+        bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.8, false);
+      }
     }
   }
 

@@ -26,6 +26,11 @@ struct Bullet {
       y = _y;
       damage = _damage;
       speedX = _speedX;
+
+      options &= ~(1 << 0);
+      options &= ~(1 << 1);
+      options &= ~(1 << 2);
+      
       options |= 1 << 0;
       options |= firedByPlayer << 1;
       options |= isLaserBeam << 2;
@@ -71,7 +76,7 @@ struct Bullet {
     boolean isHittingObject(byte objectX, byte objectY, byte objectWidth, byte objectHeight) {
       if ((isVisible()) &&
         (((isLaserBeam()) && (x >= (objectX - 50))) || ((!isLaserBeam()) && (x >= objectX))) &&
-        (((isLaserBeam()) && (x <= (objectX + objectWidth - 50))) || ((!isLaserBeam()) && (x <= (objectX + objectWidth)))) &&
+        (x <= (objectX + objectWidth)) &&
         (y >= objectY) &&
         (y <= (objectY + objectHeight))) {
         return true;
