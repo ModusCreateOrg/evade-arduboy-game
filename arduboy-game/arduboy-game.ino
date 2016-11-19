@@ -415,6 +415,13 @@ void playGame() {
     arduboy.clear();
     inGameFrame++;
 
+    // Cool off the gun
+    if (inGameFrame % 20 == 0 && spaceShip.gunTemp > 0) {
+      spaceShip.gunTemp--;
+    }
+
+    drawGunTemp();
+
     drawScore();
 
     drawPlayerShip();
@@ -447,12 +454,14 @@ void playGame() {
 
     drawStarLayer();
     drawLives();
+       
     arduboy.display();
+
     updateStarFieldVals();
 
     handlePlayerBullets();
     handleEnemyBullets();
-
+    
     // Play stage1 music
   
     playMusic(2);
@@ -467,6 +476,11 @@ void playGame() {
   }
 
   stopMusic();
+}
+
+void drawGunTemp() {
+  arduboy.drawRect(40, 1, 40, 5, 1);
+  arduboy.fillRect(40, 1, (spaceShip.gunTemp > 40 ? 40 : spaceShip.gunTemp), 5, 1);
 }
 
 void drawScore() {
@@ -524,10 +538,14 @@ void drawPlayerShip() {
     if (arduboy.pressed(A_BUTTON)) {
       if (inGameAButtonLastPress < (inGameFrame - 75)) {
         inGameAButtonLastPress = inGameFrame;
-        // Fire A weapon (single fire)
+        // Fire A weapon (single fire) if weapon isn't too hot
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
           if (inGameAButtonLastPress > 80 && !playerBullets[i].isVisible()) {
-            playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE);
+            if (spaceShip.gunTemp < 40) {
+              playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE);
+              spaceShip.gunTemp += 15;
+            }
+
             break;
           }
         }
