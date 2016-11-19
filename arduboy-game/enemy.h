@@ -6,7 +6,7 @@
 #include "bitmaps.h"
 
 struct Enemy {
-  byte x;
+  byte x = 0;  // Use this to know if enemy is in play or not to avoid death logic issues
   byte y;
   int health;
   byte difficulty;

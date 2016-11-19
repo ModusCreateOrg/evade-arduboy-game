@@ -585,16 +585,23 @@ void drawEnemies() {
             enemyBullets[i].set(enemies[i].x, (enemies[i].y + (16 / 2) - 1), false, 1);
           }
         }
-      } //else {
-//        enemies[i].dying = 1;
-//      }
-    }// else {
-      // this one is dying...
-//      arduboy.drawCircle(enemies[i].x, enemies[i].y, enemies[i].dying , 1);
-//      if (enemies[i].dying < 65) {
-//        enemies[i].dying++;
-//      }
-//    }
+      } else {
+        // Use x value of 0 to make sure enemy is initialized and active
+        if (enemies[i].x > 0) {
+          enemies[i].dying = 1;
+        }
+      }
+    } else {
+      // This enemy is dying
+      arduboy.drawCircle(enemies[i].x, enemies[i].y, enemies[i].dying, 1);
+      if (enemies[i].dying < 65) {
+        enemies[i].dying++;
+      } else {
+        // Fully dead, reset it so it can respawn
+        enemies[i].dying = 0;
+        enemies[i].x = 0;
+      }
+    }
   }
 }
 
