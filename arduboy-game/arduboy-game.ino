@@ -61,7 +61,7 @@ void stopMusic() {
 }
 
 void playMusic(byte song) {
-    if (!arduboy.tunes.playing() && currentSong != song) {
+    if (!arduboy.tunes.playing() && currentSong != song && musicOn) {
       stopMusic();
 
       unsigned char *music;
@@ -129,8 +129,8 @@ byte titleScreen() {
   long lastDebounceTime = millis();  // the last time the button was pressed
   
   arduboy.clear();
-  drawBitmap(0, 0, title, 0);
-  arduboy.drawRect(2, 47, 26, 13, 1);
+  drawBitmap(4, 14, title, 0);
+  arduboy.drawRect(2, 48, 26, 12, 1);
   arduboy.display();
 
   playMusic(5);
@@ -172,15 +172,15 @@ byte titleMenuLeftButton(byte selectedItem) {
   */
   switch (selectedItem) {
     case TITLE_SETTINGS:
-      arduboy.drawRect(76, 47, 51, 13, 0);
-      arduboy.drawRect(30, 47, 45, 13, 1);
+      arduboy.drawRect(76, 48, 51, 12, 0);
+      arduboy.drawRect(30, 48, 45, 12, 1);
       arduboy.display();
       return TITLE_CREDITS;
       break;
 
     case TITLE_CREDITS:
-      arduboy.drawRect(30, 47, 45, 13, 0);
-      arduboy.drawRect(2, 47, 26, 13, 1);
+      arduboy.drawRect(30, 48, 45, 12, 0);
+      arduboy.drawRect(2, 48, 26, 12, 1);
       arduboy.display();
       return  TITLE_PLAY_GAME;
       break;
@@ -197,15 +197,15 @@ byte titleMenuRightButton(byte selectedItem) {
   */
   switch (selectedItem) {
     case TITLE_PLAY_GAME:
-      arduboy.drawRect(2, 47, 26, 13, 0);
-      arduboy.drawRect(30, 47, 45, 13, 1);
+      arduboy.drawRect(2, 48, 26, 12, 0);
+      arduboy.drawRect(30, 48, 45, 12, 1);
       arduboy.display();
       return TITLE_CREDITS;
       break;
 
     case TITLE_CREDITS:
-      arduboy.drawRect(30, 47, 45, 13, 0);
-      arduboy.drawRect(76, 47, 51, 13, 1);
+      arduboy.drawRect(30, 48, 45, 12, 0);
+      arduboy.drawRect(76, 48, 51, 12, 1);
       arduboy.display();
       return TITLE_SETTINGS;
       break;
@@ -450,12 +450,14 @@ void playGame() {
     handleEnemyBullets();
 
     // Play stage1 music
-    playMusic(2);
-    if (shouldPlayAButtonTone()) {
+    if(musicOn) {
+      playMusic(2);
+    }
+    if (shouldPlayAButtonTone() && musicOn) {
       sfx(1);
     }
 
-    if (shouldPlayBButtonTone()) {
+    if (shouldPlayBButtonTone() && musicOn) {
       sfx(2);
     }
   }
@@ -476,7 +478,9 @@ void drawStarLayer() {
 
 void drawLives() {
   for (byte i = 0; i < MAX_LIVES; i++) {
-    drawBitmap(120 - (i * 10), 0, (i < livesRemaining ? heart : unfilledHeart) , 0);
+    if (i < livesRemaining) {
+      drawBitmap(120 - (i * 10), 0, livesShip , 0);
+    }
   }
 }
 
@@ -670,7 +674,9 @@ void gameOverScreen() {
 
   delay(100);
   // play game over tune
-  playMusic(4);
+  if(musicOn) {
+    playMusic(4);
+  }
   delay(3000);
   stopMusic();
   delay(2000);

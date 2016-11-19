@@ -13,10 +13,10 @@
 
 struct Bullet {
   public:
-    byte posX;
+    float posX;
     byte posY;
     byte damage;
-    byte speedX;
+    float speedX;
     // Visibility (0), Direction (1)
     byte options;
 
@@ -24,7 +24,7 @@ struct Bullet {
       posX = x;
       posY = y;
       damage = _damage;
-      speedX = firedByPlayer ? 3 : 1;
+      speedX = firedByPlayer ? 3 : 0.7;
       options |= 1 << 0;
       options |= firedByPlayer << 1;
     }
