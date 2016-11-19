@@ -432,11 +432,14 @@ void playGame() {
         drawBoss(boss.x, boss.y, boss.type);  
       }
     }
-    
-    for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
-      playerBullets[i].draw();
-      playerBullets[i].update();
+
+    if(inGameAButtonLastPress > 80 || inGameBButtonLastPress > 60) {
+      for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
+        playerBullets[i].draw();
+        playerBullets[i].update();
+      }  
     }
+    
     for (byte i = 0; i < MAX_ENEMIES; i++) {
       enemyBullets[i].draw();
       enemyBullets[i].update();
@@ -523,7 +526,7 @@ void drawPlayerShip() {
         inGameAButtonLastPress = inGameFrame;
         // Fire A weapon (single fire)
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
-          if (!playerBullets[i].isVisible()) {
+          if (inGameAButtonLastPress > 80 && !playerBullets[i].isVisible()) {
             playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE);
             break;
           }
@@ -537,7 +540,7 @@ void drawPlayerShip() {
         inGameBButtonLastPress = inGameFrame;
         // Fire B weapon (rapid fire)
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
-          if (!playerBullets[i].isVisible()) {
+          if (inGameBButtonLastPress > 80 && !playerBullets[i].isVisible()) {
             playerBullets[i].set(spaceShip.x, (spaceShip.y + 7), true, B_BULLET_DAMAGE);
             break;
           }
