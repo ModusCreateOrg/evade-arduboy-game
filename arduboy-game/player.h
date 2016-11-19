@@ -7,6 +7,8 @@
 struct Player {
   byte x;
   byte y;
+  byte width = 16;
+  byte height = 16;
   byte frame;
   byte dying;
   byte gunTemp;
