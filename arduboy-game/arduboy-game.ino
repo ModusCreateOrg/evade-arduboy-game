@@ -433,14 +433,22 @@ void playGame() {
     drawPlayerShip();
 
     if (!isBossAlive) {
+      boolean spawnedBoss = false;
       if ((score >= 5000) && (!spawnedBossOne)) {
         boss.set((arduboy.width() + 1), 10, 1);
         spawnedBossOne = true;
-        isBossAlive = true;
+        spawnedBoss = true;
       } else if ((score >= 12000) && (!spawnedBossTwo)) {
         boss.set((arduboy.width() + 1), 24, 2);
         spawnedBossTwo = true;
+        spawnedBoss = true;
+      }
+
+      if (spawnedBoss) {
         isBossAlive = true;
+        for (byte i = 0; i < MAX_ENEMIES; i++) {
+          enemies[i].health = 0;
+        }
       }
     }
     
@@ -465,6 +473,7 @@ void playGame() {
 
     handlePlayerBullets();
     handleEnemyBullets();
+    handleBossBullets();
     
     // Play stage1 music
   
@@ -545,7 +554,7 @@ void drawPlayerShip() {
         // Fire A weapon (single fire) if weapon isn't too hot
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
           if (!playerBullets[i].isVisible()) {
-            playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE);
+            playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE, 3);
             spaceShip.gunTemp += 15;
             break;
           }
@@ -560,7 +569,7 @@ void drawPlayerShip() {
         // Fire B weapon (rapid fire)
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
           if (inGameBButtonLastPress > 80 && !playerBullets[i].isVisible()) {
-            playerBullets[i].set(spaceShip.x, (spaceShip.y + 7), true, B_BULLET_DAMAGE);
+            playerBullets[i].set(spaceShip.x, (spaceShip.y + 7), true, B_BULLET_DAMAGE, 3);
             break;
           }
         }
@@ -620,6 +629,23 @@ void handleEnemyBullets() {
   }
 }
 
+void handleBossBullets() {
+  if (isBossAlive) {
+    for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
+      if ((boss.bullets[i].isVisible()) && (boss.bullets[i].isHittingObject(spaceShip.x, spaceShip.y, spaceShip.width, spaceShip.height))) {
+        // Hit Player
+        boss.bullets[i].hide();
+  
+        // Doesn't count if player recently died
+        if (inGameLastDeath < (inGameFrame - 300)) {
+          inGameLastDeath = inGameFrame;
+          spaceShip.dying = 1;
+        }
+      }
+    }
+  }
+}
+
 void handlePlayerBullets() {
   for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
     if (playerBullets[i].isVisible()) {
@@ -633,6 +659,9 @@ void handlePlayerBullets() {
           if (boss.health <= 0) {
             // Killed Boss
             isBossAlive = false;
+            for (byte j = 0; j < MAX_BOSS_BULLETS; j++) {
+              boss.bullets[j].hide();
+            }
             score += 500;
           }
         }

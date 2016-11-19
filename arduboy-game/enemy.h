@@ -23,6 +23,7 @@ struct Enemy {
     x = _x;
     y = _y;
     dying = 0;
+    bullet.hide();
     
     direction |= random(2) << 0;
     direction |= random(2) << 1;
@@ -47,14 +48,16 @@ struct Enemy {
   }
 
   void update() {
+    if (bullet.isVisible()) {
+      bullet.update();
+    }
+    
     if (isAlive()) {
       move();
       draw();
 
       if (!bullet.isVisible()) {
         fire();
-      } else {
-        bullet.update();
       }
     } else if (isDying()) {
       updateDeathSequence();
@@ -112,7 +115,7 @@ struct Enemy {
     if ((dying == 0) &&
       (!bullet.isVisible()) &&
       (random(1000 / difficulty) == 0)) {
-      bullet.set(x, (y + (height / 2) - 1), false, 1);
+      bullet.set(x, (y + (height / 2) - 1), false, 1, .7);
     }
   }
 

@@ -6,13 +6,13 @@
 #include "bitmaps.h"
 
 struct Boss {
-  int x;
-  int y;
-  int width;
-  int height;
-  int frame;
+  byte x;
+  byte y;
+  byte width;
+  byte height;
   int health;
-  int type;
+  byte type;
+  Bullet bullets[5];
   // isMovingLeft (0), isMovingDown (1)
   byte direction;
   const uint8_t *bitmap;
@@ -21,6 +21,10 @@ struct Boss {
     x = _x;
     y = _y;
     type = _type;
+
+    for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
+      bullets[i].hide();
+    }
     
     direction |= random(2) << 0;
     direction |= random(2) << 1;
@@ -49,6 +53,18 @@ struct Boss {
   void update() {
     move();
     draw();
+
+    if (type == 1) {
+      if (x == 69) {
+        for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
+          if (!bullets[i].isVisible()) {
+            fire(i);
+          } else {
+            bullets[i].update();
+          }
+        }
+      }
+    }
   }
 
   void move() {
@@ -81,6 +97,12 @@ struct Boss {
 
   void draw() {
     drawBitmap(x, y, bitmap, 0);
+  }
+
+  void fire(byte bulletIndex) {
+    if (type == 1) {
+      bullets[bulletIndex].set((x + 2), random(MIN_SHIP_Y, (MAX_SHIP_Y + 8)), false, 1, 0.4);
+    }
   }
 
   void changeDirection() {

@@ -7,6 +7,7 @@
 #include "Arduboy.h"
 #include "globals.h"
 #include "bitmaps.h"
+#include "bullet.h"
 
 #define A_BULLET_DAMAGE 75
 #define B_BULLET_DAMAGE 40
@@ -20,11 +21,11 @@ struct Bullet {
     // Visibility (0), Direction (1)
     byte options;
 
-    void set(byte _x, byte _y, boolean firedByPlayer, byte _damage) {
+    void set(byte _x, byte _y, boolean firedByPlayer, byte _damage, float _speedX) {
       x = _x;
       y = _y;
       damage = _damage;
-      speedX = firedByPlayer ? 3 : 0.7;
+      speedX = _speedX;
       options |= 1 << 0;
       options |= firedByPlayer << 1;
 
