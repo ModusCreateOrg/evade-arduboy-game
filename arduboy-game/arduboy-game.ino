@@ -554,7 +554,7 @@ void drawPlayerShip() {
         // Fire A weapon (single fire) if weapon isn't too hot
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
           if (!playerBullets[i].isVisible()) {
-            playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE, 3);
+            playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE, 3, false);
             spaceShip.gunTemp += 15;
             break;
           }
@@ -569,7 +569,7 @@ void drawPlayerShip() {
         // Fire B weapon (rapid fire)
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
           if (inGameBButtonLastPress > 80 && !playerBullets[i].isVisible()) {
-            playerBullets[i].set(spaceShip.x, (spaceShip.y + 7), true, B_BULLET_DAMAGE, 3);
+            playerBullets[i].set(spaceShip.x, (spaceShip.y + 7), true, B_BULLET_DAMAGE, 3, false);
             break;
           }
         }

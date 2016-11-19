@@ -115,7 +115,7 @@ struct Enemy {
     if ((dying == 0) &&
       (!bullet.isVisible()) &&
       (random(1000 / difficulty) == 0)) {
-      bullet.set(x, (y + (height / 2) - 1), false, 1, .7);
+      bullet.set(x, (y + (height / 2) - 1), false, 1, .7, false);
     }
   }
 
