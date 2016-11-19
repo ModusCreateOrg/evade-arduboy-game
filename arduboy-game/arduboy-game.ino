@@ -587,7 +587,7 @@ void drawPlayerShip() {
       }
     }
 
-    if ((inGameLastDeath > 0) && (inGameLastDeath > (inGameFrame - 300))) {
+    if ((inGameLastDeath > 0) && (inGameLastDeath > (inGameFrame - 450))) {
       if (!(inGameFrame % 3)) {
         // Blink ship
         drawBitmap(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
@@ -621,7 +621,7 @@ void handleEnemyBullets() {
       enemies[i].bullet.hide();
 
       // Doesn't count if player recently died
-      if (inGameLastDeath < (inGameFrame - 300)) {
+      if (inGameLastDeath < (inGameFrame - 450)) {
         inGameLastDeath = inGameFrame;
         spaceShip.dying = 1;
       }
@@ -637,7 +637,7 @@ void handleBossBullets() {
         boss.bullets[i].hide();
   
         // Doesn't count if player recently died
-        if (inGameLastDeath < (inGameFrame - 300)) {
+        if (inGameLastDeath < (inGameFrame - 450)) {
           inGameLastDeath = inGameFrame;
           spaceShip.dying = 1;
         }
