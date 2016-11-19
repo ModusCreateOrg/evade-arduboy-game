@@ -678,6 +678,7 @@ void handlePlayerBullets() {
               score += 100;
             } else {
               enemies[j].health -= playerBullets[i].damage;
+              enemies[j].takeDamage();
             }
           }
         }
