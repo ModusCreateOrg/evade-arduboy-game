@@ -9,7 +9,7 @@
 #include "bitmaps.h"
 
 #define A_BULLET_DAMAGE 75
-#define B_BULLET_DAMAGE 10
+#define B_BULLET_DAMAGE 40
 
 struct Bullet {
   public:
