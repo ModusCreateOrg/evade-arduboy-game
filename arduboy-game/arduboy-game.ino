@@ -570,20 +570,37 @@ void drawPlayerShip() {
 
 void drawEnemies() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
-    if ((enemies[i].health <= 0) && (random(700) == 0)) {
-      byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
-      byte enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
-      enemies[i].set(enemyX, enemyY);
-    }
-    
-    if (enemies[i].health > 0) {
-      enemies[i].move();
-      drawBitmap(enemies[i].x, enemies[i].y, enemies[i].bitmap, 0);
-
-      if (spaceShip.dying == 0) {
-        if ((!enemyBullets[i].isVisible()) && (enemies[i].doFire())) {
-          enemyBullets[i].set(enemies[i].x, (enemies[i].y + (16 / 2) - 1), false, 1);
+    if (enemies[i].dying == 0) {
+      if ((enemies[i].health <= 0) && (random(700) == 0)) {
+        byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
+        byte enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
+        enemies[i].set(enemyX, enemyY);
+      }
+      
+      if (enemies[i].health > 0) {
+        enemies[i].move();
+        drawBitmap(enemies[i].x, enemies[i].y, enemies[i].bitmap, 0);
+  
+        if (spaceShip.dying == 0) {
+          if ((!enemyBullets[i].isVisible()) && (enemies[i].doFire())) {
+            enemyBullets[i].set(enemies[i].x, (enemies[i].y + (16 / 2) - 1), false, 1);
+          }
         }
+      } else {
+        // Use x value of 0 to make sure enemy is initialized and active
+        if (enemies[i].x > 0) {
+          enemies[i].dying = 1;
+        }
+      }
+    } else {
+      // This enemy is dying
+      arduboy.drawCircle(enemies[i].x, enemies[i].y, enemies[i].dying, 1);
+      if (enemies[i].dying < 65) {
+        enemies[i].dying++;
+      } else {
+        // Fully dead, reset it so it can respawn
+        enemies[i].dying = 0;
+        enemies[i].x = 0;
       }
     }
   }
