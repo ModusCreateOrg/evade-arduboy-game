@@ -130,6 +130,7 @@ byte titleScreen() {
   
   arduboy.clear();
   drawBitmap(4, 14, title, 0);
+  drawBitmap(4, 51, titleMenuOptions, 0);
   arduboy.drawRect(2, 48, 26, 12, 1);
   arduboy.display();
 
