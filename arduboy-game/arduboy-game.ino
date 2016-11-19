@@ -410,14 +410,20 @@ void playGame() {
   livesRemaining = MAX_LIVES;
   spaceShip.reset();
   stopMusic();
+  boolean spawnedBossOne = false;
+  boolean spawnedBossTwo = false;
   
   while (livesRemaining > 0) {  
     arduboy.clear();
     inGameFrame++;
 
-    // Cool off the gun
-    if (inGameFrame % 20 == 0 && spaceShip.gunTemp > 0) {
-      spaceShip.gunTemp--;
+    if (inGameFrame % 20 == 0) {
+      score++;
+
+      if (spaceShip.gunTemp > 0) {
+        // Cool off the gun
+        spaceShip.gunTemp--;
+      }
     }
 
     drawGunTemp();
@@ -425,19 +431,21 @@ void playGame() {
     drawScore();
 
     drawPlayerShip();
-    
-    if(!isBossAlive) {
-      updateEnemies();  
-    }
 
-    if(score > 0) {
-      if(score % 3000 == 0) {
+    if (!isBossAlive) {
+      if ((score >= 5000) && (!spawnedBossOne)) {
         drawBoss(69, 6, 1);
-      } else if(score % 5000 == 0) {
+        spawnedBossOne = true;
+      } else if ((score >= 12000) && (!spawnedBossTwo)) {
         drawBoss(96, 24, 2);
-      } else if(isBossAlive) {
-        drawBoss(boss.x, boss.y, boss.type);  
+        spawnedBossTwo = true;
       }
+    }
+    
+    if (isBossAlive) {
+      drawBoss(boss.x, boss.y, boss.type); 
+    } else {
+      updateEnemies();
     }
 
     if(inGameAButtonLastPress > 80 || inGameBButtonLastPress > 60) {
@@ -627,6 +635,7 @@ void handlePlayerBullets() {
           // Hit Boss
           playerBullets[i].hide();
           boss.health -= playerBullets[i].damage;
+          score += playerBullets[i].damage;
           
           if (boss.health <= 0) {
             // Killed Boss
@@ -639,6 +648,7 @@ void handlePlayerBullets() {
           if ((enemies[j].health > 0) && (playerBullets[i].isHittingObject(enemies[j].x, enemies[j].y, enemies[j].width, enemies[j].height))) {
             // Hit Enemy
             playerBullets[i].hide();
+            score += playerBullets[i].damage;
             
             if (playerBullets[i].damage > enemies[j].health) {
               enemies[j].health = 0;
