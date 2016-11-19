@@ -36,5 +36,6 @@
 #define MAX_ENEMIES 3
 
 Arduboy arduboy;
+unsigned long inGameFrame;
 
 #endif

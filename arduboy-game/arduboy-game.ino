@@ -24,7 +24,7 @@
 // TODO highScoreTable should be replaced with table in EEPROM
 char *highScoreTable = "AAA000400BBB000300CCC000200DDD000100";
 
-unsigned long inGameFrame, inGameAButtonLastPress, inGameBButtonLastPress, score;
+unsigned long inGameAButtonLastPress, inGameBButtonLastPress, inGameLastDeath, score;
 byte livesRemaining = MAX_LIVES;
 
 float starX[NUM_STARS];
@@ -35,9 +35,8 @@ byte starWidth[NUM_STARS];
 bool musicOn = true;     
 byte currentSong = 255;
 
-// Bullet arrays
+// Bullet array
 Bullet playerBullets[MAX_PLAYER_BULLETS];
-Bullet enemyBullets[MAX_ENEMIES];
 
 // Enemies array
 Enemy enemies[MAX_ENEMIES];
@@ -406,18 +405,25 @@ void playGame() {
   inGameFrame = 0;
   inGameAButtonLastPress = 0;
   inGameBButtonLastPress = 0;
+  inGameLastDeath = 0;
   score = 0;
   livesRemaining = MAX_LIVES;
   spaceShip.reset();
   stopMusic();
+  boolean spawnedBossOne = false;
+  boolean spawnedBossTwo = false;
   
   while (livesRemaining > 0) {  
     arduboy.clear();
     inGameFrame++;
 
-    // Cool off the gun
-    if (inGameFrame % 20 == 0 && spaceShip.gunTemp > 0) {
-      spaceShip.gunTemp--;
+    if (inGameFrame % 20 == 0) {
+      score++;
+
+      if (spaceShip.gunTemp > 0) {
+        // Cool off the gun
+        spaceShip.gunTemp--;
+      }
     }
 
     drawGunTemp();
@@ -425,31 +431,29 @@ void playGame() {
     drawScore();
 
     drawPlayerShip();
-    
-    if(!isBossAlive) {
-      drawEnemies();  
-    }
 
-    if(score > 0) {
-      if(score % 3000 == 0) {
-        drawBoss(69, 6, 1);
-      } else if(score % 5000 == 0) {
-        drawBoss(96, 24, 2);
-      } else if(isBossAlive) {
-        drawBoss(boss.x, boss.y, boss.type);  
+    if (!isBossAlive) {
+      if ((score >= 5000) && (!spawnedBossOne)) {
+        boss.set((arduboy.width() + 1), 10, 1);
+        spawnedBossOne = true;
+        isBossAlive = true;
+      } else if ((score >= 12000) && (!spawnedBossTwo)) {
+        boss.set((arduboy.width() + 1), 24, 2);
+        spawnedBossTwo = true;
+        isBossAlive = true;
       }
+    }
+    
+    if (isBossAlive) {
+      boss.update();
+    } else {
+      updateEnemies();
     }
 
     if(inGameAButtonLastPress > 80 || inGameBButtonLastPress > 60) {
       for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
-        playerBullets[i].draw();
         playerBullets[i].update();
       }  
-    }
-    
-    for (byte i = 0; i < MAX_ENEMIES; i++) {
-      enemyBullets[i].draw();
-      enemyBullets[i].update();
     }
 
     drawStarLayer();
@@ -536,16 +540,13 @@ void drawPlayerShip() {
     }
   
     if (arduboy.pressed(A_BUTTON)) {
-      if (inGameAButtonLastPress < (inGameFrame - 75)) {
+      if ((inGameFrame > 80) && (inGameAButtonLastPress < (inGameFrame - 75)) && (spaceShip.gunTemp < 25)) {
         inGameAButtonLastPress = inGameFrame;
         // Fire A weapon (single fire) if weapon isn't too hot
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
-          if (inGameAButtonLastPress > 80 && !playerBullets[i].isVisible()) {
-            if (spaceShip.gunTemp < 40) {
-              playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE);
-              spaceShip.gunTemp += 15;
-            }
-
+          if (!playerBullets[i].isVisible()) {
+            playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE);
+            spaceShip.gunTemp += 15;
             break;
           }
         }
@@ -577,7 +578,16 @@ void drawPlayerShip() {
       }
     }
 
-    drawBitmap(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
+    if ((inGameLastDeath > 0) && (inGameLastDeath > (inGameFrame - 300))) {
+      if (!(inGameFrame % 3)) {
+        // Blink ship
+        drawBitmap(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
+      }
+    } else {
+      drawBitmap(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
+    }
+
+    
   } else {
     arduboy.drawCircle(spaceShip.x, spaceShip.y, spaceShip.dying , 1);
     if (spaceShip.dying < 65) {
@@ -589,109 +599,60 @@ void drawPlayerShip() {
   }
 }
 
-void drawEnemies() {
+void updateEnemies() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
-    if (enemies[i].dying == 0) {
-      if ((enemies[i].health <= 0) && (random(700) == 0)) {
-        byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
-        byte enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
-        enemies[i].set(enemyX, enemyY);
-      }
-      
-      if (enemies[i].health > 0) {
-        enemies[i].move();
-        drawBitmap(enemies[i].x, enemies[i].y, enemies[i].bitmap, 0);
-  
-        if (spaceShip.dying == 0) {
-          if ((!enemyBullets[i].isVisible()) && (enemies[i].doFire())) {
-            enemyBullets[i].set(enemies[i].x, (enemies[i].y + (16 / 2) - 1), false, 1);
-          }
-        }
-      } else {
-        // Use x value of 0 to make sure enemy is initialized and active
-        if (enemies[i].x > 0) {
-          enemies[i].dying = 1;
-        }
-      }
-    } else {
-      // This enemy is dying
-      arduboy.drawCircle(enemies[i].x, enemies[i].y, enemies[i].dying, 1);
-      if (enemies[i].dying < 65) {
-        enemies[i].dying++;
-      } else {
-        // Fully dead, reset it so it can respawn
-        enemies[i].dying = 0;
-        enemies[i].x = 0;
-      }
-    }
+    enemies[i].update();
   }
-}
-
-void drawBoss(int x, int y, int type) {
-  if (!isBossAlive) {
-    boss.set(x, y, type);
-    isBossAlive = true;
-  }
-  
-  drawBitmap(boss.x, boss.y, boss.bitmap, 0);
 }
 
 void handleEnemyBullets() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
-    if ((enemyBullets[i].isVisible()) &&
-        (enemyBullets[i].posX >= spaceShip.x) &&
-        (enemyBullets[i].posX <= (spaceShip.x + 16)) &&
-        (enemyBullets[i].posY >= spaceShip.y) &&
-        (enemyBullets[i].posY <= (spaceShip.y + 16))) {
-          // Hit Player
-          enemyBullets[i].hide();
+    if ((enemies[i].bullet.isVisible()) && (enemies[i].bullet.isHittingObject(spaceShip.x, spaceShip.y, spaceShip.width, spaceShip.height))) {
+      // Hit Player
+      enemies[i].bullet.hide();
 
-          // Doesn't count if player was already dying
-          if (spaceShip.dying == 0) {
-            spaceShip.dying = 1;
-          }
-        }
+      // Doesn't count if player recently died
+      if (inGameLastDeath < (inGameFrame - 300)) {
+        inGameLastDeath = inGameFrame;
+        spaceShip.dying = 1;
+      }
+    }
   }
 }
 
 void handlePlayerBullets() {
   for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
     if (playerBullets[i].isVisible()) {
-      if(isBossAlive) {
-        if((boss.health > 0) &&
-            (playerBullets[i].posX >= boss.x) &&
-            (playerBullets[i].posX <= (boss.x + boss.width)) &&
-            (playerBullets[i].posY >= boss.y) &&
-            (playerBullets[i].posY <= (boss.y + boss.height))) {
-              // Hit Boss
-              playerBullets[i].hide();
-              boss.health -= playerBullets[i].damage;
-              
-              if (boss.health <= 0) {
-                // Killed Boss
-                isBossAlive = false;
-                score += 500;
-              }
-            }
+      if (isBossAlive) {
+        if ((boss.health > 0) && (playerBullets[i].isHittingObject(boss.x, boss.y, boss.width, boss.height))) {
+          // Hit Boss
+          playerBullets[i].hide();
+          boss.health -= playerBullets[i].damage;
+          score += playerBullets[i].damage;
+          
+          if (boss.health <= 0) {
+            // Killed Boss
+            isBossAlive = false;
+            score += 500;
+          }
+        }
       } else {
         for (byte j = 0; j < MAX_ENEMIES; j++) {
-          if ((enemies[j].health > 0) &&
-              (playerBullets[i].posX >= enemies[j].x) &&
-              (playerBullets[i].posX <= (enemies[j].x + 16)) &&
-              (playerBullets[i].posY >= enemies[j].y) &&
-              (playerBullets[i].posY <= (enemies[j].y + 16))) {
-                // Hit Enemy
-                playerBullets[i].hide();
-                enemies[j].health -= playerBullets[i].damage;
-  
-                if (enemies[j].health <= 0) {
-                  // Killed Enemy
-                  score += 100;
-                }
-              }
+          if ((enemies[j].health > 0) && (playerBullets[i].isHittingObject(enemies[j].x, enemies[j].y, enemies[j].width, enemies[j].height))) {
+            // Hit Enemy
+            playerBullets[i].hide();
+            score += playerBullets[i].damage;
+            
+            if (playerBullets[i].damage > enemies[j].health) {
+              enemies[j].health = 0;
+              enemies[j].dying = 1;
+              score += 100;
+            } else {
+              enemies[j].health -= playerBullets[i].damage;
+            }
           }
+        }
       }
-      
     }
   }
 }
