@@ -54,14 +54,12 @@ struct Boss {
     move();
     draw();
 
-    if (type == 1) {
-      if (x == 69) {
-        for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
-          if (!bullets[i].isVisible()) {
-            fire(i);
-          } else {
-            bullets[i].update();
-          }
+    if (((type == 1) && (x == 69)) || ((type == 2) && (x <= 110))) {
+      for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
+        if (!bullets[i].isVisible()) {
+          fire(i);
+        } else {
+          bullets[i].update();
         }
       }
     }
@@ -101,7 +99,13 @@ struct Boss {
 
   void fire(byte bulletIndex) {
     if (type == 1) {
-      bullets[bulletIndex].set((x + 2), random(MIN_SHIP_Y, (MAX_SHIP_Y + 8)), false, 1, 0.4);
+      bullets[bulletIndex].set(x, random(MIN_SHIP_Y, (MAX_SHIP_Y + 8)), false, 1, 0.4, false);
+    } else if ((inGameFrame % 50 == 0) && (random(2) == 0)) {
+      if (random(4) == 0) {
+        bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.6, true);
+      } else {
+        bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.8, false);
+      }
     }
   }
 
