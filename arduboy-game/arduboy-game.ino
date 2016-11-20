@@ -262,27 +262,24 @@ void creditsScreen() {
   scrollCredits(4, false);
 }
 
-void scrollCredits(int y, bool quit) {
+void scrollCredits(byte y, bool quit) {
   /**
      Recursive function for scrolling
      credits up screen
   */
   byte padding = 7;
-  byte textSize = 1;
-  int origY = y;
+  byte origY = y;
   arduboy.clear();
   
   for (unsigned short i = 0; i < NUM_CREDITS; i++) {
     if (i == 0) {
-      textSize = 2;
       y = y - 4;
     } else {
-      textSize = 1;
       y = origY;
     }
     
     strcpy_P(textBuf, (char*)pgm_read_word(&(credits[i])));
-    printText(textBuf, 2, y + padding, textSize);
+    printText(textBuf, 2, y + padding, (i == 0 ? 2 : 1));
     arduboy.display();
     padding = padding + 15;
     if ( i + 1 == NUM_CREDITS && y + padding < 0) {
@@ -290,10 +287,9 @@ void scrollCredits(int y, bool quit) {
     }
   }
   delay(1000);
-  y = y - 15;
 
   if (!quit) {
-    scrollCredits(y, quit);
+    scrollCredits(y - 15, quit);
   }
 }
 
