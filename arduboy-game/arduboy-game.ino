@@ -69,10 +69,12 @@ void playMusic(byte song) {
            music = titleMusic;
         break;
         case 2 :
-          music = stage1Music;
+//          music = stage1MusicSingleTrack; // IF WE RUN OUT OF SPACE
+          music = stage1MusicDoubleTrack;
         break;
         case 3 :
-           music = bossMusic;
+//          music = bossMusicSingleTrack; // IF WE RUN OUT OF SPACE
+           music = bossMusicDoubleTrack;
         break;
         case 4 :
           music = gameOverMusic;
