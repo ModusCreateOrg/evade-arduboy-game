@@ -47,7 +47,7 @@ Boss boss;
 bool isBossAlive;
 
 // General purpose text buffer for string concatenation and read from progmem
-char textBuf[25];
+char textBuf[23];
 
 Player spaceShip;
 
