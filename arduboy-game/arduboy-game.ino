@@ -32,7 +32,7 @@ float starSpeed[NUM_STARS];
 byte starY[NUM_STARS];
 byte starWidth[NUM_STARS];
 
-bool musicOn = true;     
+bool soundOn = true;     
 byte currentSong = 255;
 
 // Bullet array
@@ -51,19 +51,20 @@ char textBuf[25];
 
 Player spaceShip;
 
-void stopMusic() {
-    Arduboy ab;
-
-    if (ab.tunes.playing()) {
-        ab.tunes.stopScore();
-    }
-}
+//void stopMusic() {
+//
+//    if (arduboy.tunes.playing()) {
+//        arduboy.tunes.stopScore();
+//    }
+//}
 
 void playMusic(byte song) {
-    if (!arduboy.tunes.playing() && currentSong != song && musicOn) {
-      stopMusic();
-
-      unsigned char *music;
+//  Serial.println(currentSong);
+    if (soundOn && currentSong != song) {
+      arduboy.tunes.stopScore();
+    }
+    
+    unsigned char *music;
       switch(song) {
         case 1 :
            music = titleMusic;
@@ -81,9 +82,11 @@ void playMusic(byte song) {
           music = mainMusic;
         break;
       }
-      
-      arduboy.tunes.playScore(music);
-    }
+
+      currentSong = song;
+      if (! arduboy.tunes.playing()) {
+        arduboy.tunes.playScore(music);
+      }
 }   
 
 // SFX (experimental)
@@ -266,6 +269,7 @@ void scrollCredits(int y, bool quit) {
   byte textSize = 1;
   int origY = y;
   arduboy.clear();
+  
   for (unsigned short i = 0; i < NUM_CREDITS; i++) {
     if (i == 0) {
       textSize = 2;
@@ -274,6 +278,7 @@ void scrollCredits(int y, bool quit) {
       textSize = 1;
       y = origY;
     }
+    
     strcpy_P(textBuf, (char*)pgm_read_word(&(credits[i])));
     printText(textBuf, 2, y + padding, textSize);
     arduboy.display();
@@ -297,7 +302,7 @@ void settingsScreen() {
 
   arduboy.clear();
   printText("SETTINGS", 20, 5, 2);
-  printMusicOnOff();
+  printsoundOnOff();
   printText("RESET HIGHSCORE", 20, 37, 1);
   printText("EXIT", 20, 49, 1);
   arduboy.drawRect(17, 22, 35, 13, 1);
@@ -328,8 +333,8 @@ void settingsScreen() {
             break;
 
           case SETTINGS_SOUND:
-            musicOn = !musicOn;
-            printMusicOnOff();
+            soundOn = !soundOn;
+            printsoundOnOff();
             break;
             
           case SETTINGS_RESET_HIGH_SCORE:
@@ -396,8 +401,8 @@ byte settingMenuUpButton(byte selectedItem) {
   }
 }
 
-void printMusicOnOff() {
-  if(musicOn) {
+void printsoundOnOff() {
+  if(soundOn) {
     printText("SOUND  ON ", 20, 25, 1);
     arduboy.drawRect(17, 22, 35, 13, 1);
   } else {
@@ -415,7 +420,7 @@ void playGame() {
   score = 0;
   livesRemaining = MAX_LIVES;
   spaceShip.reset();
-  stopMusic();
+  arduboy.tunes.stopScore();
   boolean spawnedBossOne = false;
   boolean spawnedBossTwo = false;
   
@@ -440,12 +445,13 @@ void playGame() {
 
     if (!isBossAlive) {
       boolean spawnedBoss = false;
-      if ((score >= 5000) && (!spawnedBossOne)) {
-        boss.set((arduboy.width() + 1), 10, 1);
+      byte arduboyWidth = arduboy.width();
+      if ((score >= 500) && (!spawnedBossOne)) {
+        boss.set(arduboyWidth + 1, 10, 1);
         spawnedBossOne = true;
         spawnedBoss = true;
       } else if ((score >= 12000) && (!spawnedBossTwo)) {
-        boss.set((arduboy.width() + 1), 24, 2);
+        boss.set(arduboyWidth + 1, 24, 2);
         spawnedBossTwo = true;
         spawnedBoss = true;
       }
@@ -480,21 +486,24 @@ void playGame() {
     handlePlayerBullets();
     handleEnemyBullets();
     handleBossBullets();
+      
+    if (isBossAlive) {
+       playMusic(3);
+    }
+    else {
+       playMusic(2);
+    }
     
-    // Play stage1 music
-  
-    playMusic(2);
- 
-    if (shouldPlayAButtonTone() && musicOn) {
+    if (shouldPlayAButtonTone() && soundOn) {
       sfx(1);
     }
 
-    if (shouldPlayBButtonTone() && musicOn) {
+    if (shouldPlayBButtonTone() && soundOn) {
       sfx(2);
     }
   }
 
-  stopMusic();
+  arduboy.tunes.stopScore();
 }
 
 void drawGunTemp() {
@@ -704,7 +713,7 @@ void gameOverScreen() {
   playMusic(4);
   
   delay(3000);
-  stopMusic();
+  arduboy.tunes.stopScore();
   delay(2000);
 }
 
