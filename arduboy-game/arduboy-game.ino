@@ -427,7 +427,7 @@ void playGame() {
     if (!isBossAlive) {
       boolean spawnedBoss = false;
       byte arduboyWidth = arduboy.width();
-      if ((score >= 500) && (!spawnedBossOne)) {
+      if ((score >= 5000) && (!spawnedBossOne)) {
         boss.set(arduboyWidth + 1, 10, 1);
         spawnedBossOne = true;
         spawnedBoss = true;
