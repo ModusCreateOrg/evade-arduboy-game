@@ -12,6 +12,7 @@ struct Boss {
   byte height;
   int health;
   byte type;
+  
   Bullet bullets[5];
   // isMovingLeft (0), isMovingDown (1)
   byte direction;

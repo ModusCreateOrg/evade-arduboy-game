@@ -103,6 +103,7 @@ struct Enemy {
 
   void updateDeathSequence() {
     arduboy.drawCircle(x, y, dying, 1);
+    arduboy.tunes.tone(200 + (dying * 4), 10);
     if (dying < 65) {
       dying++;
     } else {

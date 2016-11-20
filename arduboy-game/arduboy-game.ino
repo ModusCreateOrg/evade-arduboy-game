@@ -91,23 +91,6 @@ void playMusic(byte song) {
       }
 }   
 
-// SFX (experimental)
-void sfx(byte tone) {
-  switch(tone) {
-    case 1:
-      arduboy.tunes.tone(820, 10);
-    break;
-    case 2:
-      arduboy.tunes.tone(750, 50);
-    break;
-    case 3:
-      arduboy.tunes.tone(987, 400);
-    break;
-    case 4:
-      arduboy.tunes.tone(800, 50);
-    break;
-  }
-}
 
 void printText(char *message, byte x, byte y, byte textSize) {
   arduboy.setCursor(x, y);
@@ -491,14 +474,7 @@ void playGame() {
     else {
        playMusic(2);
     }
-    
-    if (shouldPlayAButtonTone() && soundOn) {
-      sfx(1);
-    }
 
-    if (shouldPlayBButtonTone() && soundOn) {
-      sfx(2);
-    }
   }
 
   arduboy.tunes.stopScore();
@@ -567,7 +543,7 @@ void drawPlayerShip() {
         // Fire A weapon (single fire) if weapon isn't too hot
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
           if (!playerBullets[i].isVisible()) {
-            playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE, 3, false);
+            playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE, 2.5, false);
             spaceShip.gunTemp += 15;
             break;
           }
@@ -612,6 +588,9 @@ void drawPlayerShip() {
     
   } else {
     arduboy.drawCircle(spaceShip.x, spaceShip.y, spaceShip.dying , 1);
+    
+    int tone = (spaceShip.dying % 2 == 0) ? (400 + spaceShip.dying * 2) : (600 - spaceShip.dying * 2);
+    arduboy.tunes.tone(tone, 10);
     if (spaceShip.dying < 65) {
       spaceShip.dying++;
     } else {
