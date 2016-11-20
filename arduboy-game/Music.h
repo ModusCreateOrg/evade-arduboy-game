@@ -263,3 +263,12 @@ const unsigned char PROGMEM titleMusic [] = {
 0x90,63, 0,100, 0x90,65, 0,100, 0x90,67, 0,100, 0x90,70, 1,144, 0x80, 0xf0};
 // This titleSong contains 18 bytes, and 1 tone generator is used.
 
+
+//
+//PROGMEM char const scores[] = {
+//  titleMusic,
+//  stage1Music,
+//  bossMusic,
+//  gameOverMusic,
+//  mainMusic,
+//};
