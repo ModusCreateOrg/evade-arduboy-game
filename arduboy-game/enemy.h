@@ -13,8 +13,8 @@ struct Enemy {
   byte health;
   byte difficulty;
   byte dying;
-  // isMovingLeft (0), isMovingDown (1)
-  byte direction;
+  // isMovingLeft (0), isMovingDown (1), tookDamage (2)
+  byte options;
   const uint8_t *bitmap;
   Bullet bullet;
 
@@ -24,8 +24,8 @@ struct Enemy {
     dying = 0;
     bullet.hide();
     
-    direction |= random(2) << 0;
-    direction |= random(2) << 1;
+    options |= random(2) << 0;
+    options |= random(2) << 1;
 
     byte typeRando = random(10);
 
@@ -50,8 +50,8 @@ struct Enemy {
     if (bullet.isVisible()) {
       bullet.update();
     }
-    
-    if (isAlive()) {
+
+    if (isAlive() && !(options & (1 << 2))) {
       move();
       draw();
 
@@ -62,6 +62,16 @@ struct Enemy {
       updateDeathSequence();
     } else if (random(700) == 0) {
       spawn();
+    }
+
+    
+    if(options & (1 << 2)) {
+      if (!(arduboy.nextFrame())){
+        return;
+      }
+      if(arduboy.everyXFrames(4)) {
+        options &= ~(1 << 2);
+      }
     }
   }
 
@@ -103,10 +113,10 @@ struct Enemy {
 
   void changeDirection() {
     if (random(30) == 0) {
-      direction ^= 1 << 0;
+      options ^= 1 << 0;
     }
     if (random(10) == 0) {
-      direction ^= 1 << 1;
+      options ^= 1 << 1;
     }
   }
 
@@ -118,6 +128,10 @@ struct Enemy {
     }
   }
 
+  void takeDamage() {
+    options |= 1 << 2;
+  }
+
   boolean isAlive() {
     return ((health > 0) && (dying == 0));
   }
@@ -127,11 +141,11 @@ struct Enemy {
   }
 
   boolean isMovingLeft() {
-    return (direction & (1 << 0));
+    return (options & (1 << 0));
   }
 
   boolean isMovingDown() {
-    return (direction & (1 << 1));
+    return (options & (1 << 1));
   }
 };
 
