@@ -6,12 +6,12 @@
 #define NUM_CREDITS 12
 
 PROGMEM const char credits0[] = "CREDITS";
-PROGMEM const char credits1[] = "Captain: Jay Garcia";
+PROGMEM const char credits1[] = "Capn: Jay Garcia";
 PROGMEM const char credits2[] = "Medic: Simon Prickett";
 PROGMEM const char credits3[] = "Lt: Stan Bershadskiy"; 
-PROGMEM const char credits4[] = "Helmsman: Andrew Owen"; 
+PROGMEM const char credits4[] = "Helm: Andrew Owen"; 
 PROGMEM const char credits5[] = "Hologram: Andy Dennis"; 
-PROGMEM const char credits6[] = "Gunner: Timothy Eagan"; 
+PROGMEM const char credits6[] = "Gunner: Tim Eagan"; 
 PROGMEM const char credits7[] = "Tech: Drew Griffith"; 
 PROGMEM const char credits8[] = "Loadmaster: JD Jones"; 
 PROGMEM const char credits9[] = "Purser: Jon Van Dalen"; 
