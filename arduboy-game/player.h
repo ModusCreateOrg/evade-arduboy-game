@@ -1,8 +1,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Arduboy.h"
-#include "globals.h"
 
 struct Player {
   byte x;

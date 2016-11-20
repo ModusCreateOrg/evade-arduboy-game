@@ -4,8 +4,6 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include "Arduboy.h"
-
 // Define limits that ship movement is bounded by
 #define MIN_SHIP_Y 9
 #define MAX_SHIP_Y 48

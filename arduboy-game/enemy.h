@@ -1,7 +1,6 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "Arduboy.h"
 #include "globals.h"
 #include "bitmaps.h"
 #include "bullet.h"
