@@ -4,7 +4,6 @@
 #ifndef BULLET_H
 #define BULLET_H
 
-#include "Arduboy.h"
 #include "globals.h"
 #include "bitmaps.h"
 #include "bullet.h"

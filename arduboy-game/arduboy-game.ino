@@ -136,25 +136,27 @@ byte titleScreen() {
   playMusic(5);
   
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {
+    unsigned long currentMilliseconds = millis();
+    
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
-      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
         break;
       } else {
-        lastDebounceTime = millis();
+        lastDebounceTime = currentMilliseconds;
       }
     }
 
     if (arduboy.pressed(LEFT_BUTTON)) {
-      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
         selectedItem = titleMenuLeftButton(selectedItem);
-        lastDebounceTime = millis(); //set the current time
+        lastDebounceTime =currentMilliseconds; //set the current time
       }
     }
 
     if (arduboy.pressed(RIGHT_BUTTON)) {
-      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
         selectedItem = titleMenuRightButton(selectedItem);
-        lastDebounceTime = millis(); //set the current time
+        lastDebounceTime = currentMilliseconds; //set the current time
       }
     }
 
@@ -235,10 +237,12 @@ void highScoreScreen() {
 
   arduboy.display();
   while (totalDelay < 4000) {
+    unsigned long currentMilliseconds = millis();
     if (arduboy.pressed(UP_BUTTON) || arduboy.pressed(DOWN_BUTTON) || arduboy.pressed(LEFT_BUTTON) || arduboy.pressed(RIGHT_BUTTON) || arduboy.pressed(A_BUTTON)  || arduboy.pressed(B_BUTTON)) {
-      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+
+      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
         totalDelay = 4000;
-        lastDebounceTime = millis();
+        lastDebounceTime = currentMilliseconds;
       }
     }
     
@@ -300,22 +304,24 @@ void settingsScreen() {
   arduboy.display();
 
   while (!exit_settings_menu) {
+    unsigned long currentMilliseconds = millis();
+
     if (arduboy.pressed(DOWN_BUTTON)) {
-      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
         selectedItem = settingMenuDownButton(selectedItem);
-        lastDebounceTime = millis(); //set the current time
+        lastDebounceTime = currentMilliseconds; //set the current time
       }
     }
 
     if (arduboy.pressed(UP_BUTTON)) {
-      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
         selectedItem = settingMenuUpButton(selectedItem);
-        lastDebounceTime = millis(); //set the current time
+        lastDebounceTime = currentMilliseconds; //set the current time
       }
     }
 
     if (arduboy.pressed(A_BUTTON)) {
-      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
         switch (selectedItem) {
           case SETTINGS_EXIT:
             exit_settings_menu = true;
@@ -333,7 +339,7 @@ void settingsScreen() {
           default: break;
         }
       }
-      lastDebounceTime = millis(); //set the current time
+      lastDebounceTime = currentMilliseconds; //set the current time
     }
   }
 }
@@ -736,8 +742,9 @@ void newHighScoreScreen(byte newHiPos) {
   arduboy.display();
 
   while(! allDone) {
+    unsigned long currentMilliseconds = millis();
     if (arduboy.pressed(A_BUTTON)) {
-      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
         // Advance right or finish entering initials
         if (currPos < 2) {
           currPos++;
@@ -746,36 +753,36 @@ void newHighScoreScreen(byte newHiPos) {
         } else {
           allDone = true;
         }
-        lastDebounceTime = millis();
+        lastDebounceTime = currentMilliseconds;
       }
     }
    
     if (arduboy.pressed(LEFT_BUTTON)) {
-      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
         // Only do something if we are not already on leftmost one
         if (currPos > 0) {
           currPos--;
           drawHighScoreEntryCursor(currPos);
           arduboy.display();
         }
-        lastDebounceTime = millis();
+        lastDebounceTime = currentMilliseconds;
       }    
     }
   
     if (arduboy.pressed(RIGHT_BUTTON)) {
-      if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
         // Only do something if we are not already on rightmost one
         if (currPos < 2) {
           currPos++;
           drawHighScoreEntryCursor(currPos);
           arduboy.display();
         }
-        lastDebounceTime = millis();
+        lastDebounceTime = currentMilliseconds;
       }
     }
 
     if (arduboy.pressed(UP_BUTTON)) {
-       if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+       if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
           if (currInitials[currPos] == 96) {
             currInitials[currPos] = 32;
           } else {
@@ -784,12 +791,12 @@ void newHighScoreScreen(byte newHiPos) {
           sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
           printText(textBuf, 44, 45, 2);
           arduboy.display();
-          lastDebounceTime = millis();
+          lastDebounceTime = currentMilliseconds;
        }
     }
 
     if (arduboy.pressed(DOWN_BUTTON)) {
-       if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+       if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
           if (currInitials[currPos] == 32) {
             currInitials[currPos] = 96;
           } else {
@@ -798,7 +805,7 @@ void newHighScoreScreen(byte newHiPos) {
           sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
           printText(textBuf, 44, 45, 2);
           arduboy.display();
-          lastDebounceTime = millis();
+          lastDebounceTime = currentMilliseconds;
        }     
     }
   }
@@ -870,7 +877,7 @@ boolean shouldPlayBButtonTone() {
 void setup() {
   arduboy.beginNoLogo();
   introScreen();
-  spaceShip.set();
+  spaceShip.reset();
   createStarFieldVals();
 }
 
