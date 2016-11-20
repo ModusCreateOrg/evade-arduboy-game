@@ -633,7 +633,7 @@ void updateEnemies() {
 
 void handleEnemyBullets() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
-    if ((enemies[i].bullet.isVisible()) && (enemies[i].bullet.isHittingObject(spaceShip.x, spaceShip.y, spaceShip.width, spaceShip.height))) {
+    if ((enemies[i].bullet.isVisible()) && (enemies[i].bullet.isHittingObject(spaceShip.x, spaceShip.y, PLAYER_WIDTH, PLAYER_HEIGHT))) {
       // Hit Player
       enemies[i].bullet.hide();
 
@@ -649,7 +649,7 @@ void handleEnemyBullets() {
 void handleBossBullets() {
   if (isBossAlive) {
     for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
-      if ((boss.bullets[i].isVisible()) && (boss.bullets[i].isHittingObject(spaceShip.x, spaceShip.y, spaceShip.width, spaceShip.height))) {
+      if ((boss.bullets[i].isVisible()) && (boss.bullets[i].isHittingObject(spaceShip.x, spaceShip.y, PLAYER_WIDTH, PLAYER_HEIGHT))) {
         // Hit Player
         boss.bullets[i].hide();
   
