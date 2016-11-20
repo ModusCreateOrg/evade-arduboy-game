@@ -1,12 +1,12 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#define PLAYER_WIDTH 16
+#define PLAYER_HEIGHT 16
 
 struct Player {
   byte x;
   byte y;
-  byte width = 16;
-  byte height = 16;
   byte frame;
   byte dying;
   byte gunTemp;
