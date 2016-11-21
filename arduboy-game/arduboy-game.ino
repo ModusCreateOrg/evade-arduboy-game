@@ -447,11 +447,11 @@ void playGame() {
     if (!isBossAlive) {
       boolean spawnedBoss = false;
       
-      if ((score >= 500) && (!spawnedBossOne)) {
+      if ((score >= 10000) && (!spawnedBossOne)) {
         boss.set(129, 10, 1);
         spawnedBossOne = true;
         spawnedBoss = true;
-      } else if ((score >= 12000) && (!spawnedBossTwo)) {
+      } else if ((score >= 20000) && (!spawnedBossTwo)) {
         boss.set(129, 24, 2);
         spawnedBossTwo = true;
         spawnedBoss = true;
