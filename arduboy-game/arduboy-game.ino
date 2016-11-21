@@ -242,10 +242,10 @@ void highScoreScreen() {
 }
 
 void creditsScreen() {
-  scrollCredits(4, false);
+  scrollCredits(4, NUM_CREDITS);
 }
 
-void scrollCredits(byte y, bool quit) {
+void scrollCredits(byte y, short line) {
   /**
      Recursive function for scrolling
      credits up screen
@@ -265,14 +265,11 @@ void scrollCredits(byte y, bool quit) {
     printText(textBuf, 2, y + padding, (i == 0 ? 2 : 1));
     arduboy.display();
     padding = padding + 15;
-    if ( i + 1 == NUM_CREDITS && y + padding < 0) {
-      quit = true;
-    }
   }
   delay(1000);
 
-  if (!quit) {
-    scrollCredits(y - 15, quit);
+  if (line > 0) {
+    scrollCredits(y - 15, line - 1);
   }
 }
 
