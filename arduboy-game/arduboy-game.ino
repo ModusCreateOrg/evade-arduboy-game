@@ -476,13 +476,14 @@ void playGame() {
     }
 
     if(inGameAButtonLastPress > 80 || inGameBButtonLastPress > 60) {
-       for (byte i = 0; i < MAX_ENEMIES; i++) {
+//       for (byte i = 0; i < MAX_ENEMIES; i++) {
+//       playerBullets[i].update(); 
+//       } 
 
-         playerBullets[i].update(); 
-//       playerBullets[1].update(); 
-//       playerBullets[2].update(); 
-//       playerBullets[3].update();
-       } 
+       playerBullets[0].update(); 
+       playerBullets[1].update(); 
+       playerBullets[2].update(); 
+       playerBullets[3].update();
     }
 
     drawStarLayer();
@@ -640,7 +641,7 @@ void updateEnemies() {
 //    enemies[0].update();
 //    enemies[1].update();
 //    enemies[2].update();
-//    enemies[3].update();
+//   enemies[3].update();
 
 }
 
