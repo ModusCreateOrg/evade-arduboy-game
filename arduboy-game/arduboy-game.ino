@@ -462,6 +462,10 @@ void playGame() {
         for (byte i = 0; i < MAX_ENEMIES; i++) {
           enemies[i].health = 0;
         }
+//          enemies[0].health = 0;
+//          enemies[1].health = 0;
+//          enemies[2].health = 0;
+
       }
     }
     
@@ -472,9 +476,10 @@ void playGame() {
     }
 
     if(inGameAButtonLastPress > 80 || inGameBButtonLastPress > 60) {
-      for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
-        playerBullets[i].update();
-      }  
+       playerBullets[0].update(); 
+       playerBullets[1].update(); 
+       playerBullets[2].update(); 
+       playerBullets[3].update(); 
     }
 
     drawStarLayer();
@@ -683,7 +688,8 @@ void handlePlayerBullets() {
         }
       } else {
         for (byte j = 0; j < MAX_ENEMIES; j++) {
-          if ((enemies[j].health > 0) && (playerBullets[i].isHittingObject(enemies[j].x, enemies[j].y, enemies[j].width, enemies[j].height))) {
+          
+          if ((enemies[j].health > 0) && (playerBullets[i].isHittingObject(enemies[j].x, enemies[j].y, 16, 16))) {
             // Hit Enemy
             playerBullets[i].hide();
             score += playerBullets[i].damage;
