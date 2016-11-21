@@ -402,6 +402,7 @@ void playGame() {
   livesRemaining = MAX_LIVES;
   spaceShip.reset();
   arduboy.tunes.stopScore();
+  isBossAlive = false;
   boolean spawnedBossOne = false;
   boolean spawnedBossTwo = false;
   
