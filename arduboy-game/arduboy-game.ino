@@ -630,9 +630,15 @@ void drawPlayerShip() {
 }
 
 void updateEnemies() {
-  for (byte i = 0; i < MAX_ENEMIES; i++) {
-    enemies[i].update();
-  }
+//  for (byte i = 0; i < MAX_ENEMIES; i++) {
+//    enemies[i].update();
+//  }
+
+    enemies[0].update();
+    enemies[1].update();
+    enemies[2].update();
+    enemies[3].update();
+
 }
 
 void handleEnemyBullets() {
