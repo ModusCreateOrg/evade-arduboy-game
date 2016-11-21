@@ -1,8 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#define PLAYER_WIDTH 16
-#define PLAYER_HEIGHT 16
+#define PLAYER_SIZE 16
 
 struct Player {
   byte x;
