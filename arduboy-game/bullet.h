@@ -72,7 +72,7 @@ struct Bullet {
         } else if (!isLaserBeam()) {
           drawBitmap(x, y, enemyBullet, 0);
         } else {
-          arduboy.fillRect(x, y, 50, 2, 1);
+          arduboy.fillRect(x - 44, y, 50, 2, 1);
         }
       
     }
