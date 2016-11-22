@@ -16,6 +16,7 @@ struct Enemy {
   // isMovingLeft (0), isMovingDown (1), tookDamage (2)
   byte options;
   const uint8_t *bitmap;
+  unsigned long damageFrame;
   Bullet bullet;
 
   void set(byte _x, byte _y) {
@@ -65,11 +66,8 @@ struct Enemy {
     }
 
     
-    if(options & (1 << 2)) {
-      if (!(arduboy.nextFrame())){
-        return;
-      }
-      if(arduboy.everyXFrames(4)) {
+    if(inGameFrame > (damageFrame + 4) && options & (1 << 2)) {
+      if(inGameFrame % 4) {
         options &= ~(1 << 2);
       }
     }
@@ -131,6 +129,7 @@ struct Enemy {
 
   void takeDamage() {
     options |= 1 << 2;
+    damageFrame = inGameFrame;
   }
 
   boolean isAlive() {
