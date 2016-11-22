@@ -4,6 +4,15 @@
 
 #include "Arduboy.h"
 #include "globals.h"
+
+bool soundOn = true;     
+void playTone(byte tone, byte duration) {
+  if (soundOn) {
+    arduboy.tunes.tone(200 + tone, duration);
+  }
+}
+
+
 #include "messagecatalog.h"
 #include "player.h"
 #include "bullet.h"
@@ -32,7 +41,6 @@ float starSpeed[NUM_STARS];
 byte starY[NUM_STARS];
 byte starWidth[NUM_STARS];
 
-bool soundOn = true;     
 byte currentSong = 255;
 
 // Bullet array
@@ -57,6 +65,7 @@ Player spaceShip;
 //        arduboy.tunes.stopScore();
 //    }
 //}
+
 
 void playMusic(byte song) {
     if (soundOn && currentSong != song) {
@@ -125,14 +134,20 @@ byte titleScreen() {
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {
     unsigned long currentMilliseconds = millis();
     bool isGreater = (currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY;
-
+//    byte buttonState = arduboy.buttonsState();
+    /*
+     * UP 128
+     * DN 16
+     * LT 32
+     * RT 64
+     * A  8
+     * B  4
+     */
     if (isGreater) {
       if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
         break;
       } 
-//      else {
-//        lastDebounceTime = currentMilliseconds;
-//      }
+
     
       if (arduboy.pressed(LEFT_BUTTON)) {
         selectedItem = titleMenuLeftButton(selectedItem);
@@ -305,7 +320,7 @@ void settingsScreen() {
         lastDebounceTime = currentMilliseconds; //set the current time
       }
   
-      if (arduboy.pressed(A_BUTTON)) {
+      if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
         switch (selectedItem) {
           case SETTINGS_EXIT || SETTINGS_RESET_HIGH_SCORE:
             exit_settings_menu = true;
@@ -322,7 +337,9 @@ void settingsScreen() {
         lastDebounceTime = currentMilliseconds; //set the current time
 
       }
-      
+
+// If we have space, uncomment
+//      delay(15);
     }
      
   }
@@ -352,6 +369,7 @@ byte settingMenuDownButton(byte selectedItem) {
 
     default: break;
   }
+
 }
 
 byte settingMenuUpButton(byte selectedItem) {
@@ -360,35 +378,44 @@ byte settingMenuUpButton(byte selectedItem) {
      to navigate through settings menu
      items.
   */
-  switch (selectedItem) {
-
-    case SETTINGS_EXIT:
+  if (selectedItem == SETTINGS_EXIT) {
       arduboy.drawRect(17, 46, 29, 13, 0);
       arduboy.drawRect(17, 34, 95, 13, 1);
       arduboy.display();
-      return SETTINGS_RESET_HIGH_SCORE;
-      break;
 
-    case SETTINGS_RESET_HIGH_SCORE:
+      return SETTINGS_RESET_HIGH_SCORE;
+  }
+  else if (selectedItem == SETTINGS_RESET_HIGH_SCORE) {
       arduboy.drawRect(17, 34, 95, 13, 0);
       arduboy.drawRect(17, 22, 35, 13, 1);
       arduboy.display();
       return SETTINGS_SOUND;
-      break;
-
-    default: break;
   }
+
+// Somehow going to the above if statement saved 2 bytes.    ¯\_(ツ)_/¯
+//  switch (selectedItem) {
+//
+//    case SETTINGS_EXIT:
+//      arduboy.drawRect(17, 46, 29, 13, 0);
+//      arduboy.drawRect(17, 34, 95, 13, 1);
+//      arduboy.display();
+//      return SETTINGS_RESET_HIGH_SCORE;
+//      break;
+//
+//    case SETTINGS_RESET_HIGH_SCORE:
+//      arduboy.drawRect(17, 34, 95, 13, 0);
+//      arduboy.drawRect(17, 22, 35, 13, 1);
+//      arduboy.display();
+//      return SETTINGS_SOUND;
+//      break;
+//
+//    default: break;
+//  }
 }
 
 void printsoundOnOff() {
-  if(soundOn) {
-    printText("SOUND  ON ", 20, 25, 1);
-    arduboy.drawRect(17, 22, 35, 13, 1);
-  } else {
-    printText("SOUND  OFF", 20, 25, 1);
-    arduboy.drawRect(17, 22, 35, 13, 1);
-  }
-  
+  printText(soundOn ? "SOUND  ON " : "SOUND OFF", 20, 25, 1);
+  arduboy.drawRect(17, 22, 35, 13, 1);
   arduboy.display();
 }
 
@@ -432,13 +459,13 @@ void playGame() {
     }
 
     if (!isBossAlive && !enemiesAlive) {
-      byte arduboyWidth = arduboy.width();
+//      byte arduboyWidth = 129;
       if ((score >= 5000) && (spawnedBoss < 1)) {
-        boss.set(arduboyWidth + 1, 10, 1);
+        boss.set(129, 10, 1);
         spawnedBoss = 1;
         isBossAlive = true;
       } else if ((score >= 12000) && (spawnedBoss < 2)) {
-        boss.set(arduboyWidth + 1, 24, 2);
+        boss.set(129, 24, 2);
         spawnedBoss = 2;
         isBossAlive = true;
       }
@@ -472,12 +499,7 @@ void playGame() {
     handleEnemyBullets();
     handleBossBullets();
       
-    if (isBossAlive) {
-       playMusic(3);
-    }
-    else {
-       playMusic(2);
-    }
+     playMusic(isBossAlive ? 3 : 2);
 
   }
 
@@ -597,8 +619,9 @@ void drawPlayerShip() {
   } else {
     arduboy.drawCircle(spaceShip.x, spaceShip.y, spaceShip.dying , 1);
     
-    int tone = (spaceShip.dying % 2 == 0) ? (400 + spaceShip.dying * 2) : (600 - spaceShip.dying * 2);
-    arduboy.tunes.tone(tone, 10);
+//    int tone = ;
+    playTone((spaceShip.dying % 2 == 0) ? (400 + spaceShip.dying * 2) : (600 - spaceShip.dying * 2), 10);
+//    arduboy.tunes.tone(tone, 10);
     if (spaceShip.dying < 65) {
       spaceShip.dying++;
     } else {
