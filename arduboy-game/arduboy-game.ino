@@ -68,7 +68,12 @@ Player spaceShip;
 
 
 void playMusic(byte song) {
-    if (soundOn && currentSong != song) {
+
+    if (! soundOn) {
+      return;
+    }
+   
+    if (currentSong != song) {
       arduboy.tunes.stopScore();
     }
     
@@ -363,6 +368,7 @@ void settingsScreen() {
 
           case SETTINGS_SOUND:
             soundOn = !soundOn;
+            Serial.println(soundOn, BIN);
             printsoundOnOff();
             break;
 
@@ -380,7 +386,7 @@ void settingsScreen() {
 
 
 // If we have space, uncomment
-//      delay(15);
+      delay(15);
     }
      
   }
