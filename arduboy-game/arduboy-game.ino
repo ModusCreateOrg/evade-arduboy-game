@@ -130,11 +130,10 @@ byte titleScreen() {
       if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
         break;
       } 
-      else {
-        lastDebounceTime = currentMilliseconds;
-      }
+//      else {
+//        lastDebounceTime = currentMilliseconds;
+//      }
     
-
       if (arduboy.pressed(LEFT_BUTTON)) {
         selectedItem = titleMenuLeftButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
