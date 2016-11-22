@@ -169,8 +169,8 @@ byte titleScreen() {
     playMusic(5);
 
   
-    delay(15);
-    totalDelay += 15;
+    delay(20);
+    totalDelay += 20;
 
   }
   arduboy.tunes.stopScore();
