@@ -400,8 +400,7 @@ void playGame() {
   spaceShip.reset();
   arduboy.tunes.stopScore();
   isBossAlive = false;
-  boolean spawnedBossOne = false;
-  boolean spawnedBossTwo = false;
+  byte spawnedBoss = 0;
   
   while (livesRemaining > 0) {
     arduboy.clear();
@@ -429,23 +428,15 @@ void playGame() {
     }
 
     if (!isBossAlive && !enemiesAlive) {
-      boolean spawnedBoss = false;
       byte arduboyWidth = arduboy.width();
-      if ((score >= 5000) && (!spawnedBossOne)) {
+      if ((score >= 5000) && (spawnedBoss < 1)) {
         boss.set(arduboyWidth + 1, 10, 1);
-        spawnedBossOne = true;
-        spawnedBoss = true;
-      } else if ((score >= 12000) && (!spawnedBossTwo)) {
-        boss.set(arduboyWidth + 1, 24, 2);
-        spawnedBossTwo = true;
-        spawnedBoss = true;
-      }
-
-      if (spawnedBoss) {
+        spawnedBoss = 1;
         isBossAlive = true;
-        for (byte i = 0; i < MAX_ENEMIES; i++) {
-          enemies[i].health = 0;
-        }
+      } else if ((score >= 12000) && (spawnedBoss < 2)) {
+        boss.set(arduboyWidth + 1, 24, 2);
+        spawnedBoss = 2;
+        isBossAlive = true;
       }
     }
     
