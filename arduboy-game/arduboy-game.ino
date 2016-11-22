@@ -768,13 +768,8 @@ void gameOverScreen() {
   drawBitmap(0, 8, gameOver, 0);
   arduboy.display();
 
-//  delay(100);
-  // play game over tune
-  playMusic(4);
-  
+  playMusic(4); 
   delay(4500);
-//  arduboy.tunes.stopScore();
-//  delay(2000);
 }
 
 void drawHighScoreEntryCursor(byte pos) {
@@ -799,7 +794,7 @@ void newHighScoreScreen(byte newHiPos) {
   long lastDebounceTime = millis();
   bool allDone = false;
   unsigned short currPos = 0;
-  byte currInitials[] = { 65, 65, 65};
+  byte currInitials[] = {65, 65, 65};
   
   arduboy.clear();
   printText("NEW HI!", 24, 1, 2);
@@ -821,7 +816,6 @@ void newHighScoreScreen(byte newHiPos) {
           if (currPos < 2) {
             currPos++;
             drawHighScoreEntryCursor(currPos);
-//            arduboy.display();
           } 
           else {
             allDone = true;
@@ -834,7 +828,6 @@ void newHighScoreScreen(byte newHiPos) {
         if (currPos > 0) {
           currPos--;
           drawHighScoreEntryCursor(currPos);
-//          arduboy.display();
         }
         lastDebounceTime = currentMilliseconds;
       }    
@@ -844,7 +837,6 @@ void newHighScoreScreen(byte newHiPos) {
         if (currPos < 2) {
           currPos++;
           drawHighScoreEntryCursor(currPos);
-//          arduboy.display();
         }
         lastDebounceTime = currentMilliseconds;
       }
@@ -858,7 +850,6 @@ void newHighScoreScreen(byte newHiPos) {
           
           sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
           printText(textBuf, 44, 45, 2);
-//          arduboy.display();
           lastDebounceTime = currentMilliseconds;
        }
 
@@ -870,7 +861,6 @@ void newHighScoreScreen(byte newHiPos) {
           }
           sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
           printText(textBuf, 44, 45, 2);
-//          arduboy.display();
           lastDebounceTime = currentMilliseconds;
        }    
        arduboy.display();
