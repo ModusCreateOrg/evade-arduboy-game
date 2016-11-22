@@ -505,7 +505,7 @@ void playGame() {
 
     if (!isBossAlive && !enemiesAlive) {
       if ((score >= 5000) && (spawnedBoss < 1)) {
-        boss.set(129, 10, 1);
+        boss.set(129, 28, 1);
         spawnedBoss = 1;
         isBossAlive = true;
       } else if ((score >= 12000) && (spawnedBoss < 2)) {
