@@ -417,12 +417,18 @@ void playGame() {
     }
 
     drawGunTemp();
-
     drawScore();
-
     drawPlayerShip();
 
-    if (!isBossAlive) {
+    boolean enemiesAlive = false;
+    for (byte i = 0; i < MAX_ENEMIES; i++) {
+      if ( enemies[i].isAlive() ) {
+        enemiesAlive = true;
+        break;
+      }
+    }
+
+    if (!isBossAlive && !enemiesAlive) {
       boolean spawnedBoss = false;
       byte arduboyWidth = arduboy.width();
       if ((score >= 5000) && (!spawnedBossOne)) {
