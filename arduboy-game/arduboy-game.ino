@@ -311,7 +311,26 @@ void settingsScreen() {
     if (isGreater) {
       
       if (arduboy.pressed(DOWN_BUTTON)) {
-        selectedItem = settingMenuDownButton(selectedItem);
+//        selectedItem = settingMenuDownButton(selectedItem);
+        switch (selectedItem) {
+      
+          case SETTINGS_SOUND:
+            arduboy.drawRect(17, 22, 35, 13, 0);
+            arduboy.drawRect(17, 34, 95, 13, 1);
+            arduboy.display();
+            selectedItem = SETTINGS_RESET_HIGH_SCORE;
+            break;
+      
+          case SETTINGS_RESET_HIGH_SCORE:
+            arduboy.drawRect(17, 34, 95, 13, 0);
+            arduboy.drawRect(17, 46, 29, 13, 1);
+            arduboy.display();
+            selectedItem = SETTINGS_EXIT;
+            break;
+      
+          default: break;
+        }
+        
         lastDebounceTime = currentMilliseconds; //set the current time
       }
   
@@ -459,7 +478,6 @@ void playGame() {
     }
 
     if (!isBossAlive && !enemiesAlive) {
-//      byte arduboyWidth = 129;
       if ((score >= 5000) && (spawnedBoss < 1)) {
         boss.set(129, 10, 1);
         spawnedBoss = 1;
