@@ -59,7 +59,6 @@ Player spaceShip;
 //}
 
 void playMusic(byte song) {
-//  Serial.println(currentSong);
     if (soundOn && currentSong != song) {
       arduboy.tunes.stopScore();
     }
@@ -91,23 +90,6 @@ void playMusic(byte song) {
       }
 }   
 
-// SFX (experimental)
-void sfx(byte tone) {
-  switch(tone) {
-    case 1:
-      arduboy.tunes.tone(820, 10);
-    break;
-    case 2:
-      arduboy.tunes.tone(750, 50);
-    break;
-    case 3:
-      arduboy.tunes.tone(987, 400);
-    break;
-    case 4:
-      arduboy.tunes.tone(800, 50);
-    break;
-  }
-}
 
 void printText(char *message, byte x, byte y, byte textSize) {
   arduboy.setCursor(x, y);
@@ -422,8 +404,7 @@ void playGame() {
   livesRemaining = MAX_LIVES;
   spaceShip.reset();
   isBossAlive = false;
-  boolean spawnedBossOne = false;
-  boolean spawnedBossTwo = false;
+  byte spawnedBoss = 0;
   
   while (livesRemaining > 0) {
     arduboy.clear();
@@ -432,40 +413,35 @@ void playGame() {
     if (inGameFrame % 20 == 0) {
       score++;
 
-      if (spaceShip.gunTemp > 0) {
-        // Cool off the gun
-        spaceShip.gunTemp--;
+      if (spaceShip.gunCharge < MAX_GUN_CHARGE) {
+        // Charge up the gun
+        spaceShip.gunCharge++;
       }
     }
 
     drawGunTemp();
-
     drawScore();
-
     drawPlayerShip();
 
-    if (!isBossAlive) {
-      boolean spawnedBoss = false;
-      
-      if ((score >= 10000) && (!spawnedBossOne)) {
-        boss.set(129, 10, 1);
-        spawnedBossOne = true;
-        spawnedBoss = true;
-      } else if ((score >= 20000) && (!spawnedBossTwo)) {
-        boss.set(129, 24, 2);
-        spawnedBossTwo = true;
-        spawnedBoss = true;
+
+    boolean enemiesAlive = false;
+    for (byte i = 0; i < MAX_ENEMIES; i++) {
+      if ( enemies[i].isAlive() ) {
+        enemiesAlive = true;
+        break;
       }
+    }
 
-      if (spawnedBoss) {
+    if (!isBossAlive && !enemiesAlive) {
+      byte arduboyWidth = arduboy.width();
+      if ((score >= 5000) && (spawnedBoss < 1)) {
+        boss.set(arduboyWidth + 1, 10, 1);
+        spawnedBoss = 1;
         isBossAlive = true;
-        for (byte i = 0; i < MAX_ENEMIES; i++) {
-          enemies[i].health = 0;
-        }
-//          enemies[0].health = 0;
-//          enemies[1].health = 0;
-//          enemies[2].health = 0;
-
+      } else if ((score >= 12000) && (spawnedBoss < 2)) {
+        boss.set(arduboyWidth + 1, 24, 2);
+        spawnedBoss = 2;
+        isBossAlive = true;
       }
     }
     
@@ -503,14 +479,7 @@ void playGame() {
     else {
        playMusic(2);
     }
-    
-    if (shouldPlayAButtonTone() && soundOn) {
-      sfx(1);
-    }
 
-    if (shouldPlayBButtonTone() && soundOn) {
-      sfx(2);
-    }
   }
 
   arduboy.tunes.stopScore();
@@ -518,7 +487,7 @@ void playGame() {
 
 void drawGunTemp() {
   arduboy.drawRect(40, 1, 40, 5, 1);
-  arduboy.fillRect(40, 1, (spaceShip.gunTemp > 40 ? 40 : spaceShip.gunTemp), 5, 1);
+  arduboy.fillRect(40, 1, (spaceShip.gunCharge >= MAX_GUN_CHARGE ? MAX_GUN_CHARGE : spaceShip.gunCharge), 5, 1);
 }
 
 void drawScore() {
@@ -574,13 +543,17 @@ void drawPlayerShip() {
     }
   
     if (arduboy.pressed(A_BUTTON)) {
-      if ((inGameFrame > 80) && (inGameAButtonLastPress < (inGameFrame - 75)) && (spaceShip.gunTemp < 25)) {
+      if ((inGameFrame > 80) && (inGameAButtonLastPress < (inGameFrame - 75)) && (spaceShip.gunCharge >= GUN_SHOT_COST)) {
         inGameAButtonLastPress = inGameFrame;
         // Fire A weapon (single fire) if weapon isn't too hot
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
           if (!playerBullets[i].isVisible()) {
-            playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE, 3, false);
-            spaceShip.gunTemp += 15;
+            playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE, 2.5, false);
+            if (spaceShip.gunCharge > GUN_SHOT_COST) {
+              spaceShip.gunCharge -= GUN_SHOT_COST;
+            } else {
+              spaceShip.gunCharge = 0;
+            }
             break;
           }
         }
@@ -624,6 +597,9 @@ void drawPlayerShip() {
     
   } else {
     arduboy.drawCircle(spaceShip.x, spaceShip.y, spaceShip.dying , 1);
+    
+    int tone = (spaceShip.dying % 2 == 0) ? (400 + spaceShip.dying * 2) : (600 - spaceShip.dying * 2);
+    arduboy.tunes.tone(tone, 10);
     if (spaceShip.dying < 65) {
       spaceShip.dying++;
     } else {
