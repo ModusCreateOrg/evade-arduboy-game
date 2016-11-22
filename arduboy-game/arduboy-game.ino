@@ -317,14 +317,13 @@ void settingsScreen() {
           case SETTINGS_SOUND:
             arduboy.drawRect(17, 22, 35, 13, 0);
             arduboy.drawRect(17, 34, 95, 13, 1);
-            arduboy.display();
+
             selectedItem = SETTINGS_RESET_HIGH_SCORE;
             break;
-      
           case SETTINGS_RESET_HIGH_SCORE:
             arduboy.drawRect(17, 34, 95, 13, 0);
             arduboy.drawRect(17, 46, 29, 13, 1);
-            arduboy.display();
+            
             selectedItem = SETTINGS_EXIT;
             break;
       
@@ -335,19 +334,41 @@ void settingsScreen() {
       }
   
       if (arduboy.pressed(UP_BUTTON)) {
-        selectedItem = settingMenuUpButton(selectedItem);
+//        selectedItem = settingMenuUpButton(selectedItem);
+
+        if (selectedItem == SETTINGS_EXIT) {
+          arduboy.drawRect(17, 46, 29, 13, 0);
+          arduboy.drawRect(17, 34, 95, 13, 1);
+  
+          selectedItem =  SETTINGS_RESET_HIGH_SCORE;
+        }
+        else if (selectedItem == SETTINGS_RESET_HIGH_SCORE) {
+          arduboy.drawRect(17, 34, 95, 13, 0);
+          arduboy.drawRect(17, 22, 35, 13, 1);
+          
+          selectedItem =  SETTINGS_SOUND;
+        }
+
         lastDebounceTime = currentMilliseconds; //set the current time
       }
+
+      arduboy.display();
+
   
       if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
         switch (selectedItem) {
-          case SETTINGS_EXIT || SETTINGS_RESET_HIGH_SCORE:
+          case SETTINGS_EXIT:
             exit_settings_menu = true;
             break;
 
           case SETTINGS_SOUND:
             soundOn = !soundOn;
             printsoundOnOff();
+            break;
+
+          case SETTINGS_RESET_HIGH_SCORE: 
+            // TODO: Reset high score
+            exit_settings_menu = true;
             break;
         
           default: break;
@@ -357,6 +378,7 @@ void settingsScreen() {
 
       }
 
+
 // If we have space, uncomment
 //      delay(15);
     }
@@ -364,58 +386,16 @@ void settingsScreen() {
   }
 }
 
-byte settingMenuDownButton(byte selectedItem) {
-  /**
-     Handle clicks on the down button
-     to navigate through settings menu
-     items.
-  */
-  switch (selectedItem) {
-
-    case SETTINGS_SOUND:
-      arduboy.drawRect(17, 22, 35, 13, 0);
-      arduboy.drawRect(17, 34, 95, 13, 1);
-      arduboy.display();
-      return SETTINGS_RESET_HIGH_SCORE;
-      break;
-
-    case SETTINGS_RESET_HIGH_SCORE:
-      arduboy.drawRect(17, 34, 95, 13, 0);
-      arduboy.drawRect(17, 46, 29, 13, 1);
-      arduboy.display();
-      return SETTINGS_EXIT;
-      break;
-
-    default: break;
-  }
-
-}
-
-byte settingMenuUpButton(byte selectedItem) {
-  /**
-     Handle clicks on the up button
-     to navigate through settings menu
-     items.
-  */
-  if (selectedItem == SETTINGS_EXIT) {
-      arduboy.drawRect(17, 46, 29, 13, 0);
-      arduboy.drawRect(17, 34, 95, 13, 1);
-      arduboy.display();
-
-      return SETTINGS_RESET_HIGH_SCORE;
-  }
-  else if (selectedItem == SETTINGS_RESET_HIGH_SCORE) {
-      arduboy.drawRect(17, 34, 95, 13, 0);
-      arduboy.drawRect(17, 22, 35, 13, 1);
-      arduboy.display();
-      return SETTINGS_SOUND;
-  }
-
-// Somehow going to the above if statement saved 2 bytes.    ¯\_(ツ)_/¯
+//byte settingMenuDownButton(byte selectedItem) {
+//  /**
+//     Handle clicks on the down button
+//     to navigate through settings menu
+//     items.
+//  */
 //  switch (selectedItem) {
 //
-//    case SETTINGS_EXIT:
-//      arduboy.drawRect(17, 46, 29, 13, 0);
+//    case SETTINGS_SOUND:
+//      arduboy.drawRect(17, 22, 35, 13, 0);
 //      arduboy.drawRect(17, 34, 95, 13, 1);
 //      arduboy.display();
 //      return SETTINGS_RESET_HIGH_SCORE;
@@ -423,14 +403,56 @@ byte settingMenuUpButton(byte selectedItem) {
 //
 //    case SETTINGS_RESET_HIGH_SCORE:
 //      arduboy.drawRect(17, 34, 95, 13, 0);
-//      arduboy.drawRect(17, 22, 35, 13, 1);
+//      arduboy.drawRect(17, 46, 29, 13, 1);
 //      arduboy.display();
-//      return SETTINGS_SOUND;
+//      return SETTINGS_EXIT;
 //      break;
 //
 //    default: break;
 //  }
-}
+//
+//}
+
+//byte settingMenuUpButton(byte selectedItem) {
+//  /**
+//     Handle clicks on the up button
+//     to navigate through settings menu
+//     items.
+//  */
+//  if (selectedItem == SETTINGS_EXIT) {
+//      arduboy.drawRect(17, 46, 29, 13, 0);
+//      arduboy.drawRect(17, 34, 95, 13, 1);
+//      arduboy.display();
+//
+//      return SETTINGS_RESET_HIGH_SCORE;
+//  }
+//  else if (selectedItem == SETTINGS_RESET_HIGH_SCORE) {
+//      arduboy.drawRect(17, 34, 95, 13, 0);
+//      arduboy.drawRect(17, 22, 35, 13, 1);
+//      arduboy.display();
+//      return SETTINGS_SOUND;
+//  }
+//
+//// Somehow going to the above if statement saved 2 bytes.    ¯\_(ツ)_/¯
+////  switch (selectedItem) {
+////
+////    case SETTINGS_EXIT:
+////      arduboy.drawRect(17, 46, 29, 13, 0);
+////      arduboy.drawRect(17, 34, 95, 13, 1);
+////      arduboy.display();
+////      return SETTINGS_RESET_HIGH_SCORE;
+////      break;
+////
+////    case SETTINGS_RESET_HIGH_SCORE:
+////      arduboy.drawRect(17, 34, 95, 13, 0);
+////      arduboy.drawRect(17, 22, 35, 13, 1);
+////      arduboy.display();
+////      return SETTINGS_SOUND;
+////      break;
+////
+////    default: break;
+////  }
+//}
 
 void printsoundOnOff() {
   printText(soundOn ? "SOUND  ON " : "SOUND OFF", 20, 25, 1);
