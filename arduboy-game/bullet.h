@@ -65,9 +65,9 @@ struct Bullet {
   
         if (isMovingRight()) {
           const bool isBulletA = (damage == A_BULLET_DAMAGE);
-          const int tone = isBulletA ? 600 - (x + 2) : 900 - (x + 3);
-          
-          arduboy.tunes.tone(tone - x, 10);
+//          const int tone = ;
+          playTone(isBulletA ? 600 - (x + 2) : 900 - (x + 3) - x, 10);
+//          arduboy.tunes.tone(tone - x, 10);
           drawBitmap(x, y, (isBulletA ? playerBulletA : playerBulletB), 0);
         } else if (!isLaserBeam()) {
           drawBitmap(x, y, enemyBullet, 0);
