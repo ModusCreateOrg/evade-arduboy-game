@@ -787,7 +787,7 @@ byte isNewHighScore() {
   char hiScore[7];
   hiScore[6] = '\0';
   for (byte i = 0; i < 4; i++) {
-    strncpy(hiScore, highScoreTable + (((9 * i) + 3) * sizeof(char)), 6);
+    strncpy(hiScore, highScoreTable + ((9 * i) + 3), 6);
     if (score > strtol(hiScore, NULL, 10)) {
        return i;
     }
@@ -890,7 +890,7 @@ void newHighScoreScreen(byte newHiPos) {
 
   // then copy new result into correct place
   for (currPos = 0; currPos < 9; currPos++) {
-    highScoreTable[currPos + ((9 * newHiPos) * sizeof(char))] = textBuf[currPos];
+    highScoreTable[currPos + (9 * newHiPos)] = textBuf[currPos];
   }
 }
 
