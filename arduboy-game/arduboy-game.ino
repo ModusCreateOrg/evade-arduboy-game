@@ -917,7 +917,7 @@ void updateStarFieldVals() {
       starX[i] = 128 + random(20);
       starY[i] = random(10, 64);
       
-    } 
+    }   
     else {
       starX[i] -= starSpeed[i];
     }

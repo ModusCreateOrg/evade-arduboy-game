@@ -184,10 +184,19 @@ const unsigned char PROGMEM mainMusic [] = {
 0x80, 0,187, 0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 0xf0};
 // This mainMusic contains 69 bytes, and 1 tone generator is used.
 
+//const unsigned char PROGMEM gameOverMusic [] = {
+//// Transport
+//0x90,70, 1,144, 0x90,65, 1,144, 0x90,68, 1,144, 0x90,67, 1,144, 0x90,60, 6,64, 0x80, 0xf0};
+//// This gameOver contains 22 bytes, and 1 tone generator is used.
+
+
+// Playtune bytestream for file "gameOver-deeper.mid.mid" created by MIDITONES V1.14 on Tue Nov 22 16:11:12 2016
+// command line: miditones gameOver-deeper.mid 
 const unsigned char PROGMEM gameOverMusic [] = {
 // Transport
-0x90,70, 1,144, 0x90,65, 1,144, 0x90,68, 1,144, 0x90,67, 1,144, 0x90,60, 6,64, 0x80, 0xf0};
-// This gameOver contains 22 bytes, and 1 tone generator is used.
+0x90,41, 0,200, 0x90,44, 2,88, 0x90,49, 0,200, 0x90,48, 3,232, 0x80, 0xf0};
+// This gameOverMusic contains 18 bytes, and 1 tone generator is used.
+
 
 // Playtune bytestream for file "title.mid.mid" created by MIDITONES V1.14 on Sun Nov 13 11:01:26 2016
 // command line: miditones title.mid 
