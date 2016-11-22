@@ -30,6 +30,24 @@ In addition to the above you also need to select the *Board* as Arduboy (explain
 The *Tick* icon can be used to verify the code prior to uploading. The *Arrow* button uploads the sketch to
 the device.  
 
+## Troubleshooting
+
+If the Arduboy doesn't upload your sketch, try the following procedure:
+
+* Turn off device. 
+* Press upload, on ide.  
+* Then hold reset. 
+* While holding reset press power, then let go of reset.  It will work.
+
+Alternatively:
+
+* Press and -hold- reset button (paperclip)
+* Hit upload
+* Wait for the “Sketch uses xxx bytes” message 
+* Count to 4
+* Release reset button
+
+Further information on how to unbrick it [here](http://community.arduboy.com/t/how-to-reset-arduboy-if-its-bricked/807).
 
 ## Resources
 
