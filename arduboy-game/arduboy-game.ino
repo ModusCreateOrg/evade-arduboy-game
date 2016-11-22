@@ -79,7 +79,7 @@ void playMusic(byte song) {
     unsigned char *music;
     switch(song) {
       case 1 :
-         music = titleMusic;
+         music = introMusic;
       break;
       case 2 :
 //          music = stage1MusicSingleTrack; // IF WE RUN OUT OF SPACE
@@ -93,7 +93,7 @@ void playMusic(byte song) {
         music = gameOverMusic;
       break;
       case 5 : 
-        music = mainMusic;
+        music = titleMusic;
       break;
     }
     currentSong = song;

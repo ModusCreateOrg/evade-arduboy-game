@@ -177,12 +177,12 @@ const unsigned char PROGMEM bossMusicSingleTrack[] = {
 
 // Playtune bytestream for file "main.mid.mid" created by MIDITONES V1.14 on Wed Nov 16 14:35:18 2016
 // command line: miditones main.mid 
-const unsigned char PROGMEM mainMusic [] = {
+const unsigned char PROGMEM titleMusic [] = {
 // Transport
 0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 1,244, 0x90,46, 0,125, 0x80, 0,187, 0x90,48, 0,62, 0x80, 
 0,62, 0x90,48, 0,62, 0x80, 3,44, 0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 1,244, 0x90,36, 0,125, 
 0x80, 0,187, 0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 0xf0};
-// This mainMusic contains 69 bytes, and 1 tone generator is used.
+// This titleMusic contains 69 bytes, and 1 tone generator is used.
 
 //const unsigned char PROGMEM gameOverMusic [] = {
 //// Transport
@@ -200,7 +200,7 @@ const unsigned char PROGMEM gameOverMusic [] = {
 
 // Playtune bytestream for file "title.mid.mid" created by MIDITONES V1.14 on Sun Nov 13 11:01:26 2016
 // command line: miditones title.mid 
-const unsigned char PROGMEM titleMusic [] = {
+const unsigned char PROGMEM introMusic [] = {
 // Transport
 0x90,63, 0,100, 0x90,65, 0,100, 0x90,67, 0,100, 0x90,70, 1,144, 0x80, 0xf0};
 // This titleSong contains 18 bytes, and 1 tone generator is used.
@@ -208,9 +208,9 @@ const unsigned char PROGMEM titleMusic [] = {
 
 //
 //PROGMEM char const scores[] = {
-//  titleMusic,
+//  introMusic,
 //  stage1Music,
 //  bossMusic,
 //  gameOverMusic,
-//  mainMusic,
+//  titleMusic,
 //};
