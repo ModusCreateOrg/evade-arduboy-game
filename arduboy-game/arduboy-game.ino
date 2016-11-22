@@ -410,9 +410,9 @@ void playGame() {
     if (inGameFrame % 20 == 0) {
       score++;
 
-      if (spaceShip.gunTemp > 0) {
-        // Cool off the gun
-        spaceShip.gunTemp--;
+      if (spaceShip.gunCharge < MAX_GUN_CHARGE) {
+        // Charge up the gun
+        spaceShip.gunCharge++;
       }
     }
 
@@ -480,7 +480,7 @@ void playGame() {
 
 void drawGunTemp() {
   arduboy.drawRect(40, 1, 40, 5, 1);
-  arduboy.fillRect(40, 1, (spaceShip.gunTemp > 40 ? 40 : spaceShip.gunTemp), 5, 1);
+  arduboy.fillRect(40, 1, (spaceShip.gunCharge >= MAX_GUN_CHARGE ? MAX_GUN_CHARGE : spaceShip.gunCharge), 5, 1);
 }
 
 void drawScore() {
@@ -536,13 +536,17 @@ void drawPlayerShip() {
     }
   
     if (arduboy.pressed(A_BUTTON)) {
-      if ((inGameFrame > 80) && (inGameAButtonLastPress < (inGameFrame - 75)) && (spaceShip.gunTemp < 25)) {
+      if ((inGameFrame > 80) && (inGameAButtonLastPress < (inGameFrame - 75)) && (spaceShip.gunCharge >= 25)) {
         inGameAButtonLastPress = inGameFrame;
         // Fire A weapon (single fire) if weapon isn't too hot
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
           if (!playerBullets[i].isVisible()) {
             playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE, 2.5, false);
-            spaceShip.gunTemp += 15;
+            if (spaceShip.gunCharge > 15) {
+              spaceShip.gunCharge -= 15;
+            } else {
+              spaceShip.gunCharge = 0;
+            }
             break;
           }
         }
