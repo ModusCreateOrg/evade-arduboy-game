@@ -17,6 +17,7 @@ struct Boss {
   // isMovingLeft (0), isMovingDown (1)
   byte direction;
   const uint8_t *bitmap;
+  int animFrame;
 
   void set(int _x, int _y, int _type) {
     x = _x;
@@ -75,7 +76,7 @@ struct Boss {
       }
     } else {
       if (x > 110) {
-        if (inGameFrame % 5 == 0) {
+        if (inGameFrame % 3 == 0) {
           x--;
         }
       } else {
@@ -95,7 +96,18 @@ struct Boss {
   }
 
   void draw() {
-    drawBitmap(x, y, bitmap, 0);
+    if(type == 1) {
+      drawBitmap(x, y, bitmap, 0);  
+    } else {
+      if(inGameFrame % 13 == 0) {
+        animFrame++;
+      }
+      drawBitmap(x, y, bitmap, animFrame);
+      if(animFrame > 2) {
+        animFrame = 0;
+      }
+    }
+    
   }
 
   void fire(byte bulletIndex) {
