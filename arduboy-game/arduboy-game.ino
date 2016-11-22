@@ -133,8 +133,9 @@ byte titleScreen() {
   arduboy.display();
 
   playMusic(5);
-  
+
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {
+
     unsigned long currentMilliseconds = millis();
     bool isGreater = (currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY;
 //    byte buttonState = arduboy.buttonsState();
@@ -147,6 +148,7 @@ byte titleScreen() {
      * B  4
      */
     if (isGreater) {
+
       if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
         break;
       } 
@@ -164,11 +166,14 @@ byte titleScreen() {
       }
     }
   
-  
+    playMusic(5);
+
   
     delay(15);
     totalDelay += 15;
+
   }
+  arduboy.tunes.stopScore();
 
   
   return (totalDelay >= ATTRACT_MODE_TIMEOUT ? TITLE_TIMEOUT : selectedItem);
