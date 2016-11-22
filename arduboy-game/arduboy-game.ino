@@ -68,7 +68,6 @@ Player spaceShip;
 
 
 void playMusic(byte song) {
-
     if (! soundOn) {
       return;
     }
@@ -78,30 +77,29 @@ void playMusic(byte song) {
     }
     
     unsigned char *music;
-      switch(song) {
-        case 1 :
-           music = titleMusic;
-        break;
-        case 2 :
+    switch(song) {
+      case 1 :
+         music = titleMusic;
+      break;
+      case 2 :
 //          music = stage1MusicSingleTrack; // IF WE RUN OUT OF SPACE
-          music = stage1MusicDoubleTrack;
-        break;
-        case 3 :
+        music = stage1MusicDoubleTrack;
+      break;
+      case 3 :
 //          music = bossMusicSingleTrack; // IF WE RUN OUT OF SPACE
-           music = bossMusicDoubleTrack;
-        break;
-        case 4 :
-          music = gameOverMusic;
-        break;
-        case 5 : 
-          music = mainMusic;
-        break;
-      }
-
-      currentSong = song;
-      if (! arduboy.tunes.playing()) {
-        arduboy.tunes.playScore(music);
-      }
+         music = bossMusicDoubleTrack;
+      break;
+      case 4 :
+        music = gameOverMusic;
+      break;
+      case 5 : 
+        music = mainMusic;
+      break;
+    }
+    currentSong = song;
+    if (! arduboy.tunes.playing()) {
+      arduboy.tunes.playScore(music);
+    }
 }   
 
 
@@ -668,6 +666,7 @@ void drawPlayerShip() {
 //    int tone = ;
     playTone((spaceShip.dying % 2 == 0) ? (400 + spaceShip.dying * 2) : (600 - spaceShip.dying * 2), 10);
 //    arduboy.tunes.tone(tone, 10);
+
     if (spaceShip.dying < 65) {
       spaceShip.dying++;
     } else {
@@ -764,18 +763,18 @@ void handlePlayerBullets() {
 }
 
 void gameOverScreen() {
+  arduboy.tunes.stopScore();
   arduboy.clear();
   drawBitmap(0, 8, gameOver, 0);
   arduboy.display();
 
-  delay(100);
+//  delay(100);
   // play game over tune
-
   playMusic(4);
   
-  delay(3000);
-  arduboy.tunes.stopScore();
-  delay(2000);
+  delay(4500);
+//  arduboy.tunes.stopScore();
+//  delay(2000);
 }
 
 void drawHighScoreEntryCursor(byte pos) {
