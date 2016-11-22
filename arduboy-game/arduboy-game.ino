@@ -536,14 +536,14 @@ void drawPlayerShip() {
     }
   
     if (arduboy.pressed(A_BUTTON)) {
-      if ((inGameFrame > 80) && (inGameAButtonLastPress < (inGameFrame - 75)) && (spaceShip.gunCharge >= 25)) {
+      if ((inGameFrame > 80) && (inGameAButtonLastPress < (inGameFrame - 75)) && (spaceShip.gunCharge >= GUN_SHOT_COST)) {
         inGameAButtonLastPress = inGameFrame;
         // Fire A weapon (single fire) if weapon isn't too hot
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
           if (!playerBullets[i].isVisible()) {
             playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE, 2.5, false);
-            if (spaceShip.gunCharge > 15) {
-              spaceShip.gunCharge -= 15;
+            if (spaceShip.gunCharge > GUN_SHOT_COST) {
+              spaceShip.gunCharge -= GUN_SHOT_COST;
             } else {
               spaceShip.gunCharge = 0;
             }

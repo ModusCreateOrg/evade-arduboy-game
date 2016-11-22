@@ -4,6 +4,7 @@
 #define PLAYER_WIDTH 16
 #define PLAYER_HEIGHT 16
 #define MAX_GUN_CHARGE 40
+#define GUN_SHOT_COST 25
 
 struct Player {
   byte x;
