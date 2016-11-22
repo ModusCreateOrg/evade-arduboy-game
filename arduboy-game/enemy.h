@@ -46,7 +46,7 @@ struct Enemy {
     draw();
   }
 
-  void update() {
+  void update(boolean stopSpawningEnemies) {
     if (bullet.isVisible()) {
       bullet.update();
     }
@@ -60,7 +60,7 @@ struct Enemy {
       }
     } else if (isDying()) {
       updateDeathSequence();
-    } else if (random(700) == 0) {
+    } else if ((!stopSpawningEnemies) && (random(700) == 0)) {
       spawn();
     }
 

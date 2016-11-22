@@ -478,6 +478,8 @@ void playGame() {
   byte spawnedBoss = 0;
   
   while (livesRemaining > 0) {
+    boolean stopSpawningEnemies = false;
+    
     arduboy.clear();
     inGameFrame++;
 
@@ -503,22 +505,30 @@ void playGame() {
       }
     }
 
-    if (!isBossAlive && !enemiesAlive) {
+    if (!isBossAlive) {
       if ((score >= 5000) && (spawnedBoss < 1)) {
-        boss.set(129, 28, 1);
-        spawnedBoss = 1;
-        isBossAlive = true;
+        if (!enemiesAlive) {
+          boss.set(129, 28, 1);
+          spawnedBoss = 1;
+          isBossAlive = true;
+        } else {
+          stopSpawningEnemies = true;
+        }
       } else if ((score >= 12000) && (spawnedBoss < 2)) {
-        boss.set(129, 24, 2);
-        spawnedBoss = 2;
-        isBossAlive = true;
+        if (!enemiesAlive) {
+          boss.set(129, 24, 2);
+          spawnedBoss = 2;
+          isBossAlive = true;
+        } else {
+          stopSpawningEnemies = true;
+        }
       }
     }
     
     if (isBossAlive) {
       boss.update();
     } else {
-      updateEnemies();
+      updateEnemies(stopSpawningEnemies);
     }
 
     if(inGameAButtonLastPress > 80 || inGameBButtonLastPress > 60) {
@@ -676,9 +686,9 @@ void drawPlayerShip() {
   }
 }
 
-void updateEnemies() {
+void updateEnemies(boolean stopSpawningEnemies) {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
-    enemies[i].update();
+    enemies[i].update(stopSpawningEnemies);
   }
 //
 //    enemies[0].update();
