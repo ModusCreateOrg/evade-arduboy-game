@@ -19,7 +19,7 @@ struct Bullet {
     float speedX;
     // Visibility (0), Direction (1), Laser Beam (2)
     byte options;
-
+    
     void set(byte _x, byte _y, boolean firedByPlayer, byte _damage, float _speedX, boolean isLaserBeam) {
       x = _x;
       y = _y;
@@ -38,43 +38,48 @@ struct Bullet {
     }
 
     void update() {
-      move();
-      draw();
-    }
-
-    void move() {
       if (isVisible()) {
-        if (isMovingRight()) {
-          x += speedX;
-          if (x > arduboy.width()) {
-            hide();
-          }
-        } else {
-          x -= speedX;
-          if ((!isLaserBeam()) && (x <= 0)) {
-            hide();
-          } else if ((isLaserBeam()) && (x <= -50)) {
-            hide();
-          }
-        }
+        move();
+        draw();
       }
     }
 
+    void move() {
+      if (isMovingRight()) {
+        x += speedX;
+        if (x > 128) {
+          hide();
+        }
+      } else {
+        x -= speedX;
+        if ((!isLaserBeam()) && (x <= 0)) {
+          hide();
+        } else if ((isLaserBeam()) && (x <= -50)) {
+          hide();
+        }
+      }
+    
+    }
+
     void draw() {
-      if (isVisible()) {
+  
         if (isMovingRight()) {
-          drawBitmap(x, y, (damage == A_BULLET_DAMAGE ? playerBulletA : playerBulletB), 0);
+          const bool isBulletA = (damage == A_BULLET_DAMAGE);
+          const int tone = isBulletA ? 600 - (x + 2) : 900 - (x + 3);
+          
+          arduboy.tunes.tone(tone - x, 10);
+          drawBitmap(x, y, (isBulletA ? playerBulletA : playerBulletB), 0);
         } else if (!isLaserBeam()) {
           drawBitmap(x, y, enemyBullet, 0);
         } else {
           arduboy.fillRect(x, y, 50, 2, 1);
         }
-      }
+      
     }
 
     boolean isHittingObject(byte objectX, byte objectY, byte objectWidth, byte objectHeight) {
       if ((isVisible()) &&
-        (((isLaserBeam()) && (x >= (objectX - 50))) || ((!isLaserBeam()) && (x >= objectX))) &&
+        ((isLaserBeam() && (x >= (objectX - 50))) || (! isLaserBeam() && (x >= objectX))) &&
         (x <= (objectX + objectWidth)) &&
         (y >= objectY) &&
         (y <= (objectY + objectHeight))) {
