@@ -8,8 +8,7 @@
 struct Enemy {
   byte x;
   byte y;
-  byte width = 16;
-  byte height = 16;
+  byte size = 16;
   byte health;
   byte difficulty;
   byte dying;
@@ -123,7 +122,7 @@ struct Enemy {
     if ((dying == 0) &&
       (!bullet.isVisible()) &&
       (random(1000 / difficulty) == 0)) {
-      bullet.set(x, (y + (height / 2) - 1), false, 1, .7, false);
+      bullet.set(x, (y + (size / 2) - 1), false, 1, .7, false);
     }
   }
 

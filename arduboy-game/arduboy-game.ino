@@ -59,7 +59,6 @@ Player spaceShip;
 //}
 
 void playMusic(byte song) {
-//  Serial.println(currentSong);
     if (soundOn && currentSong != song) {
       arduboy.tunes.stopScore();
     }
@@ -125,32 +124,35 @@ byte titleScreen() {
   
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {
     unsigned long currentMilliseconds = millis();
-    
-    if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
-      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
+    bool isGreater = (currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY;
+
+    if (isGreater) {
+      if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
         break;
-      } else {
-        lastDebounceTime = currentMilliseconds;
-      }
-    }
-
-    if (arduboy.pressed(LEFT_BUTTON)) {
-      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
+      } 
+//      else {
+//        lastDebounceTime = currentMilliseconds;
+//      }
+    
+      if (arduboy.pressed(LEFT_BUTTON)) {
         selectedItem = titleMenuLeftButton(selectedItem);
-        lastDebounceTime =currentMilliseconds; //set the current time
+        lastDebounceTime = currentMilliseconds; //set the current time
       }
-    }
+    
 
-    if (arduboy.pressed(RIGHT_BUTTON)) {
-      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if (arduboy.pressed(RIGHT_BUTTON)) {
         selectedItem = titleMenuRightButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
       }
     }
-
+  
+  
+  
     delay(15);
     totalDelay += 15;
   }
+
+  
   return (totalDelay >= ATTRACT_MODE_TIMEOUT ? TITLE_TIMEOUT : selectedItem);
 }
 
@@ -226,7 +228,8 @@ void highScoreScreen() {
   arduboy.display();
   while (totalDelay < 4000) {
     unsigned long currentMilliseconds = millis();
-    if (arduboy.pressed(UP_BUTTON) || arduboy.pressed(DOWN_BUTTON) || arduboy.pressed(LEFT_BUTTON) || arduboy.pressed(RIGHT_BUTTON) || arduboy.pressed(A_BUTTON)  || arduboy.pressed(B_BUTTON)) {
+    
+    if (arduboy.buttonsState() > 0) {
 
       if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
         totalDelay = 4000;
@@ -254,7 +257,7 @@ void scrollCredits(byte y, short line) {
   byte origY = y;
   arduboy.clear();
   
-  for (unsigned short i = 0; i < NUM_CREDITS; i++) {
+  for (byte i = 0; i < NUM_CREDITS; i++) {
     if (i == 0) {
       y = y - 4;
     } else {
@@ -288,25 +291,23 @@ void settingsScreen() {
 
   while (!exit_settings_menu) {
     unsigned long currentMilliseconds = millis();
-
-    if (arduboy.pressed(DOWN_BUTTON)) {
-      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
+    bool isGreater = (currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY;
+    
+    if (isGreater) {
+      
+      if (arduboy.pressed(DOWN_BUTTON)) {
         selectedItem = settingMenuDownButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
       }
-    }
-
-    if (arduboy.pressed(UP_BUTTON)) {
-      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
+  
+      if (arduboy.pressed(UP_BUTTON)) {
         selectedItem = settingMenuUpButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
       }
-    }
-
-    if (arduboy.pressed(A_BUTTON)) {
-      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
+  
+      if (arduboy.pressed(A_BUTTON)) {
         switch (selectedItem) {
-          case SETTINGS_EXIT:
+          case SETTINGS_EXIT || SETTINGS_RESET_HIGH_SCORE:
             exit_settings_menu = true;
             break;
 
@@ -314,16 +315,16 @@ void settingsScreen() {
             soundOn = !soundOn;
             printsoundOnOff();
             break;
-            
-          case SETTINGS_RESET_HIGH_SCORE:
-            exit_settings_menu = true;
-            break;
-
+        
           default: break;
-        }
+        }  
+        
+        lastDebounceTime = currentMilliseconds; //set the current time
+
       }
-      lastDebounceTime = currentMilliseconds; //set the current time
+      
     }
+     
   }
 }
 
@@ -387,10 +388,13 @@ void printsoundOnOff() {
     printText("SOUND  OFF", 20, 25, 1);
     arduboy.drawRect(17, 22, 35, 13, 1);
   }
+  
   arduboy.display();
 }
 
 void playGame() {
+  arduboy.tunes.stopScore();
+
   inGameFrame = 0;
   inGameAButtonLastPress = 0;
   inGameBButtonLastPress = 0;
@@ -398,7 +402,6 @@ void playGame() {
   score = 0;
   livesRemaining = MAX_LIVES;
   spaceShip.reset();
-  arduboy.tunes.stopScore();
   isBossAlive = false;
   byte spawnedBoss = 0;
   
@@ -418,6 +421,7 @@ void playGame() {
     drawGunTemp();
     drawScore();
     drawPlayerShip();
+
 
     boolean enemiesAlive = false;
     for (byte i = 0; i < MAX_ENEMIES; i++) {
@@ -447,9 +451,14 @@ void playGame() {
     }
 
     if(inGameAButtonLastPress > 80 || inGameBButtonLastPress > 60) {
-      for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
-        playerBullets[i].update();
-      }  
+//       for (byte i = 0; i < MAX_ENEMIES; i++) {
+//       playerBullets[i].update(); 
+//       } 
+
+       playerBullets[0].update(); 
+       playerBullets[1].update(); 
+       playerBullets[2].update(); 
+       playerBullets[3].update();
     }
 
     drawStarLayer();
@@ -603,11 +612,17 @@ void updateEnemies() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
     enemies[i].update();
   }
+//
+//    enemies[0].update();
+//    enemies[1].update();
+//    enemies[2].update();
+//   enemies[3].update();
+
 }
 
 void handleEnemyBullets() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
-    if ((enemies[i].bullet.isVisible()) && (enemies[i].bullet.isHittingObject(spaceShip.x, spaceShip.y, PLAYER_WIDTH, PLAYER_HEIGHT))) {
+    if ((enemies[i].bullet.isVisible()) && (enemies[i].bullet.isHittingObject(spaceShip.x, spaceShip.y, PLAYER_SIZE, PLAYER_SIZE))) {
       // Hit Player
       enemies[i].bullet.hide();
 
@@ -623,7 +638,7 @@ void handleEnemyBullets() {
 void handleBossBullets() {
   if (isBossAlive) {
     for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
-      if ((boss.bullets[i].isVisible()) && (boss.bullets[i].isHittingObject(spaceShip.x, spaceShip.y, PLAYER_WIDTH, PLAYER_HEIGHT))) {
+      if ((boss.bullets[i].isVisible()) && (boss.bullets[i].isHittingObject(spaceShip.x, spaceShip.y, PLAYER_SIZE, PLAYER_SIZE))) {
         // Hit Player
         boss.bullets[i].hide();
   
@@ -658,7 +673,8 @@ void handlePlayerBullets() {
         }
       } else {
         for (byte j = 0; j < MAX_ENEMIES; j++) {
-          if ((enemies[j].health > 0) && (playerBullets[i].isHittingObject(enemies[j].x, enemies[j].y, enemies[j].width, enemies[j].height))) {
+          
+          if ((enemies[j].health > 0) && (playerBullets[i].isHittingObject(enemies[j].x, enemies[j].y, 16, 16))) {
             // Hit Enemy
             playerBullets[i].hide();
             score += playerBullets[i].damage;
@@ -729,60 +745,56 @@ void newHighScoreScreen(byte newHiPos) {
 
   while(! allDone) {
     unsigned long currentMilliseconds = millis();
-    if (arduboy.pressed(A_BUTTON)) {
-      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
-        // Advance right or finish entering initials
-        if (currPos < 2) {
-          currPos++;
-          drawHighScoreEntryCursor(currPos);
-          arduboy.display();
-        } else {
-          allDone = true;
-        }
-        lastDebounceTime = currentMilliseconds;
+    const bool isGreater = (currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY;
+
+    if (isGreater) {
+      if (arduboy.pressed(A_BUTTON)) {
+          // Advance right or finish entering initials
+          if (currPos < 2) {
+            currPos++;
+            drawHighScoreEntryCursor(currPos);
+//            arduboy.display();
+          } 
+          else {
+            allDone = true;
+          }
+          lastDebounceTime = currentMilliseconds;
       }
-    }
-   
-    if (arduboy.pressed(LEFT_BUTTON)) {
-      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
+       
+      if (arduboy.pressed(LEFT_BUTTON)) {
         // Only do something if we are not already on leftmost one
         if (currPos > 0) {
           currPos--;
           drawHighScoreEntryCursor(currPos);
-          arduboy.display();
+//          arduboy.display();
         }
         lastDebounceTime = currentMilliseconds;
       }    
-    }
   
-    if (arduboy.pressed(RIGHT_BUTTON)) {
-      if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if (arduboy.pressed(RIGHT_BUTTON)) {
         // Only do something if we are not already on rightmost one
         if (currPos < 2) {
           currPos++;
           drawHighScoreEntryCursor(currPos);
-          arduboy.display();
+//          arduboy.display();
         }
         lastDebounceTime = currentMilliseconds;
       }
-    }
 
-    if (arduboy.pressed(UP_BUTTON)) {
-       if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
+      if (arduboy.pressed(UP_BUTTON)) {
           if (currInitials[currPos] == 96) {
             currInitials[currPos] = 32;
           } else {
             currInitials[currPos]++;
           }
+          
           sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
           printText(textBuf, 44, 45, 2);
-          arduboy.display();
+//          arduboy.display();
           lastDebounceTime = currentMilliseconds;
        }
-    }
 
-    if (arduboy.pressed(DOWN_BUTTON)) {
-       if ((currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY) {
+       if (arduboy.pressed(DOWN_BUTTON)) {
           if (currInitials[currPos] == 32) {
             currInitials[currPos] = 96;
           } else {
@@ -790,9 +802,11 @@ void newHighScoreScreen(byte newHiPos) {
           }
           sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
           printText(textBuf, 44, 45, 2);
-          arduboy.display();
+//          arduboy.display();
           lastDebounceTime = currentMilliseconds;
-       }     
+       }    
+       arduboy.display();
+ 
     }
   }
 
@@ -822,6 +836,7 @@ void setStarValuesForIndex(byte i) {
   starX[i] = random(250);
   starY[i] = random(75);
   starWidth[i] = random(1, 4);
+  
 
   if (starWidth[i] >= 3) {
 //    starSpeed[i] = random(75, 95) * 0.01f;
