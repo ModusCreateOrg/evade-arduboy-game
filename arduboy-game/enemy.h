@@ -70,6 +70,12 @@ struct Enemy {
       health = 2000;
       width = 32;
       height = 16;
+    } else if (type == 130) {
+      difficulty = 4;
+      bitmap = boss3;
+      health = 3000;
+      width = 59;
+      height = 53;
     }
 
     draw();
@@ -98,7 +104,8 @@ struct Enemy {
     
     if ((type <= 9)
       || ((type == 128) && (x == MIN_ENEMY_SHIP_X))
-      || ((type == 129) && (x <= 110))) {
+      || ((type == 129) && (x <= 110))
+      || ((type == 130) && (x == 69))) {
         
       for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
         if (!bullets[i].isVisible()) {
@@ -130,8 +137,12 @@ struct Enemy {
         if (inGameFrame % 3 == 0) {
           x--;
         }
+      } else if ((type == 130) && x > 69) {
+        if (inGameFrame % 5 == 0) {
+          x--;
+        }
       } else if ((type <= 9)
-        || ((type > 9) && (random(3) == 0))) {
+        || (((type == 128) || (type == 129)) && (random(3) == 0))) {
           
         byte newX = x + (isMovingLeft() ? -1 : 1);
         byte newY = y + (isMovingDown() ? -1 : 1);
@@ -142,7 +153,7 @@ struct Enemy {
         }
         
         if (((type <= 9) && (newY >= MIN_SHIP_Y) && (newY <= MAX_SHIP_Y))
-          || ((type > 9) && (newY >= MIN_SHIP_Y) && (newY <= (MAX_SHIP_Y + 16 - height)))) {
+          || (((type == 128) || (type == 129)) && (newY >= MIN_SHIP_Y) && (newY <= (MAX_SHIP_Y + 16 - height)))) {
           y = newY;
         }
       }
@@ -204,7 +215,9 @@ struct Enemy {
         } else {
           bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.8, false);
         }
-      }
+      } else if (type == 130) {
+        bullets[bulletIndex].set(x, random(MIN_SHIP_Y, (MAX_SHIP_Y + 8)), false, 1, 0.6, false);
+      } 
     }
     
   }

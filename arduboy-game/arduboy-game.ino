@@ -531,6 +531,14 @@ void playGame() {
         } else {
           stopSpawningEnemies = true;
         }
+      } else if ((score >= 20000) && (spawnedBoss < 3)) {
+        if (!enemiesAlive) {
+          boss.set(129, 10, 130);
+          spawnedBoss = 3;
+          isBossAlive = true;
+        } else {
+          stopSpawningEnemies = true;
+        }
       }
     }
     
