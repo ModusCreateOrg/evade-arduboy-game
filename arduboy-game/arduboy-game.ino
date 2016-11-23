@@ -79,7 +79,7 @@ void playMusic(byte song) {
     unsigned char *music;
     switch(song) {
       case 1 :
-         music = titleMusic;
+         music = introMusic;
       break;
       case 2 :
 //          music = stage1MusicSingleTrack; // IF WE RUN OUT OF SPACE
@@ -93,7 +93,7 @@ void playMusic(byte song) {
         music = gameOverMusic;
       break;
       case 5 : 
-        music = mainMusic;
+        music = titleMusic;
       break;
     }
     currentSong = song;
@@ -133,8 +133,9 @@ byte titleScreen() {
   arduboy.display();
 
   playMusic(5);
-  
+
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {
+
     unsigned long currentMilliseconds = millis();
     bool isGreater = (currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY;
 //    byte buttonState = arduboy.buttonsState();
@@ -146,29 +147,34 @@ byte titleScreen() {
      * A  8
      * B  4
      */
+    playMusic(5);
+
     if (isGreater) {
+
       if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
         break;
       } 
-
     
       if (arduboy.pressed(LEFT_BUTTON)) {
+        delay(40);
         selectedItem = titleMenuLeftButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
       }
     
 
       if (arduboy.pressed(RIGHT_BUTTON)) {
+        delay(40);
         selectedItem = titleMenuRightButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
       }
     }
   
-  
-  
-    delay(15);
-    totalDelay += 15;
+
+//    delay(40);
+    totalDelay ++;
+
   }
+  arduboy.tunes.stopScore();
 
   
   return (totalDelay >= ATTRACT_MODE_TIMEOUT ? TITLE_TIMEOUT : selectedItem);
@@ -778,13 +784,8 @@ void gameOverScreen() {
   drawBitmap(0, 8, gameOver, 0);
   arduboy.display();
 
-//  delay(100);
-  // play game over tune
-  playMusic(4);
-  
+  playMusic(4); 
   delay(4500);
-//  arduboy.tunes.stopScore();
-//  delay(2000);
 }
 
 void drawHighScoreEntryCursor(byte pos) {
@@ -797,7 +798,7 @@ byte isNewHighScore() {
   char hiScore[7];
   hiScore[6] = '\0';
   for (byte i = 0; i < 4; i++) {
-    strncpy(hiScore, highScoreTable + (((9 * i) + 3) * sizeof(char)), 6);
+    strncpy(hiScore, highScoreTable + ((9 * i) + 3), 6);
     if (score > strtol(hiScore, NULL, 10)) {
        return i;
     }
@@ -809,7 +810,7 @@ void newHighScoreScreen(byte newHiPos) {
   long lastDebounceTime = millis();
   bool allDone = false;
   unsigned short currPos = 0;
-  byte currInitials[] = { 65, 65, 65};
+  byte currInitials[] = {65, 65, 65};
   
   arduboy.clear();
   printText("NEW HI!", 24, 1, 2);
@@ -831,7 +832,6 @@ void newHighScoreScreen(byte newHiPos) {
           if (currPos < 2) {
             currPos++;
             drawHighScoreEntryCursor(currPos);
-//            arduboy.display();
           } 
           else {
             allDone = true;
@@ -844,7 +844,6 @@ void newHighScoreScreen(byte newHiPos) {
         if (currPos > 0) {
           currPos--;
           drawHighScoreEntryCursor(currPos);
-//          arduboy.display();
         }
         lastDebounceTime = currentMilliseconds;
       }    
@@ -854,7 +853,6 @@ void newHighScoreScreen(byte newHiPos) {
         if (currPos < 2) {
           currPos++;
           drawHighScoreEntryCursor(currPos);
-//          arduboy.display();
         }
         lastDebounceTime = currentMilliseconds;
       }
@@ -868,7 +866,6 @@ void newHighScoreScreen(byte newHiPos) {
           
           sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
           printText(textBuf, 44, 45, 2);
-//          arduboy.display();
           lastDebounceTime = currentMilliseconds;
        }
 
@@ -880,7 +877,6 @@ void newHighScoreScreen(byte newHiPos) {
           }
           sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
           printText(textBuf, 44, 45, 2);
-//          arduboy.display();
           lastDebounceTime = currentMilliseconds;
        }    
        arduboy.display();
@@ -900,7 +896,7 @@ void newHighScoreScreen(byte newHiPos) {
 
   // then copy new result into correct place
   for (currPos = 0; currPos < 9; currPos++) {
-    highScoreTable[currPos + ((9 * newHiPos) * sizeof(char))] = textBuf[currPos];
+    highScoreTable[currPos + (9 * newHiPos)] = textBuf[currPos];
   }
 }
 
@@ -937,7 +933,7 @@ void updateStarFieldVals() {
       starX[i] = 128 + random(20);
       starY[i] = random(10, 64);
       
-    } 
+    }   
     else {
       starX[i] -= starSpeed[i];
     }

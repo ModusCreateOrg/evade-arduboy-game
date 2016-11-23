@@ -175,33 +175,66 @@ const unsigned char PROGMEM bossMusicSingleTrack[] = {
 // This boss contains 897 bytes, and 1 tone generator is used.
 
 
-// Playtune bytestream for file "main.mid.mid" created by MIDITONES V1.14 on Wed Nov 16 14:35:18 2016
-// command line: miditones main.mid 
-const unsigned char PROGMEM mainMusic [] = {
-// Transport
-0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 1,244, 0x90,46, 0,125, 0x80, 0,187, 0x90,48, 0,62, 0x80, 
-0,62, 0x90,48, 0,62, 0x80, 3,44, 0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 1,244, 0x90,36, 0,125, 
-0x80, 0,187, 0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 0xf0};
-// This mainMusic contains 69 bytes, and 1 tone generator is used.
+//// Playtune bytestream for file "main.mid.mid" created by MIDITONES V1.14 on Wed Nov 16 14:35:18 2016
+//// command line: miditones main.mid 
+//const unsigned char PROGMEM titleMusic [] = {
+//// Transport
+//0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 1,244, 0x90,46, 0,125, 0x80, 0,187, 0x90,48, 0,62, 0x80, 
+//0,62, 0x90,48, 0,62, 0x80, 3,44, 0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 1,244, 0x90,36, 0,125, 
+//0x80, 0,187, 0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 0xf0};
+//// This titleMusic contains 69 bytes, and 1 tone generator is used.
 
+// Playtune bytestream for file "title.mid.mid" created by MIDITONES V1.14 on Tue Nov 22 17:03:46 2016
+// command line: miditones title.mid 
+const unsigned char PROGMEM titleMusic [] = {
+// Transport
+0x90,29, 0,93, 0x80, 0,156, 0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 0,62, 0x90,29, 0,93, 0x80, 
+0,156, 0x90,51, 0,187, 0x80, 0,62, 0x90,29, 0,93, 0x80, 0,156, 0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 
+0x80, 0,62, 0x90,29, 0,93, 0x80, 1,150, 0x90,29, 0,93, 0x80, 0,156, 0x90,48, 0,62, 0x80, 0,62, 0x90,48, 
+0,62, 0x80, 0,62, 0x90,29, 0,93, 0x80, 0,156, 0x90,47, 0,187, 0x80, 0,62, 0x90,29, 0,93, 0x80, 0,156, 
+0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 0,62, 0x90,29, 0,93, 0x80, 1,25, 0x90,28, 0xf0};
+// This titleMusic contains 129 bytes, and 1 tone generator is used.
+
+
+
+
+
+
+//const unsigned char PROGMEM gameOverMusic [] = {
+//// Transport
+//0x90,70, 1,144, 0x90,65, 1,144, 0x90,68, 1,144, 0x90,67, 1,144, 0x90,60, 6,64, 0x80, 0xf0};
+//// This gameOver contains 22 bytes, and 1 tone generator is used.
+
+
+// Playtune bytestream for file "gameOver-deeper.mid.mid" created by MIDITONES V1.14 on Tue Nov 22 16:11:12 2016
+// command line: miditones gameOver-deeper.mid 
 const unsigned char PROGMEM gameOverMusic [] = {
 // Transport
-0x90,70, 1,144, 0x90,65, 1,144, 0x90,68, 1,144, 0x90,67, 1,144, 0x90,60, 6,64, 0x80, 0xf0};
-// This gameOver contains 22 bytes, and 1 tone generator is used.
+0x90,41, 0,200, 0x90,44, 2,88, 0x90,49, 0,200, 0x90,48, 3,232, 0x80, 0xf0};
+// This gameOverMusic contains 18 bytes, and 1 tone generator is used.
+
 
 // Playtune bytestream for file "title.mid.mid" created by MIDITONES V1.14 on Sun Nov 13 11:01:26 2016
 // command line: miditones title.mid 
-const unsigned char PROGMEM titleMusic [] = {
+const unsigned char PROGMEM introMusic [] = {
 // Transport
 0x90,63, 0,100, 0x90,65, 0,100, 0x90,67, 0,100, 0x90,70, 1,144, 0x80, 0xf0};
 // This titleSong contains 18 bytes, and 1 tone generator is used.
 
 
+// Playtune bytestream for file "youWin.mid.mid" created by MIDITONES V1.14 on Tue Nov 22 16:32:34 2016
+// command line: miditones youWin.mid 
+const unsigned char PROGMEM youWin [] = {
+// Transport
+0x90,60, 1,11, 0x90,68, 0,160, 0x90,67, 1,11, 0x90,70, 0,160, 0x90,72, 2,130, 0x80, 0xf0};
+// This youWin contains 22 bytes, and 1 tone generator is used.
+
+
 //
 //PROGMEM char const scores[] = {
-//  titleMusic,
+//  introMusic,
 //  stage1Music,
 //  bossMusic,
 //  gameOverMusic,
-//  mainMusic,
+//  titleMusic,
 //};
