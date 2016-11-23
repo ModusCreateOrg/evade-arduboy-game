@@ -200,7 +200,7 @@ struct Enemy {
         bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.7, false);
       } else if ((type == 129) && (inGameFrame % 50 == 0) && (random(2) == 0)) {
         if (random(4) == 0) {
-          bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.6, true);
+          bullets[bulletIndex].set((x - 10), (y + (height / 2) - 1), false, 1, 0.9, true);
         } else {
           bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.8, false);
         }
