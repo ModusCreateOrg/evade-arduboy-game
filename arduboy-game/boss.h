@@ -34,8 +34,8 @@ struct Boss {
     switch(type) {
       case 1:
         bitmap = boss1;
-        width = 59;
-        height = 53;
+        width = 32;
+        height = 16;
         health = 1000;
         break;
       case 2:
@@ -56,7 +56,7 @@ struct Boss {
     move();
     draw();
 
-    if (((type == 1) && (x == 69)) || ((type == 2) && (x <= 110))) {
+    if (((type == 1) && (x == MIN_ENEMY_SHIP_X)) || ((type == 2) && (x <= 110))) {
       for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
         if (!bullets[i].isVisible()) {
           fire(i);
@@ -70,26 +70,25 @@ struct Boss {
   void move() {
     changeDirection();
     
-    if (type == 1) {
-      if ((x > 69) && (inGameFrame % 5 == 0)) {
+    if ((type == 1) && x > MIN_ENEMY_SHIP_X) {
+      if (inGameFrame % 4 == 0) {
+        x--;
+      }
+    } else if ((type == 2) && x > 110) {
+      if (inGameFrame % 3 == 0) {
         x--;
       }
     } else {
-      if (x > 110) {
-        if (inGameFrame % 3 == 0) {
-          x--;
+      if (random(3) == 0) {
+        byte newX = x + (isMovingLeft() ? -1 : 1);
+        byte newY = y + (isMovingDown() ? -1 : 1);
+
+        if ((type == 2) && (newX >= 97) && (newX <= 109)) {
+          x = newX;
         }
-      } else {
-        if (random(3) == 0) {
-          byte newX = x + (isMovingLeft() ? -1 : 1);
-          byte newY = y + (isMovingDown() ? -1 : 1);
-          
-          if ((newX >= 97) && (newX <= 109)) {
-            x = newX;
-          }
-          if ((newY >= MIN_SHIP_Y) && (newY <= (MAX_SHIP_Y + 16 - height))) {
-            y = newY;
-          }
+        
+        if ((newY >= MIN_SHIP_Y) && (newY <= (MAX_SHIP_Y + 16 - height))) {
+          y = newY;
         }
       }
     }
@@ -112,7 +111,7 @@ struct Boss {
 
   void fire(byte bulletIndex) {
     if (type == 1) {
-      bullets[bulletIndex].set(x, random(MIN_SHIP_Y, (MAX_SHIP_Y + 8)), false, 1, 0.4, false);
+      bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.7, false);
     } else if ((inGameFrame % 50 == 0) && (random(2) == 0)) {
       if (random(4) == 0) {
         bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.6, true);
@@ -126,7 +125,7 @@ struct Boss {
     if (random(50) == 0) {
       direction ^= 1 << 0;
     }
-    if (random(20) == 0) {
+    if (((type == 1) && (random(50) == 0)) || ((type == 2) && (random(20) == 0))) {
       direction ^= 1 << 1;
     }
   }
