@@ -8,66 +8,104 @@
 struct Enemy {
   byte x;
   byte y;
-  byte size = 16;
-  byte health;
+  byte width;
+  byte height;
+  int health;
+  byte type;
   byte difficulty;
   byte dying;
   // isMovingLeft (0), isMovingDown (1), tookDamage (2)
   byte options;
   const uint8_t *bitmap;
   unsigned long damageFrame;
-  Bullet bullet;
+  Bullet bullets[MAX_BOSS_BULLETS];
+  int animFrame;
 
-  void set(byte _x, byte _y) {
+  void set(byte _x, byte _y, byte _type) {
     x = _x;
     y = _y;
+    type = _type;
     dying = 0;
-    bullet.hide();
+
+    // Hide all bullets
+    for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
+      bullets[i].hide();
+    }
+
+    // Randomize direction
+    if (random(2)) {
+      options ^= 1 << 0;
+    }
+    if (random(2)) {
+      options ^= 1 << 1;
+    }
     
-    options |= random(2) << 0;
-    options |= random(2) << 1;
-
-    byte typeRando = random(10);
-
-    if (typeRando == 0) {
-      bitmap = enemy3;
-      health = 500;
-      difficulty = 4;
-    } else if (typeRando < 5) {
-      bitmap = enemy2;
-      health = 150;
-      difficulty = 2;
-    } else {
+    if (type < 5) {
+      difficulty = 1;
       bitmap = enemy1;
       health = 25;
-      difficulty = 1;
+      width = 16;
+      height = 16;
+    } else if (type < 9) {
+      difficulty = 2;
+      bitmap = enemy2;
+      health = 150;
+      width = 16;
+      height = 16;
+    } else if (type == 9) {
+      difficulty = 4;
+      bitmap = enemy3;
+      health = 500;
+      width = 16;
+      height = 16;
+    } else if (type == 128) {
+      difficulty = 4;
+      bitmap = boss1;
+      health = 1000;
+      width = 32;
+      height = 16;
+    } else if (type == 129) {
+      difficulty = 4;
+      bitmap = boss2;
+      health = 2000;
+      width = 32;
+      height = 16;
     }
 
     draw();
   }
 
   void update(boolean stopSpawningEnemies) {
-    if (bullet.isVisible()) {
-      bullet.update();
+    if ((inGameFrame > (damageFrame + 4))
+      && (isTakingDamage())
+      && (inGameFrame % 4)) {
+      options &= ~(1 << 2);
     }
-
-    if (isAlive() && !(options & (1 << 2))) {
+    
+    if (isAlive()) {
       move();
-      draw();
 
-      if (!bullet.isVisible()) {
-        fire();
+      if (!isTakingDamage()) {
+        draw();
       }
     } else if (isDying()) {
       updateDeathSequence();
-    } else if ((!stopSpawningEnemies) && (random(700) == 0)) {
+    } else if ((type <= 9)
+      && (!stopSpawningEnemies)
+      && (random(700) == 0)) {
       spawn();
     }
-
     
-    if(inGameFrame > (damageFrame + 4) && options & (1 << 2)) {
-      if(inGameFrame % 4) {
-        options &= ~(1 << 2);
+    if ((type <= 9)
+      || ((type == 128) && (x == MIN_ENEMY_SHIP_X))
+      || ((type == 129) && (x <= 110))) {
+        
+      for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
+        if (!bullets[i].isVisible()) {
+          fire(i);
+        } else {
+          bullets[i].update();
+        }
       }
     }
   }
@@ -75,27 +113,54 @@ struct Enemy {
   void spawn() {
     byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
     byte enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
-    set(enemyX, enemyY);
+    set(enemyX, enemyY, random(10));
   }
 
   void move() {
-    if (random(10 / difficulty) == 0) {
+    if ((random(10 / difficulty) == 0)
+      || (type > 9)) {
+        
       changeDirection();
-      
-      byte newX = x + (isMovingLeft() ? -1 : 1);
-      byte newY = y + (isMovingDown() ? -1 : 1);
-      
-      if ((newX >= MIN_ENEMY_SHIP_X) && (newX <= MAX_ENEMY_SHIP_X)) {
-        x = newX;
-      }
-      if ((newY >= MIN_SHIP_Y) && (newY <= MAX_SHIP_Y)) {
-        y = newY;
+
+      if ((type == 128) && x > MIN_ENEMY_SHIP_X) {
+        if (inGameFrame % 4 == 0) {
+          x--;
+        }
+      } else if ((type == 129) && x > 110) {
+        if (inGameFrame % 3 == 0) {
+          x--;
+        }
+      } else if ((type <= 9)
+        || ((type > 9) && (random(3) == 0))) {
+          
+        byte newX = x + (isMovingLeft() ? -1 : 1);
+        byte newY = y + (isMovingDown() ? -1 : 1);
+
+        if (((type <= 9) && (newX >= MIN_ENEMY_SHIP_X) && (newX <= MAX_ENEMY_SHIP_X))
+          || ((type == 129) && (newX >= 97) && (newX <= 109))) {
+          x = newX;
+        }
+        
+        if (((type <= 9) && (newY >= MIN_SHIP_Y) && (newY <= MAX_SHIP_Y))
+          || ((type > 9) && (newY >= MIN_SHIP_Y) && (newY <= (MAX_SHIP_Y + 16 - height)))) {
+          y = newY;
+        }
       }
     }
   }
 
   void draw() {
-    drawBitmap(x, y, bitmap, 0);
+    if (type != 129) {
+      drawBitmap(x, y, bitmap, 0);  
+    } else {
+      if (inGameFrame % 13 == 0) {
+        animFrame++;
+      }
+      drawBitmap(x, y, bitmap, animFrame);
+      if (animFrame > 2) {
+        animFrame = 0;
+      }
+    }
   }
 
   void updateDeathSequence() {
@@ -112,20 +177,36 @@ struct Enemy {
   }
 
   void changeDirection() {
-    if (random(30) == 0) {
+    if (((type <= 9) && (random(30) == 0))
+      || ((type > 9) && (random(50) == 0))) {
       options ^= 1 << 0;
     }
-    if (random(10) == 0) {
+    if (((type <= 9) && (random(10) == 0))
+      || ((type == 128) && (random(50) == 0))
+      || ((type == 129) && (random(20) == 0))) {
       options ^= 1 << 1;
     }
   }
 
-  void fire() {
-    if ((dying == 0) &&
-      (!bullet.isVisible()) &&
-      (random(1000 / difficulty) == 0)) {
-      bullet.set(x, (y + (size / 2) - 1), false, 1, .7, false);
+  void fire(byte bulletIndex) {
+    if (isAlive()) {
+      if (type <= 9) {
+        if ((bulletIndex == 0)
+          && (!bullets[bulletIndex].isVisible())
+          && (random(1000 / difficulty) == 0)) {
+          bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, .7, false);
+        }
+      } else if (type == 128) {
+        bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.7, false);
+      } else if ((type == 129) && (inGameFrame % 50 == 0) && (random(2) == 0)) {
+        if (random(4) == 0) {
+          bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.6, true);
+        } else {
+          bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.8, false);
+        }
+      }
     }
+    
   }
 
   void takeDamage() {
@@ -147,6 +228,10 @@ struct Enemy {
 
   boolean isMovingDown() {
     return (options & (1 << 1));
+  }
+
+  boolean isTakingDamage() {
+    return (options & (1 << 2));
   }
 };
 

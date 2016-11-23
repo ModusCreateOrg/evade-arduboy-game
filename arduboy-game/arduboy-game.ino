@@ -17,7 +17,6 @@ void playTone(byte tone, byte duration) {
 #include "player.h"
 #include "bullet.h"
 #include "enemy.h"
-#include "boss.h"
 #include "bitmaps.h"
 #include "Music.h"
 #include <stddef.h>
@@ -50,7 +49,7 @@ Bullet playerBullets[MAX_PLAYER_BULLETS];
 Enemy enemies[MAX_ENEMIES];
 
 // Boss
-Boss boss;
+Enemy boss;
 
 bool isBossAlive;
 
@@ -514,7 +513,7 @@ void playGame() {
     if (!isBossAlive) {
       if ((score >= 5000) && (spawnedBoss < 1)) {
         if (!enemiesAlive) {
-          boss.set(129, 28, 1);
+          boss.set(129, 28, 128);
           spawnedBoss = 1;
           isBossAlive = true;
         } else {
@@ -522,7 +521,7 @@ void playGame() {
         }
       } else if ((score >= 12000) && (spawnedBoss < 2)) {
         if (!enemiesAlive) {
-          boss.set(129, 24, 2);
+          boss.set(129, 24, 129);
           spawnedBoss = 2;
           isBossAlive = true;
         } else {
@@ -532,7 +531,7 @@ void playGame() {
     }
     
     if (isBossAlive) {
-      boss.update();
+      boss.update(false);
     } else {
       updateEnemies(stopSpawningEnemies);
     }
@@ -706,9 +705,9 @@ void updateEnemies(boolean stopSpawningEnemies) {
 
 void handleEnemyBullets() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
-    if ((enemies[i].bullet.isVisible()) && (enemies[i].bullet.isHittingObject(spaceShip.x, spaceShip.y, PLAYER_SIZE, PLAYER_SIZE))) {
+    if ((enemies[i].bullets[0].isVisible()) && (enemies[i].bullets[0].isHittingObject(spaceShip.x, spaceShip.y, PLAYER_SIZE, PLAYER_SIZE))) {
       // Hit Player
-      enemies[i].bullet.hide();
+      enemies[i].bullets[0].hide();
 
       // Doesn't count if player recently died
       if (inGameLastDeath < (inGameFrame - 450)) {
