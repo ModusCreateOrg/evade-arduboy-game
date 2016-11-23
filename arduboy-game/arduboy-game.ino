@@ -147,30 +147,31 @@ byte titleScreen() {
      * A  8
      * B  4
      */
+    playMusic(5);
+
     if (isGreater) {
 
       if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
         break;
       } 
-
     
       if (arduboy.pressed(LEFT_BUTTON)) {
+        delay(40);
         selectedItem = titleMenuLeftButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
       }
     
 
       if (arduboy.pressed(RIGHT_BUTTON)) {
+        delay(40);
         selectedItem = titleMenuRightButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
       }
     }
   
-    playMusic(5);
 
-  
-    delay(20);
-    totalDelay += 20;
+//    delay(40);
+    totalDelay ++;
 
   }
   arduboy.tunes.stopScore();

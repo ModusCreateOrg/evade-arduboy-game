@@ -184,7 +184,7 @@ const unsigned char PROGMEM bossMusicSingleTrack[] = {
 //0x80, 0,187, 0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 0xf0};
 //// This titleMusic contains 69 bytes, and 1 tone generator is used.
 
-// Playtune bytestream for file "title.mid.mid" created by MIDITONES V1.14 on Tue Nov 22 16:54:34 2016
+// Playtune bytestream for file "title.mid.mid" created by MIDITONES V1.14 on Tue Nov 22 17:03:46 2016
 // command line: miditones title.mid 
 const unsigned char PROGMEM titleMusic [] = {
 // Transport
@@ -192,9 +192,8 @@ const unsigned char PROGMEM titleMusic [] = {
 0,156, 0x90,51, 0,187, 0x80, 0,62, 0x90,29, 0,93, 0x80, 0,156, 0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 
 0x80, 0,62, 0x90,29, 0,93, 0x80, 1,150, 0x90,29, 0,93, 0x80, 0,156, 0x90,48, 0,62, 0x80, 0,62, 0x90,48, 
 0,62, 0x80, 0,62, 0x90,29, 0,93, 0x80, 0,156, 0x90,47, 0,187, 0x80, 0,62, 0x90,29, 0,93, 0x80, 0,156, 
-0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 0,62, 0x90,29, 0,93, 0x80, 1,25, 0x90,28, 0,125, 0x80, 
-0xf0};
-// This titleMusic contains 132 bytes, and 1 tone generator is used.
+0x90,48, 0,62, 0x80, 0,62, 0x90,48, 0,62, 0x80, 0,62, 0x90,29, 0,93, 0x80, 1,25, 0x90,28, 0xf0};
+// This titleMusic contains 129 bytes, and 1 tone generator is used.
 
 
 
