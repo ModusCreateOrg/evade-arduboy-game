@@ -481,6 +481,10 @@ void playGame() {
   spaceShip.reset();
   isBossAlive = false;
   byte spawnedBoss = 0;
+
+  resetEnemies();
+  resetBoss();
+  resetPlayerBullets();
   
   while (livesRemaining > 0) {
     boolean stopSpawningEnemies = false;
@@ -903,6 +907,26 @@ void createStarFieldVals() {
   for (byte i = 0; i < NUM_STARS; i++) {
       setStarValuesForIndex(i);
   } 
+}
+
+void resetEnemies() {
+  for (byte i = 0; i < MAX_ENEMIES; i++) {
+    enemies[i].health = 0;
+    enemies[i].bullets[0].hide();
+  }
+}
+
+void resetBoss() {
+  boss.health = 0;
+  for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
+    boss.bullets[i].hide();
+  }
+}
+
+void resetPlayerBullets() {
+  for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
+    playerBullets[i].hide();
+  }
 }
 
 void setStarValuesForIndex(byte i) {

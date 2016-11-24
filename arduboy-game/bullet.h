@@ -19,6 +19,7 @@ struct Bullet {
     float speedX;
     // Visibility (0), Direction (1), Laser Beam (2)
     byte options;
+    unsigned long inGameFireFrame;
     
     void set(byte _x, byte _y, boolean firedByPlayer, byte _damage, float _speedX, boolean isLaserBeam) {
       x = _x;
@@ -26,13 +27,14 @@ struct Bullet {
       damage = _damage;
       speedX = _speedX;
 
-      options &= ~(1 << 0);
       options &= ~(1 << 1);
       options &= ~(1 << 2);
       
       options |= 1 << 0;
       options |= firedByPlayer << 1;
       options |= isLaserBeam << 2;
+
+      inGameFireFrame = inGameFrame;
 
       draw();
     }
@@ -54,7 +56,7 @@ struct Bullet {
         x -= speedX;
         if ((!isLaserBeam()) && (x <= 0)) {
           hide();
-        } else if ((isLaserBeam()) && (x <= -50)) {
+        } else if ((isLaserBeam()) && (x <= -30)) {
           hide();
         }
       }
@@ -72,14 +74,14 @@ struct Bullet {
         } else if (!isLaserBeam()) {
           drawBitmap(x, y, enemyBullet, 0);
         } else {
-          arduboy.fillRect(x - 44, y, 50, 2, 1);
+          arduboy.fillRect(x, y, min((inGameFrame, inGameFireFrame), 30), 2, 1);
         }
       
     }
 
     boolean isHittingObject(byte objectX, byte objectY, byte objectWidth, byte objectHeight) {
       if ((isVisible()) &&
-        ((isLaserBeam() && (x >= (objectX - 50))) || (! isLaserBeam() && (x >= objectX))) &&
+        ((isLaserBeam() && (x >= (objectX - 30))) || (!isLaserBeam() && (x >= objectX))) &&
         (x <= (objectX + objectWidth)) &&
         (y >= objectY) &&
         (y <= (objectY + objectHeight))) {
