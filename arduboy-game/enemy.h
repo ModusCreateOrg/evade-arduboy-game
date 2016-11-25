@@ -125,15 +125,14 @@ struct Enemy {
   }
 
   void move() {
-    if ((random(10 / difficulty) == 0)
-      || (type > 9)) {
+    if ((random(10 / difficulty) == 0) || (type > 9)) {
         
       changeDirection();
 
       bool typeIs128 = (type == 128),
            typeIs129 = (type == 129);
       
-      if ( typeIs128 && x > MIN_ENEMY_SHIP_X) {
+      if (typeIs128 && x > MIN_ENEMY_SHIP_X) {
         if (inGameFrame % 4 == 0) {
           x--;
         }
