@@ -129,6 +129,7 @@ void playMusic(byte song) {
         music = titleMusic;
       break;
     }
+    
     currentSong = song;
     if (! arduboy.tunes.playing()) {
       arduboy.tunes.playScore(music);
