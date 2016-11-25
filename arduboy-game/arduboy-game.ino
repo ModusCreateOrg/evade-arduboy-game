@@ -340,17 +340,19 @@ void settingsScreen() {
   byte selectedItem;
 
   arduboy.clear();
-  printText("SETTINGS", 20, 5, 2);
+  printText("SETTINGS", 20, 2, 2);
   printsoundOnOff();
   printText("RESET HIGHSCORE", 20, 37, 1);
   printText("EXIT", 20, 49, 1);
-  arduboy.drawRect(17, 22, 35, 13, 1);
-  arduboy.display();
+//  arduboy.drawRect(17, 22, 35, 13, 1);
+//  arduboy.display();
 
   while (!exit_settings_menu) {
     unsigned long currentMilliseconds = millis();
     bool isGreater = (currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY;
-    
+
+    arduboy.display();
+  
     if (isGreater) {
       
       if (arduboy.pressed(DOWN_BUTTON)) {
@@ -383,19 +385,18 @@ void settingsScreen() {
           arduboy.drawRect(17, 46, 29, 13, 0);
           arduboy.drawRect(17, 34, 95, 13, 1);
   
-          selectedItem =  SETTINGS_RESET_HIGH_SCORE;
+          selectedItem = SETTINGS_RESET_HIGH_SCORE;
         }
         else if (selectedItem == SETTINGS_RESET_HIGH_SCORE) {
           arduboy.drawRect(17, 34, 95, 13, 0);
           arduboy.drawRect(17, 22, 35, 13, 1);
           
-          selectedItem =  SETTINGS_SOUND;
+          selectedItem = SETTINGS_SOUND;
         }
 
         lastDebounceTime = currentMilliseconds; //set the current time
       }
 
-      arduboy.display();
 
   
       if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
@@ -422,8 +423,6 @@ void settingsScreen() {
 
       }
 
-
-// If we have space, uncomment
       delay(15);
     }
      
@@ -501,7 +500,7 @@ void settingsScreen() {
 void printsoundOnOff() {
   printText(soundOn ? "SOUND  ON " : "SOUND OFF", 20, 25, 1);
   arduboy.drawRect(17, 22, 35, 13, 1);
-  arduboy.display();
+//  arduboy.display();
 }
 
 void playGame() {
