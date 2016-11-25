@@ -334,6 +334,10 @@ void scrollCredits(byte y, short line) {
   }
 }
 
+void drawBoxAroundSoundSetting(byte color) {
+   arduboy.drawRect(17, 22, 35, 13, color);
+}
+
 void settingsScreen() {
   long lastDebounceTime = millis();  // the last time the button was pressed
   bool exit_settings_menu = false;
@@ -356,11 +360,10 @@ void settingsScreen() {
     if (isGreater) {
       
       if (arduboy.pressed(DOWN_BUTTON)) {
-//        selectedItem = settingMenuDownButton(selectedItem);
         switch (selectedItem) {
       
           case SETTINGS_SOUND:
-            arduboy.drawRect(17, 22, 35, 13, 0);
+            drawBoxAroundSoundSetting(0);
             arduboy.drawRect(17, 34, 95, 13, 1);
 
             selectedItem = SETTINGS_RESET_HIGH_SCORE;
@@ -379,7 +382,6 @@ void settingsScreen() {
       }
   
       if (arduboy.pressed(UP_BUTTON)) {
-//        selectedItem = settingMenuUpButton(selectedItem);
 
         if (selectedItem == SETTINGS_EXIT) {
           arduboy.drawRect(17, 46, 29, 13, 0);
@@ -389,7 +391,7 @@ void settingsScreen() {
         }
         else if (selectedItem == SETTINGS_RESET_HIGH_SCORE) {
           arduboy.drawRect(17, 34, 95, 13, 0);
-          arduboy.drawRect(17, 22, 35, 13, 1);
+          drawBoxAroundSoundSetting(1);
           
           selectedItem = SETTINGS_SOUND;
         }
@@ -498,8 +500,8 @@ void settingsScreen() {
 //}
 
 void printsoundOnOff() {
-  printText(soundOn ? "SOUND  ON " : "SOUND OFF", 20, 25, 1);
-  arduboy.drawRect(17, 22, 35, 13, 1);
+  printText(soundOn ? "SOUND ON " : "SOUND OFF", 20, 25, 1);
+  drawBoxAroundSoundSetting(1);
 //  arduboy.display();
 }
 
