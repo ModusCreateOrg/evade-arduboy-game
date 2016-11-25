@@ -400,7 +400,7 @@ void settingsScreen() {
       }
 
 
-  
+ 
       if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
         switch (selectedItem) {
           case SETTINGS_EXIT:
@@ -409,7 +409,7 @@ void settingsScreen() {
 
           case SETTINGS_SOUND:
             soundOn = !soundOn;
-            Serial.println(soundOn, BIN);
+//            Serial.println(soundOn, BIN);
             printsoundOnOff();
             break;
 
@@ -422,7 +422,6 @@ void settingsScreen() {
         }  
         
         lastDebounceTime = currentMilliseconds; //set the current time
-
       }
 
       delay(15);
