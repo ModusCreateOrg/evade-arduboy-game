@@ -94,7 +94,8 @@ struct Enemy {
       if (!isTakingDamage()) {
         draw();
       }
-    } else if (isDying()) {
+//    } else if (isDying()) {
+    } else if (dying > 0) {
       updateDeathSequence();
     } else if ((type <= 9)
       && (!stopSpawningEnemies)
@@ -124,16 +125,18 @@ struct Enemy {
   }
 
   void move() {
-    if ((random(10 / difficulty) == 0)
-      || (type > 9)) {
+    if ((random(10 / difficulty) == 0) || (type > 9)) {
         
       changeDirection();
 
-      if ((type == 128) && x > MIN_ENEMY_SHIP_X) {
+      bool typeIs128 = (type == 128),
+           typeIs129 = (type == 129);
+      
+      if (typeIs128 && x > MIN_ENEMY_SHIP_X) {
         if (inGameFrame % 4 == 0) {
           x--;
         }
-      } else if ((type == 129) && x > 110) {
+      } else if (typeIs129 && x > 110) {
         if (inGameFrame % 3 == 0) {
           x--;
         }
@@ -142,7 +145,7 @@ struct Enemy {
           x--;
         }
       } else if ((type <= 9)
-        || (((type == 128) || (type == 129)) && (random(3) == 0))) {
+        || ((typeIs128 || typeIs129) && (random(3) == 0))) {
           
         byte newX = x + (isMovingLeft() ? -1 : 1);
         byte newY = y + (isMovingDown() ? -1 : 1);
@@ -151,9 +154,10 @@ struct Enemy {
           || ((type == 129) && (newX >= 97) && (newX <= 109))) {
           x = newX;
         }
-        
-        if (((type <= 9) && (newY >= MIN_SHIP_Y) && (newY <= MAX_SHIP_Y))
-          || (((type == 128) || (type == 129)) && (newY >= MIN_SHIP_Y) && (newY <= (MAX_SHIP_Y + 16 - height)))) {
+
+        bool newShipYisGreater = newY >= MIN_SHIP_Y;
+        if (((type <= 9) && newShipYisGreater && (newY <= MAX_SHIP_Y))
+          || (((type == 128) || (type == 129)) && newShipYisGreater && (newY <= (MAX_SHIP_Y + 16 - height)))) {
           y = newY;
         }
       }
@@ -188,6 +192,7 @@ struct Enemy {
   }
 
   void changeDirection() {
+  
     if (((type <= 9) && (random(30) == 0))
       || ((type > 9) && (random(50) == 0))) {
       options ^= 1 << 0;
@@ -201,19 +206,21 @@ struct Enemy {
 
   void fire(byte bulletIndex) {
     if (isAlive()) {
+      byte newY =  (y + (height / 2) - 1);
+      
       if (type <= 9) {
         if ((bulletIndex == 0)
           && (!bullets[bulletIndex].isVisible())
           && (random(1000 / difficulty) == 0)) {
-          bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, .7, false);
+          bullets[bulletIndex].set(x, newY, false, 1, .7, false);
         }
       } else if (type == 128) {
-        bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.7, false);
+        bullets[bulletIndex].set(x, newY, false, 1, 0.7, false);
       } else if ((type == 129) && (inGameFrame % 50 == 0) && (random(2) == 0)) {
         if (random(4) == 0) {
-          bullets[bulletIndex].set((x - 10), (y + (height / 2) - 1), false, 1, 0.9, true);
+          bullets[bulletIndex].set((x - 10), newY, false, 1, 0.9, true);
         } else {
-          bullets[bulletIndex].set(x, (y + (height / 2) - 1), false, 1, 0.8, false);
+          bullets[bulletIndex].set(x, newY, false, 1, 0.8, false);
         }
       } else if (type == 130) {
         bullets[bulletIndex].set(x, random(MIN_SHIP_Y, (MAX_SHIP_Y + 8)), false, 1, 0.6, false);
@@ -231,9 +238,9 @@ struct Enemy {
     return ((health > 0) && (dying == 0));
   }
 
-  boolean isDying() {
-    return (dying > 0);
-  }
+//  boolean isDying() {
+//    return (dying > 0);
+//  }
 
   boolean isMovingLeft() {
     return (options & (1 << 0));

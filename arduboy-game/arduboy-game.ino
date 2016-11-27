@@ -29,6 +29,40 @@ void playTone(byte tone, byte duration) {
 #define NUM_STARS 15
 #define NOT_NEW_HI_SCORE 5
 
+#define PLAYER_SIZE 16
+#define MAX_GUN_CHARGE 40
+#define GUN_SHOT_COST 12
+
+byte playerX,
+     playerY,
+     playerFrame,
+     playerDying,
+     playerGunCharge;
+
+void resetPlayer() {
+    playerX = 2;
+    playerY = 32;
+    playerFrame = 2;
+    playerDying = 0;
+    playerGunCharge = MAX_GUN_CHARGE; 
+}
+
+//struct Player {
+//  byte x;
+//  byte y;
+//  byte frame;
+//  byte dying;
+//  byte gunCharge;
+//
+//  void reset() {
+//    x = 2;
+//    y = 32;
+//    frame = 2;
+//    dying = 0;
+//    gunCharge = MAX_GUN_CHARGE;
+//  }
+//};
+
 // TODO highScoreTable should be replaced with table in EEPROM
 char *highScoreTable = "AAA000400BBB000300CCC000200DDD000100";
 
@@ -56,7 +90,7 @@ bool isBossAlive;
 // General purpose text buffer for string concatenation and read from progmem
 char textBuf[23];
 
-Player spaceShip;
+//Player spaceShip;
 
 //void stopMusic() {
 //
@@ -95,6 +129,7 @@ void playMusic(byte song) {
         music = titleMusic;
       break;
     }
+    
     currentSong = song;
     if (! arduboy.tunes.playing()) {
       arduboy.tunes.playScore(music);
@@ -299,31 +334,36 @@ void scrollCredits(byte y, short line) {
   }
 }
 
+void drawBoxAroundSoundSetting(byte color) {
+   arduboy.drawRect(17, 22, 35, 13, color);
+}
+
 void settingsScreen() {
   long lastDebounceTime = millis();  // the last time the button was pressed
   bool exit_settings_menu = false;
   byte selectedItem;
 
   arduboy.clear();
-  printText("SETTINGS", 20, 5, 2);
+  printText("SETTINGS", 20, 2, 2);
   printsoundOnOff();
   printText("RESET HIGHSCORE", 20, 37, 1);
   printText("EXIT", 20, 49, 1);
-  arduboy.drawRect(17, 22, 35, 13, 1);
-  arduboy.display();
+//  arduboy.drawRect(17, 22, 35, 13, 1);
+//  arduboy.display();
 
   while (!exit_settings_menu) {
     unsigned long currentMilliseconds = millis();
     bool isGreater = (currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY;
-    
+
+    arduboy.display();
+  
     if (isGreater) {
       
       if (arduboy.pressed(DOWN_BUTTON)) {
-//        selectedItem = settingMenuDownButton(selectedItem);
         switch (selectedItem) {
       
           case SETTINGS_SOUND:
-            arduboy.drawRect(17, 22, 35, 13, 0);
+            drawBoxAroundSoundSetting(0);
             arduboy.drawRect(17, 34, 95, 13, 1);
 
             selectedItem = SETTINGS_RESET_HIGH_SCORE;
@@ -342,27 +382,25 @@ void settingsScreen() {
       }
   
       if (arduboy.pressed(UP_BUTTON)) {
-//        selectedItem = settingMenuUpButton(selectedItem);
 
         if (selectedItem == SETTINGS_EXIT) {
           arduboy.drawRect(17, 46, 29, 13, 0);
           arduboy.drawRect(17, 34, 95, 13, 1);
   
-          selectedItem =  SETTINGS_RESET_HIGH_SCORE;
+          selectedItem = SETTINGS_RESET_HIGH_SCORE;
         }
         else if (selectedItem == SETTINGS_RESET_HIGH_SCORE) {
           arduboy.drawRect(17, 34, 95, 13, 0);
-          arduboy.drawRect(17, 22, 35, 13, 1);
+          drawBoxAroundSoundSetting(1);
           
-          selectedItem =  SETTINGS_SOUND;
+          selectedItem = SETTINGS_SOUND;
         }
 
         lastDebounceTime = currentMilliseconds; //set the current time
       }
 
-      arduboy.display();
 
-  
+ 
       if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
         switch (selectedItem) {
           case SETTINGS_EXIT:
@@ -371,7 +409,7 @@ void settingsScreen() {
 
           case SETTINGS_SOUND:
             soundOn = !soundOn;
-            Serial.println(soundOn, BIN);
+//            Serial.println(soundOn, BIN);
             printsoundOnOff();
             break;
 
@@ -384,11 +422,8 @@ void settingsScreen() {
         }  
         
         lastDebounceTime = currentMilliseconds; //set the current time
-
       }
 
-
-// If we have space, uncomment
       delay(15);
     }
      
@@ -464,9 +499,9 @@ void settingsScreen() {
 //}
 
 void printsoundOnOff() {
-  printText(soundOn ? "SOUND  ON " : "SOUND OFF", 20, 25, 1);
-  arduboy.drawRect(17, 22, 35, 13, 1);
-  arduboy.display();
+  printText(soundOn ? "SOUND ON " : "SOUND OFF", 20, 25, 1);
+  drawBoxAroundSoundSetting(1);
+//  arduboy.display();
 }
 
 void playGame() {
@@ -478,7 +513,7 @@ void playGame() {
   inGameLastDeath = 0;
   score = 0;
   livesRemaining = MAX_LIVES;
-  spaceShip.reset();
+  resetPlayer();
   isBossAlive = false;
   byte spawnedBoss = 0;
 
@@ -495,9 +530,9 @@ void playGame() {
     if (inGameFrame % 20 == 0) {
       score++;
 
-      if (spaceShip.gunCharge < MAX_GUN_CHARGE) {
+      if (playerGunCharge < MAX_GUN_CHARGE) {
         // Charge up the gun
-        spaceShip.gunCharge++;
+        playerGunCharge++;
       }
     }
 
@@ -579,7 +614,7 @@ void playGame() {
 
 void drawGunTemp() {
   arduboy.drawRect(40, 1, 40, 5, 1);
-  arduboy.fillRect(40, 1, (spaceShip.gunCharge >= MAX_GUN_CHARGE ? MAX_GUN_CHARGE : spaceShip.gunCharge), 5, 1);
+  arduboy.fillRect(40, 1, (playerGunCharge >= MAX_GUN_CHARGE ? MAX_GUN_CHARGE : playerGunCharge), 5, 1);
 }
 
 void drawScore() {
@@ -602,49 +637,49 @@ void drawLives() {
 }
 
 void drawPlayerShip() {
-  if (spaceShip.dying == 0) {
-    if (arduboy.pressed(RIGHT_BUTTON) && (spaceShip.x < MAX_PLAYER_SHIP_X)) {
-      spaceShip.x++;
+  if (playerDying == 0) {
+    if (arduboy.pressed(RIGHT_BUTTON) && (playerX < MAX_PLAYER_SHIP_X)) {
+      playerX++;
     }
   
-    if (arduboy.pressed(LEFT_BUTTON) && (spaceShip.x > MIN_PLAYER_SHIP_X)) {
-      spaceShip.x--;
+    if (arduboy.pressed(LEFT_BUTTON) && (playerX > MIN_PLAYER_SHIP_X)) {
+      playerX--;
     }
   
     if (arduboy.pressed(UP_BUTTON)) {
-      if (spaceShip.y > MIN_SHIP_Y) {
-        spaceShip.y--;
+      if (playerY > MIN_SHIP_Y) {
+        playerY--;
       }
       if (arduboy.everyXFrames(9)) {
-        if (spaceShip.frame > 0) {
-          spaceShip.frame--;
+        if (playerFrame > 0) {
+          playerFrame--;
         }
       }
     }
   
     if (arduboy.pressed(DOWN_BUTTON)) {
-      if (spaceShip.y < MAX_SHIP_Y)  {
-        spaceShip.y++;
+      if (playerY < MAX_SHIP_Y)  {
+        playerY++;
       }
       if (arduboy.everyXFrames(9)) {
-        spaceShip.frame++;
+        playerFrame++;
       }
-      if (spaceShip.frame > 4) {
-        spaceShip.frame = 4;
+      if (playerFrame > 4) {
+        playerFrame = 4;
       }
     }
   
     if (arduboy.pressed(A_BUTTON)) {
-      if ((inGameFrame > 80) && (inGameAButtonLastPress < (inGameFrame - 75)) && (spaceShip.gunCharge >= GUN_SHOT_COST)) {
+      if ((inGameFrame > 80) && (inGameAButtonLastPress < (inGameFrame - 75)) && (playerGunCharge >= GUN_SHOT_COST)) {
         inGameAButtonLastPress = inGameFrame;
         // Fire A weapon (single fire) if weapon isn't too hot
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
           if (!playerBullets[i].isVisible()) {
-            playerBullets[i].set(spaceShip.x, (spaceShip.y + 5), true, A_BULLET_DAMAGE, 2.5, false);
-            if (spaceShip.gunCharge > GUN_SHOT_COST) {
-              spaceShip.gunCharge -= GUN_SHOT_COST;
+            playerBullets[i].set(playerX, (playerY + 5), true, A_BULLET_DAMAGE, 2.5, false);
+            if (playerGunCharge > GUN_SHOT_COST) {
+              playerGunCharge -= GUN_SHOT_COST;
             } else {
-              spaceShip.gunCharge = 0;
+              playerGunCharge = 0;
             }
             break;
           }
@@ -659,7 +694,7 @@ void drawPlayerShip() {
         // Fire B weapon (rapid fire)
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
           if (inGameBButtonLastPress > 80 && !playerBullets[i].isVisible()) {
-            playerBullets[i].set(spaceShip.x, (spaceShip.y + 7), true, B_BULLET_DAMAGE, 3, false);
+            playerBullets[i].set(playerX, (playerY + 7), true, B_BULLET_DAMAGE, 3, false);
             break;
           }
         }
@@ -668,11 +703,11 @@ void drawPlayerShip() {
   
     if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON)) {
       if (arduboy.everyXFrames(12)) {
-        if (spaceShip.frame > 2) {
-          spaceShip.frame--;
+        if (playerFrame > 2) {
+          playerFrame--;
         }
-        if (spaceShip.frame < 2) {
-          spaceShip.frame++;
+        if (playerFrame < 2) {
+          playerFrame++;
         }
       }
     }
@@ -680,25 +715,25 @@ void drawPlayerShip() {
     if ((inGameLastDeath > 0) && (inGameLastDeath > (inGameFrame - 450))) {
       if (!(inGameFrame % 3)) {
         // Blink ship
-        drawBitmap(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
+        drawBitmap(playerX, playerY, playerShip, playerFrame);
       }
     } else {
-      drawBitmap(spaceShip.x, spaceShip.y, playerShip, spaceShip.frame);
+      drawBitmap(playerX, playerY, playerShip, playerFrame);
     }
 
     
   } else {
-    arduboy.drawCircle(spaceShip.x, spaceShip.y, spaceShip.dying , 1);
+    arduboy.drawCircle(playerX, playerY, playerDying , 1);
     
 //    int tone = ;
-    playTone((spaceShip.dying % 2 == 0) ? (400 + spaceShip.dying * 2) : (600 - spaceShip.dying * 2), 10);
+    playTone((playerDying % 2 == 0) ? (400 + playerDying * 2) : (600 - playerDying * 2), 10);
 //    arduboy.tunes.tone(tone, 10);
 
-    if (spaceShip.dying < 65) {
-      spaceShip.dying++;
+    if (playerDying < 65) {
+      playerDying++;
     } else {
       livesRemaining--;
-      spaceShip.reset();
+      resetPlayer();
     }
   }
 }
@@ -717,14 +752,14 @@ void updateEnemies(boolean stopSpawningEnemies) {
 
 void handleEnemyBullets() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
-    if ((enemies[i].bullets[0].isVisible()) && (enemies[i].bullets[0].isHittingObject(spaceShip.x, spaceShip.y, PLAYER_SIZE, PLAYER_SIZE))) {
+    if ((enemies[i].bullets[0].isVisible()) && (enemies[i].bullets[0].isHittingObject(playerX, playerY, PLAYER_SIZE, PLAYER_SIZE))) {
       // Hit Player
       enemies[i].bullets[0].hide();
 
       // Doesn't count if player recently died
       if (inGameLastDeath < (inGameFrame - 450)) {
         inGameLastDeath = inGameFrame;
-        spaceShip.dying = 1;
+        playerDying = 1;
       }
     }
   }
@@ -733,14 +768,14 @@ void handleEnemyBullets() {
 void handleBossBullets() {
   if (isBossAlive) {
     for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
-      if ((boss.bullets[i].isVisible()) && (boss.bullets[i].isHittingObject(spaceShip.x, spaceShip.y, PLAYER_SIZE, PLAYER_SIZE))) {
+      if ((boss.bullets[i].isVisible()) && (boss.bullets[i].isHittingObject(playerX, playerY, PLAYER_SIZE, PLAYER_SIZE))) {
         // Hit Player
         boss.bullets[i].hide();
   
         // Doesn't count if player recently died
         if (inGameLastDeath < (inGameFrame - 450)) {
           inGameLastDeath = inGameFrame;
-          spaceShip.dying = 1;
+          playerDying = 1;
         }
       }
     }
@@ -983,7 +1018,7 @@ boolean shouldPlayBButtonTone() {
 void setup() {
   arduboy.beginNoLogo();
   introScreen();
-  spaceShip.reset();
+  resetPlayer();
   createStarFieldVals();
 }
 
