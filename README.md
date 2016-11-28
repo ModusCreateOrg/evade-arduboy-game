@@ -49,12 +49,16 @@ Alternatively:
 
 Further information on how to unbrick it [here](http://community.arduboy.com/t/how-to-reset-arduboy-if-its-bricked/807).
 
+## Image Conversion
+
+We used [this tool](https://github.com/yyyc514/img2ard) to convert images.  It has its own documentation.
+
 ## Resources
 
 * Start learning with the [Arduboy Quick Start](http://community.arduboy.com/t/arduboy-quick-start-guide/725)
 * [Arduboy Library](https://github.com/Arduboy/Arduboy/tree/master/src) - not much for documentation but reading the source shows what it does
 * [Some documentation for Arduboy Library](https://asmcbain.net/projects/arduboy/docs/1.2/api/index.html#arduboy)
-* [Image Encoding Utility](http://www.andrewlowndes.co.uk/blog/graphics/arduboy-image-converter)
+* [Image Encoding Utility](http://www.andrewlowndes.co.uk/blog/graphics/arduboy-image-converter) - we didn't use this one in the end
 * [Reset Procedure if you brick device](https://www.youtube.com/watch?v=l1ifTSq0VK4)
 * [Information about Memory](https://www.arduino.cc/en/Tutorial/Memory) we are space constrained and need to pay attention to this
 * [Information on use of PROGMEM](https://www.arduino.cc/en/Reference/PROGMEM)
