@@ -158,7 +158,7 @@ void introScreen() {
 
 byte titleScreen() {
   byte selectedItem = TITLE_PLAY_GAME;
-  unsigned short totalDelay = 0;
+  unsigned long totalDelay = 0;
   long lastDebounceTime = millis();  // the last time the button was pressed
   
   arduboy.clear();
@@ -204,8 +204,6 @@ byte titleScreen() {
       }
     }
   
-
-//    delay(40);
     totalDelay ++;
 
   }
