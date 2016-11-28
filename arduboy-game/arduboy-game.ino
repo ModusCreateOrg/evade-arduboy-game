@@ -102,6 +102,7 @@ char textBuf[23];
 
 
 void playMusic(byte song) {
+  return;
     if (! soundOn) {
       return;
     }
@@ -278,7 +279,7 @@ void highScoreScreen() {
     strncpy(hiScore, highScoreTable + (((9 * i) + 3) * sizeof(char)), 6);
     hiScore[6] = '\0';
     sprintf(textBuf, "%d.  %s  %s", i + 1, hiScore, hiInitials);
-    printText(textBuf, 15, 21 + (12 * i), 1);
+    printText(textBuf, 15, 26 + (12 * i), 1);
   }
 
   arduboy.display();
@@ -934,8 +935,7 @@ void newHighScoreScreen(byte newHiPos) {
   if (newHiPos < 2) {
     // shuffle existing results around
 
-    // TODO these need adjusting!
-    for (currPos = 26; currPos > (9 * newHiPos); currPos--) {
+    for (currPos = 17; currPos > (9 * newHiPos); currPos--) {
       highScoreTable[currPos + 9] = highScoreTable[currPos];
     }
   }
