@@ -264,7 +264,6 @@ byte titleMenuRightButton(byte selectedItem) {
 }
 
 void highScoreScreen() {
-  long lastDebounceTime = millis();
   unsigned short totalDelay = 0;
   char hiInitials[4];
   char hiScore[7];
@@ -282,6 +281,9 @@ void highScoreScreen() {
   }
 
   arduboy.display();
+
+  unsigned long lastDebounceTime = millis();
+
   while (totalDelay < 4000) {
     unsigned long currentMilliseconds = millis();
     
