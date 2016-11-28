@@ -26,6 +26,7 @@ void playTone(byte tone, byte duration) {
 
 #define DEBOUNCE_DELAY 100
 #define MAX_LIVES 4
+#define NUM_HIGH_SCORES 3
 #define NUM_STARS 15
 #define NOT_NEW_HI_SCORE 5
 
@@ -64,7 +65,7 @@ void resetPlayer() {
 //};
 
 // TODO highScoreTable should be replaced with table in EEPROM
-char *highScoreTable = "AAA000400BBB000300CCC000200DDD000100";
+char *highScoreTable = "AAA000300BBB000200CCC000100";
 
 unsigned long inGameAButtonLastPress, inGameBButtonLastPress, inGameLastDeath, score;
 byte livesRemaining = MAX_LIVES;
@@ -265,7 +266,6 @@ byte titleMenuRightButton(byte selectedItem) {
 }
 
 void highScoreScreen() {
-  // TODO, this is placeholder 
   long lastDebounceTime = millis();
   unsigned short totalDelay = 0;
   char hiInitials[4];
@@ -274,7 +274,7 @@ void highScoreScreen() {
   arduboy.clear();
   printText("HI SCORES", 8, 1, 2);
 
-  for (byte i = 0; i < 4; i++) {
+  for (byte i = 0; i < NUM_HIGH_SCORES; i++) {
     strncpy(hiInitials, highScoreTable + ((9 * i) * sizeof(char)), 3);
     hiInitials[3] = '\0';
     strncpy(hiScore, highScoreTable + (((9 * i) + 3) * sizeof(char)), 6);
@@ -843,7 +843,7 @@ void drawHighScoreEntryCursor(byte pos) {
 byte isNewHighScore() {
   char hiScore[7];
   hiScore[6] = '\0';
-  for (byte i = 0; i < 4; i++) {
+  for (byte i = 0; i < NUM_HIGH_SCORES; i++) {
     strncpy(hiScore, highScoreTable + ((9 * i) + 3), 6);
     if (score > strtol(hiScore, NULL, 10)) {
        return i;
@@ -933,8 +933,10 @@ void newHighScoreScreen(byte newHiPos) {
   // Store the new high score, newHiPos == 0 is highest score
   sprintf(textBuf, "%c%c%c%06d", currInitials[0], currInitials[1], currInitials[2], score);
 
-  if (newHiPos < 3) {
+  if (newHiPos < 2) {
     // shuffle existing results around
+
+    // TODO these need adjusting!
     for (currPos = 26; currPos > (9 * newHiPos); currPos--) {
       highScoreTable[currPos + 9] = highScoreTable[currPos];
     }
