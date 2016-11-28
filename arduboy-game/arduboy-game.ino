@@ -102,7 +102,6 @@ char textBuf[23];
 
 
 void playMusic(byte song) {
-  return;
     if (! soundOn) {
       return;
     }
