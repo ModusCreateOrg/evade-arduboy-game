@@ -65,7 +65,7 @@ void resetPlayer() {
 //};
 
 // TODO highScoreTable should be replaced with table in EEPROM
-char *highScoreTable = "AAA000300BBB000200CCC000100";
+char highScoreTable[27] = "AAA000300BBB000200CCC000100";
 
 unsigned long inGameAButtonLastPress, inGameBButtonLastPress, inGameLastDeath, score;
 byte livesRemaining = MAX_LIVES;
@@ -854,7 +854,7 @@ byte isNewHighScore() {
 void newHighScoreScreen(byte newHiPos) {
   long lastDebounceTime = millis();
   bool allDone = false;
-  unsigned short currPos = 0;
+  short currPos = 0;
   byte currInitials[] = {65, 65, 65};
   
   arduboy.clear();
@@ -935,7 +935,7 @@ void newHighScoreScreen(byte newHiPos) {
   if (newHiPos < 2) {
     // shuffle existing results around
 
-    for (currPos = 17; currPos > (9 * newHiPos); currPos--) {
+    for (currPos = 17; currPos >= (9 * newHiPos); currPos--) {
       highScoreTable[currPos + 9] = highScoreTable[currPos];
     }
   }
