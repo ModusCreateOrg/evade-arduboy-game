@@ -271,8 +271,10 @@ void highScoreScreen() {
   char hiScore[7];
 
   arduboy.clear();
-  printText("HI SCORES", 8, 1, 2);
-
+  
+  printText("HIGH", 0, 1, 2);
+  printText("SCORES", 58, 1, 2);
+  
   for (byte i = 0; i < NUM_HIGH_SCORES; i++) {
     strncpy(hiInitials, highScoreTable + ((9 * i) * sizeof(char)), 3);
     hiInitials[3] = '\0';
