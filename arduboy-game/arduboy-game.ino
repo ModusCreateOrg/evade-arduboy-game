@@ -163,10 +163,10 @@ byte titleScreen() {
 //  drawBitmap(4, 51, titleMenuOptions, 0);
 
 
-  drawChrs(4, 51, titleScreenText1, 20);
-  drawChrs(30, 51, titleScreenText2, 20);
-  drawChrs(76, 51, titleScreenText3, 20);
-  arduboy.drawRect(2, 48, 29, 12, 1);
+  drawChrs(4, 51, titleScreenText1, 30);
+  drawChrs(34, 51, titleScreenText2, 30);
+  drawChrs(79, 51, titleScreenText3, 30);
+  arduboy.drawRect(2, 48, 28, 12, 1);
   arduboy.display();
 
 //  playMusic(5);
@@ -223,15 +223,15 @@ byte titleMenuLeftButton(byte selectedItem) {
   */
   switch (selectedItem) {
     case TITLE_SETTINGS:
-      arduboy.drawRect(76, 48, 51, 12, 0);
-      arduboy.drawRect(30, 48, 45, 12, 1);
+      arduboy.drawRect(77, 48, 50, 12, 0);
+      arduboy.drawRect(32, 48, 42, 12, 1);
       arduboy.display();
       return TITLE_CREDITS;
       break;
 
     case TITLE_CREDITS:
-      arduboy.drawRect(30, 48, 45, 12, 0);
-      arduboy.drawRect(2, 48, 29, 12, 1);
+      arduboy.drawRect(32, 48, 42, 12, 0);
+      arduboy.drawRect(2, 48, 28, 12, 1);
       arduboy.display();
       return  TITLE_PLAY_GAME;
       break;
@@ -248,15 +248,15 @@ byte titleMenuRightButton(byte selectedItem) {
   */
   switch (selectedItem) {
     case TITLE_PLAY_GAME:
-      arduboy.drawRect(2, 48, 29, 12, 0);
-      arduboy.drawRect(30, 48, 45, 12, 1);
+      arduboy.drawRect(2, 48, 28, 12, 0);
+      arduboy.drawRect(32, 48, 42, 12, 1);
       arduboy.display();
       return TITLE_CREDITS;
       break;
 
     case TITLE_CREDITS:
-      arduboy.drawRect(30, 48, 45, 12, 0);
-      arduboy.drawRect(76, 48, 51, 12, 1);
+      arduboy.drawRect(32, 48, 42, 12, 0);
+      arduboy.drawRect(77, 48, 50, 12, 1);
       arduboy.display();
       return TITLE_SETTINGS;
       break;
