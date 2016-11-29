@@ -162,6 +162,7 @@ byte titleScreen() {
   // TODO: Repalce w/ drawChr();
 //  drawBitmap(4, 51, titleMenuOptions, 0);
 
+
   drawChrs(4, 51, titleScreenText1, 20);
   drawChrs(30, 51, titleScreenText2, 20);
   drawChrs(76, 51, titleScreenText3, 20);
@@ -640,12 +641,14 @@ void drawPlayerShip() {
         // Fire A weapon (single fire) if weapon isn't too hot
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
           if (!playerBullets[i].isVisible()) {
-            playerBullets[i].set(playerX, (playerY + 5), true, A_BULLET_DAMAGE, 2.5, false);
+            playerBullets[i].set(playerX + 16, playerY + 4, true, A_BULLET_DAMAGE, 2.5, false);
+
             if (playerGunCharge > GUN_SHOT_COST) {
               playerGunCharge -= GUN_SHOT_COST;
             } else {
               playerGunCharge = 0;
             }
+            
             break;
           }
         }
@@ -660,7 +663,7 @@ void drawPlayerShip() {
         bool isGreater = inGameBButtonLastPress > 80;
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
           if (isGreater && !playerBullets[i].isVisible()) {
-            playerBullets[i].set(playerX, (playerY + 7), true, B_BULLET_DAMAGE, 3, false);
+            playerBullets[i].set(playerX + 16, playerY + 7, true, B_BULLET_DAMAGE, 3, false);
             break;
           }
         }
