@@ -39,39 +39,43 @@ struct Enemy {
     if (random(2)) {
       options ^= 1 << 1;
     }
+
+    width = 16;
+    height = 16;
+    difficulty = 4;
     
     if (type < 5) {
       difficulty = 1;
       bitmap = enemy1;
       health = 25;
-      width = 16;
-      height = 16;
+//      width = 16;
+//      height = 16;
     } else if (type < 9) {
       difficulty = 2;
       bitmap = enemy2;
       health = 150;
-      width = 16;
-      height = 16;
+//      width = 16;
+//      height = 16;
     } else if (type == 9) {
-      difficulty = 4;
+//      difficulty = 4;
       bitmap = enemy3;
       health = 500;
-      width = 16;
-      height = 16;
+//      width = 16;
+//      height = 16;
     } else if (type == 128) {
       difficulty = 4;
-      bitmap = boss1;
+//      bitmap = boss1;
       health = 1000;
       width = 32;
-      height = 16;
+//      height = 16;
     } else if (type == 129) {
       difficulty = 4;
       bitmap = boss2;
       health = 2000;
       width = 32;
-      height = 16;
+//      height = 16;
     } else if (type == 130) {
-      difficulty = 4;
+//      difficulty = 4;
       bitmap = boss3;
       health = 3000;
       width = 59;
