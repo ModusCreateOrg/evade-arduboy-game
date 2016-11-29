@@ -54,11 +54,15 @@ struct Bullet {
         }
       } else {
         x -= speedX;
-        if ((!isLaserBeam()) && (x <= 0)) {
+        bool isLaser = isLaserBeam();        
+        if ((! isLaser) && (x <= 0)) {
           hide();
-        } else if ((isLaserBeam()) && (x <= -30)) {
+        } else if (isLaser && (x <= -30)) {
           hide();
         }
+//        if (x <= -30) {
+//          hide();
+//        }
       }
     
     }
