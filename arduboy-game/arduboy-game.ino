@@ -628,11 +628,13 @@ void drawPlayerShip() {
         playerY++;
       }
       if (every9Frames) {
-        playerFrame++;
+        if (playerFrame < 4) {
+          playerFrame++;
+        }
       }
-      if (playerFrame > 4) {
-        playerFrame = 4;
-      }
+//      if (playerFrame > 4) {
+//        playerFrame = 4;
+//      }
     }
   
     if (arduboy.pressed(A_BUTTON)) {
