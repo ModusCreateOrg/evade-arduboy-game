@@ -160,8 +160,12 @@ byte titleScreen() {
   
 
   // TODO: Repalce w/ drawChr();
-  drawBitmap(4, 51, titleMenuOptions, 0);
-  arduboy.drawRect(2, 48, 26, 12, 1);
+//  drawBitmap(4, 51, titleMenuOptions, 0);
+
+  drawChrs(4, 51, titleScreenText1, 20);
+  drawChrs(30, 51, titleScreenText2, 20);
+  drawChrs(76, 51, titleScreenText3, 20);
+  arduboy.drawRect(2, 48, 29, 12, 1);
   arduboy.display();
 
 //  playMusic(5);
@@ -226,7 +230,7 @@ byte titleMenuLeftButton(byte selectedItem) {
 
     case TITLE_CREDITS:
       arduboy.drawRect(30, 48, 45, 12, 0);
-      arduboy.drawRect(2, 48, 26, 12, 1);
+      arduboy.drawRect(2, 48, 29, 12, 1);
       arduboy.display();
       return  TITLE_PLAY_GAME;
       break;
@@ -243,7 +247,7 @@ byte titleMenuRightButton(byte selectedItem) {
   */
   switch (selectedItem) {
     case TITLE_PLAY_GAME:
-      arduboy.drawRect(2, 48, 26, 12, 0);
+      arduboy.drawRect(2, 48, 29, 12, 0);
       arduboy.drawRect(30, 48, 45, 12, 1);
       arduboy.display();
       return TITLE_CREDITS;

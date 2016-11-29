@@ -17,7 +17,7 @@
 #define MAX_ENEMY_SHIP_X 112
 
 // Time before title screen flips to high score screen
-#define ATTRACT_MODE_TIMEOUT 400000
+#define ATTRACT_MODE_TIMEOUT 900000
 
 // Title screen outcomes
 #define TITLE_CREDITS 0

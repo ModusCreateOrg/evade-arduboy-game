@@ -3,29 +3,90 @@
 
 // Credits screen
 
-//#define NUM_CREDITS 12
-//
-//PROGMEM const char credits0[] = "CREDITS";
-//PROGMEM const char credits1[] = "Capn: J. Garcia";
-//PROGMEM const char credits2[] = "Medic: S. Prickett";
-//PROGMEM const char credits3[] = "Lt: S. Bershadskiy"; 
-//PROGMEM const char credits4[] = "Helm: A. Owen"; 
-//PROGMEM const char credits5[] = "Hologram: A. Dennis"; 
-//PROGMEM const char credits6[] = "Gunner: T. Eagan"; 
-//PROGMEM const char credits7[] = "Tech: D. Griffith"; 
-//PROGMEM const char credits8[] = "Loadmaster: JD. Jones"; 
-//PROGMEM const char credits9[] = "Purser: J. Van Dalen"; 
-//PROGMEM const char credits10[] = "Ngnrng: L. Still"; 
-//PROGMEM const char credits11[] = "Comms: M. McCants";
-//
-//PROGMEM const char * const credits[] = {
-//  credits0, credits1, credits2, credits3, credits4, credits5, credits6, credits7, credits8, credits9, credits10, credits11
-//};
+/*  JAVASCRIPT To generate this stuff below: (Paste in JSFIddle.net)
+var map = {
+    'A' : 0,
+    'B' : 1,
+    'C' : 2,
+    'D' : 3,
+    'E' : 4,
+    'F' : 5,
+    'G' : 6,
+    'H' : 7,
+    'I' : 8,
+    'J' : 9,
+    'K' : 10,
+    'L' : 11,
+    'M' : 12,
+    'N' : 13,
+    'O' : 14,
+    'P' : 15,
+    'Q' : 16,
+    'R' : 17,
+    'S' : 18,
+    'T' : 19,
+    'U' : 20,
+    'V' : 21,
+    'W' : 22,
+    'X' : 23,
+    'Y' : 24,
+    'Z' : 25,
+    ':' : 26,
+    '.' : 27,
+    ' ' : 255
+}
+
+var credits = [
+     "CREDITS:",
+     "Jay Garcia",
+     "Simon Prickett",
+     "Stan Bershadskiy", 
+     "Andrew Owen", 
+     "Andrew Dennis", 
+     "Timothy Eagan", 
+     "Drew Griffith", 
+     "JD Jones", 
+     "Jonathan Van Dalen", 
+     "Lucas Still", 
+     "Matt McCants",
+     "Play",
+     "Settings",
+     "Credits"
+]
+
+var x = 0;
+
+var endStr = '\n\n';
+
+credits.forEach(function(creditStr, index) {
+  creditStr = creditStr.toUpperCase();
+    
+    var header = `\n\n//${creditStr}\nPROGMEM const uint8_t credits${index}[] = {\n`,
+      outStr = '';
+    creditStr = creditStr.split('');
+    
+    
+    creditStr.forEach(function(str) {
+      if (outStr.length > 0) {
+          outStr += ', '; 
+        }
+      outStr += map[str];
+    });
+    
+    outStr = creditStr.length +',// Number characters\n' + outStr + '\n};';
+    
+    //console.log(header, outStr)
+    endStr += (header + outStr);
+    
+})
+
+console.log(endStr);
 
 
 
-//CREDITS:
-
+   
+ 
+ */
 
 //CREDITS:
 PROGMEM const uint8_t credits0[] = {
@@ -99,5 +160,26 @@ PROGMEM const uint8_t credits11[] = {
 12, 0, 19, 19, 255, 12, 2, 2, 0, 13, 19, 18
 };
 
+
+
+//PLAY
+PROGMEM const uint8_t titleScreenText1[] = {
+4,// Number characters
+15, 11, 0, 24
+};
+
+//CREDITS
+PROGMEM const uint8_t titleScreenText2[] = {
+7,// Number characters
+2, 17, 4, 3, 8, 19, 18
+};
+
+
+
+//SETTINGS
+PROGMEM const uint8_t titleScreenText3[] = {
+8,// Number characters
+18, 4, 19, 19, 8, 13, 6, 18
+};
 
 #endif
