@@ -147,7 +147,15 @@ byte titleScreen() {
   long lastDebounceTime = millis();  // the last time the button was pressed
   
   arduboy.clear();
-  drawBitmap(4, 14, title, 0);
+  //drawBitmap(4, 14, title, 0);
+  drawBitmap(4, 14, title_letter_e, 0);
+  drawBitmap(34, 14, title_letter_v, 0);
+  drawBitmap(44, 14, title_letter_a, 0);
+  drawBitmap(54, 14, title_letter_d, 0);
+  drawBitmap(64, 14, title_letter_e, 0);
+
+  drawBitmap(80, 14, title_planet, 0);
+
   drawBitmap(4, 51, titleMenuOptions, 0);
   arduboy.drawRect(2, 48, 26, 12, 1);
   arduboy.display();
