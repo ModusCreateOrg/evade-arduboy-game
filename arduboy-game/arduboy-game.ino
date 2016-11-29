@@ -23,6 +23,7 @@ void playTone(byte tone, byte duration) {
 #include <inttypes.h>
 #include <Arduino.h>
 #include <avr/pgmspace.h>
+#include <EEPROM.h>
 
 #define DEBOUNCE_DELAY 100
 #define MAX_LIVES 4
@@ -945,6 +946,14 @@ void newHighScoreScreen(byte newHiPos) {
   for (currPos = 0; currPos < 9; currPos++) {
     highScoreTable[currPos + (9 * newHiPos)] = textBuf[currPos];
   }
+
+  persistHighScoreTable();
+}
+
+void persistHighScoreTable() {
+  for (byte i = 0; i < 27; i++) {
+    EEPROM.write(i + 2, highScoreTable[i]);
+  }
 }
 
 void createStarFieldVals() {
@@ -1018,6 +1027,21 @@ boolean shouldPlayBButtonTone() {
 // Initialization runs once only
 void setup() {
   arduboy.beginNoLogo();
+
+  // Check for hi scores in EEPROM
+  if (EEPROM.read(0) == 254 && EEPROM.read(1) == 253) {
+    // Scores were in EEPROM
+    for (byte i = 0; i < 27; i++) {
+      highScoreTable[i] = EEPROM.read(i + 2);
+    }
+  } else {
+    persistHighScoreTable();
+
+    // And write initial signature
+    EEPROM.write(0, 254);
+    EEPROM.write(1, 253);
+  }
+ 
   introScreen();
   resetPlayer();
   createStarFieldVals();
