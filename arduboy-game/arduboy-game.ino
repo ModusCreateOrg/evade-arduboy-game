@@ -27,7 +27,7 @@ void playTone(byte tone, byte duration) {
 #include <EEPROM.h>
 
 #define DEBOUNCE_DELAY 100
-#define MAX_LIVES 4
+#define MAX_LIVES 5
 #define NUM_HIGH_SCORES 3
 #define NUM_STARS 15
 #define NOT_NEW_HI_SCORE 5
@@ -514,7 +514,7 @@ void playGame() {
     }
 
     if (!isBossAlive) {
-      if ((score >= 5000) && (spawnedBoss < 1)) {
+      if ((score >= 50) && (spawnedBoss < 1)) {
         if (!enemiesAlive) {
           boss.set(129, 28, 128);
           spawnedBoss = 1;
@@ -790,14 +790,18 @@ void handlePlayerBullets() {
 void gameOverScreen() {
   arduboy.tunes.stopScore();
   arduboy.clear();
-  drawBitmap(0, 23, gameOver, 0);
-  arduboy.drawFastHLine(0, 63, 36, 1);
-  printText("GAME", 40, 0, 2);
-  printText("OVER", 40, 40, 2);
-//  printText("dreams are lost!", 20, 50, 1);
+//  drawBitmap(0, 23, gameOver, 0);
+  playMusic(4); 
+
+//  arduboy.drawFastHLine(0, 63, 36, 1);
+  printText("GAME", 40, 15, 2);
+  arduboy.display();
+  delay(1000);
+
+  printText("OVER", 40, 35, 2);
   arduboy.display();
 
-  playMusic(4); 
+//  playMusic(4); 
   delay(4500);
 }
 
