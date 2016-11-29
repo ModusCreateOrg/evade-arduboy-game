@@ -59,8 +59,8 @@ PROGMEM const unsigned char E[] = {
 // 4x5
 PROGMEM const unsigned char F[] = {
 // width, height
-4, 5,
-0x1F, 0x00, 0x06, 0x06
+4, 6,
+0x3F, 0x01, 0x0D, 0x0D
 
 };
 
