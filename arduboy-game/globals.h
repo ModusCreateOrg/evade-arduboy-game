@@ -5,11 +5,11 @@
 #define GLOBALS_H
 
 // Define limits that ship movement is bounded by
-#define MIN_SHIP_Y 9
+#define MIN_SHIP_Y 8
 #define MAX_SHIP_Y 48
 
 // Define limits that player ship movement is bounded by
-#define MIN_PLAYER_SHIP_X 2
+#define MIN_PLAYER_SHIP_X 0
 #define MAX_PLAYER_SHIP_X 27 // allows 16 for ship width
 
 // Define limits that enemy ship movement is bounded by

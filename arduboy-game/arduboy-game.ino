@@ -42,7 +42,7 @@ byte playerX,
      playerGunCharge;
 
 void resetPlayer() {
-    playerX = 2;
+    playerX = MIN_PLAYER_SHIP_X;
     playerY = 32;
     playerFrame = 2;
     playerDying = 0;
@@ -940,7 +940,7 @@ void resetPlayerBullets() {
 
 void setStarValuesForIndex(byte i) {
   starX[i] = random(250);
-  starY[i] = random(75);
+  starY[i] = random(11, 64);
   starWidth[i] = random(1, 4);  
 
   if (starWidth[i] >= 3) {
@@ -962,7 +962,7 @@ void updateStarFieldVals() {
     if (starX[i] < -1) {
       setStarValuesForIndex(i);
       starX[i] = 128 + random(20);
-      starY[i] = random(10, 64);
+      starY[i] = random(11, 64);
     }   
     else {
       starX[i] -= starSpeed[i];
