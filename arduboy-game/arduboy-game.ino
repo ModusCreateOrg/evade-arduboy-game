@@ -102,6 +102,7 @@ char textBuf[23];
 
 
 void playMusic(byte song) {
+  return; // SIMON
     if (! soundOn) {
       return;
     }
@@ -128,6 +129,9 @@ void playMusic(byte song) {
       break;
       case 5 : 
         music = titleMusic;
+      break;
+      case 6 :
+        music = youWin;
       break;
     }
     
@@ -516,6 +520,7 @@ void playGame() {
   resetPlayer();
   isBossAlive = false;
   byte spawnedBoss = 0;
+  byte currentIteration = 1;
 
   resetEnemies();
   resetBoss();
@@ -550,7 +555,7 @@ void playGame() {
     }
 
     if (!isBossAlive) {
-      if ((score >= 5000) && (spawnedBoss < 1)) {
+      if ((score >= (5000 * currentIteration)) && (spawnedBoss < 1)) { // 5000
         if (!enemiesAlive) {
           boss.set(129, 28, 128);
           spawnedBoss = 1;
@@ -558,7 +563,7 @@ void playGame() {
         } else {
           stopSpawningEnemies = true;
         }
-      } else if ((score >= 12000) && (spawnedBoss < 2)) {
+      } else if ((score >= (12000 * currentIteration)) && (spawnedBoss < 2)) { // 12000
         if (!enemiesAlive) {
           boss.set(129, 24, 129);
           spawnedBoss = 2;
@@ -566,7 +571,7 @@ void playGame() {
         } else {
           stopSpawningEnemies = true;
         }
-      } else if ((score >= 20000) && (spawnedBoss < 3)) {
+      } else if ((score >= (20000 * currentIteration)) && (spawnedBoss < 3)) { // 20000
         if (!enemiesAlive) {
           boss.set(129, 10, 130);
           spawnedBoss = 3;
@@ -601,11 +606,24 @@ void playGame() {
 
     updateStarFieldVals();
 
-    handlePlayerBullets();
+    if (handlePlayerBullets()) {
+      playerWinsScreen();
+
+      // Reset which boss spawns for next iteration
+      spawnedBoss = 0;
+
+      // Give the player their lives back, end any dying sequence etx
+      livesRemaining = MAX_LIVES;
+      resetPlayer();
+
+      // Set them on the next iteration
+      currentIteration = (currentIteration == 254 ? 0 : currentIteration + 1);
+    }
+    
     handleEnemyBullets();
     handleBossBullets();
       
-     playMusic(isBossAlive ? 3 : 2);
+    playMusic(isBossAlive ? 3 : 2);
 
   }
 
@@ -732,7 +750,7 @@ void drawPlayerShip() {
     if (playerDying < 65) {
       playerDying++;
     } else {
-      livesRemaining--;
+      //livesRemaining--;  SIMON
       resetPlayer();
     }
   }
@@ -782,7 +800,7 @@ void handleBossBullets() {
   }
 }
 
-void handlePlayerBullets() {
+boolean handlePlayerBullets() {
   for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
     if (playerBullets[i].isVisible()) {
       if (isBossAlive) {
@@ -799,6 +817,10 @@ void handlePlayerBullets() {
               boss.bullets[j].hide();
             }
             score += 500;
+
+            if (boss.type == 130) {
+              return true;
+            }
           }
         }
       } else {
@@ -822,6 +844,24 @@ void handlePlayerBullets() {
       }
     }
   }
+
+  return false;
+}
+
+void playerWinsScreen() {
+  arduboy.tunes.stopScore();
+  arduboy.clear();
+
+  // Temp
+  printText("YOU WIN", 20, 15, 2);
+
+  // TODO display stuff
+  arduboy.display();
+  
+  // Play the you win music  
+  playMusic(6);
+
+  delay(4500);
 }
 
 void gameOverScreen() {
