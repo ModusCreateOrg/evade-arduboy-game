@@ -520,7 +520,7 @@ void playGame() {
   resetPlayer();
   isBossAlive = false;
   byte spawnedBoss = 0;
-  byte currentIteration = 1;
+  byte currentIteration = 0;
 
   resetEnemies();
   resetBoss();
@@ -545,7 +545,6 @@ void playGame() {
     drawScore();
     drawPlayerShip();
 
-
     boolean enemiesAlive = false;
     for (byte i = 0; i < MAX_ENEMIES; i++) {
       if ( enemies[i].isAlive() ) {
@@ -555,7 +554,7 @@ void playGame() {
     }
 
     if (!isBossAlive) {
-      if ((score >= (5000 * currentIteration)) && (spawnedBoss < 1)) { // 5000
+      if ((score >= 5000 + (currentIteration * 20000)) && (spawnedBoss < 1)) { // 5000
         if (!enemiesAlive) {
           boss.set(129, 28, 128);
           spawnedBoss = 1;
@@ -563,7 +562,7 @@ void playGame() {
         } else {
           stopSpawningEnemies = true;
         }
-      } else if ((score >= (12000 * currentIteration)) && (spawnedBoss < 2)) { // 12000
+      } else if ((score >= (12000 + (currentIteration * 20000))) && (spawnedBoss < 2)) { // 12000
         if (!enemiesAlive) {
           boss.set(129, 24, 129);
           spawnedBoss = 2;
@@ -571,7 +570,7 @@ void playGame() {
         } else {
           stopSpawningEnemies = true;
         }
-      } else if ((score >= (20000 * currentIteration)) && (spawnedBoss < 3)) { // 20000
+      } else if ((score >= (20000 + (currentIteration * 20000))) && (spawnedBoss < 3)) { // 20000
         if (!enemiesAlive) {
           boss.set(129, 10, 130);
           spawnedBoss = 3;
