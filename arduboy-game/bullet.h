@@ -6,7 +6,6 @@
 
 #include "globals.h"
 #include "bitmaps.h"
-#include "bullet.h"
 
 #define A_BULLET_DAMAGE 75
 #define B_BULLET_DAMAGE 40
@@ -54,9 +53,13 @@ struct Bullet {
         }
       } else {
         x -= speedX;
-        if ((!isLaserBeam()) && (x <= 0)) {
-          hide();
-        } else if ((isLaserBeam()) && (x <= -30)) {
+
+//        if ((! isLaserBeam()) && (x <= 0)) {
+//          hide();
+//        } else if (isLaserBeam() && (x <= -30)) {
+//          hide();
+//        }
+        if (x <= -30) {
           hide();
         }
       }
@@ -68,7 +71,7 @@ struct Bullet {
         if (isMovingRight()) {
           const bool isBulletA = (damage == A_BULLET_DAMAGE);
 //          const int tone = ;
-          playTone(isBulletA ? 600 - (x + 2) : 900 - (x + 3) - x, 10);
+          playTone(isBulletA ? 600 - (x + 2) : 900 - (x * 2 + 3), 10);
 //          arduboy.tunes.tone(tone - x, 10);
           drawBitmap(x, y, (isBulletA ? playerBulletA : playerBulletB), 0);
         } else if (!isLaserBeam()) {

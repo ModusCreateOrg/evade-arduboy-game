@@ -39,39 +39,43 @@ struct Enemy {
     if (random(2)) {
       options ^= 1 << 1;
     }
+
+    width = 16;
+    height = 16;
+    difficulty = 4;
     
     if (type < 5) {
       difficulty = 1;
       bitmap = enemy1;
       health = 25;
-      width = 16;
-      height = 16;
+//      width = 16;
+//      height = 16;
     } else if (type < 9) {
       difficulty = 2;
       bitmap = enemy2;
       health = 150;
-      width = 16;
-      height = 16;
+//      width = 16;
+//      height = 16;
     } else if (type == 9) {
-      difficulty = 4;
+//      difficulty = 4;
       bitmap = enemy3;
       health = 500;
-      width = 16;
-      height = 16;
+//      width = 16;
+//      height = 16;
     } else if (type == 128) {
       difficulty = 4;
       bitmap = boss1;
       health = 1000;
       width = 32;
-      height = 16;
+//      height = 16;
     } else if (type == 129) {
       difficulty = 4;
       bitmap = boss2;
       health = 2000;
       width = 32;
-      height = 16;
+//      height = 16;
     } else if (type == 130) {
-      difficulty = 4;
+//      difficulty = 4;
       bitmap = boss3;
       health = 3000;
       width = 59;
@@ -120,7 +124,7 @@ struct Enemy {
 
   void spawn() {
     byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
-    byte enemyY = random(MIN_SHIP_Y, MAX_SHIP_Y);
+    byte enemyY = random(MIN_PLAYER_Y, MAX_PLAYER_Y);
     set(enemyX, enemyY, random(10));
   }
 
@@ -155,9 +159,9 @@ struct Enemy {
           x = newX;
         }
 
-        bool newShipYisGreater = newY >= MIN_SHIP_Y;
-        if (((type <= 9) && newShipYisGreater && (newY <= MAX_SHIP_Y))
-          || (((type == 128) || (type == 129)) && newShipYisGreater && (newY <= (MAX_SHIP_Y + 16 - height)))) {
+        bool newShipYisGreater = newY >= MIN_PLAYER_Y;
+        if (((type <= 9) && newShipYisGreater && (newY <= MAX_PLAYER_Y))
+          || (((type == 128) || (type == 129)) && newShipYisGreater && (newY <= (MAX_PLAYER_Y + 16 - height)))) {
           y = newY;
         }
       }
@@ -223,7 +227,7 @@ struct Enemy {
           bullets[bulletIndex].set(x, newY, false, 1, 0.8, false);
         }
       } else if (type == 130) {
-        bullets[bulletIndex].set(x, random(MIN_SHIP_Y, (MAX_SHIP_Y + 8)), false, 1, 0.6, false);
+        bullets[bulletIndex].set(x, random(MIN_PLAYER_Y, (MAX_PLAYER_Y + 8)), false, 1, 0.6, false);
       } 
     }
     
