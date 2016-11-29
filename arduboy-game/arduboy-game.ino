@@ -19,6 +19,7 @@ void playTone(byte tone, byte duration) {
 #include "enemy.h"
 #include "bitmaps.h"
 #include "Music.h"
+#include "letters.h"
 #include <stddef.h>
 #include <inttypes.h>
 #include <Arduino.h>
@@ -49,21 +50,8 @@ void resetPlayer() {
     playerGunCharge = MAX_GUN_CHARGE; 
 }
 
-//struct Player {
-//  byte x;
-//  byte y;
-//  byte frame;
-//  byte dying;
-//  byte gunCharge;
-//
-//  void reset() {
-//    x = 2;
-//    y = 32;
-//    frame = 2;
-//    dying = 0;
-//    gunCharge = MAX_GUN_CHARGE;
-//  }
-//};
+char *alphabet[28];
+
 
 char highScoreTable[27] = "AAA000300BBB000200CCC000100";
 
@@ -91,16 +79,6 @@ bool isBossAlive;
 // General purpose text buffer for string concatenation and read from progmem
 char textBuf[23];
 
-//Player spaceShip;
-
-//void stopMusic() {
-//
-//    if (arduboy.tunes.playing()) {
-//        arduboy.tunes.stopScore();
-//    }
-//}
-
-
 void playMusic(byte song) {
     if (! soundOn) {
       return;
@@ -112,23 +90,23 @@ void playMusic(byte song) {
     
     unsigned char *music;
     switch(song) {
-      case 1 :
-         music = introMusic;
-      break;
+//      case 1 :
+//         music = introMusic;
+//      break;
       case 2 :
 //          music = stage1MusicSingleTrack; // IF WE RUN OUT OF SPACE
         music = stage1MusicDoubleTrack;
       break;
       case 3 :
-//          music = bossMusicSingleTrack; // IF WE RUN OUT OF SPACE
-         music = bossMusicDoubleTrack;
+          music = bossMusicSingleTrack; // IF WE RUN OUT OF SPACE
+//         music = bossMusicDoubleTrack;
       break;
       case 4 :
         music = gameOverMusic;
       break;
-      case 5 : 
-        music = titleMusic;
-      break;
+//      case 5 : 
+//        music = titleMusic;
+//      break;
     }
     
     currentSong = song;
@@ -152,7 +130,7 @@ void introScreen() {
   arduboy.initRandomSeed();
   
   delay(250);
-  playMusic(1);
+//  playMusic(1);
   delay(2750);
 }
 
@@ -167,7 +145,7 @@ byte titleScreen() {
   arduboy.drawRect(2, 48, 26, 12, 1);
   arduboy.display();
 
-  playMusic(5);
+//  playMusic(5);
 
   while (totalDelay < ATTRACT_MODE_TIMEOUT) {
 
@@ -302,37 +280,71 @@ void highScoreScreen() {
   }  
 }
 
-void creditsScreen() {
-  scrollCredits(4, NUM_CREDITS);
-}
 
-void scrollCredits(byte y, short line) {
-  /**
-     Recursive function for scrolling
-     credits up screen
-  */
-  byte padding = 7;
-  byte origY = y;
-  arduboy.clear();
-  
-  for (byte i = 0; i < NUM_CREDITS; i++) {
-    if (i == 0) {
-      y = y - 4;
-    } else {
-      y = origY;
+void drawChrs(byte cPos, byte yPos, const uint8_t *letters, unsigned long delayTimer) {
+  byte curs = cPos,
+       strLen = pgm_read_byte(letters);
+
+//  Serial.println("\n-------------\n");
+    byte letter; 
+
+  for (byte i = 0; i <  strLen; i++) {
+    letter = pgm_read_byte(++letters);
+    
+    // Space chr
+    if (letter == 255) {
+       curs += 5;
+    }
+    else {
+        drawBitmap(curs,yPos, alphabet[letter], 0);
+        curs += pgm_read_byte(alphabet[letter]) + 1;
     }
     
-    strcpy_P(textBuf, (char*)pgm_read_word(&(credits[i])));
-    printText(textBuf, 2, y + padding, (i == 0 ? 2 : 1));
     arduboy.display();
-    padding = padding + 15;
-  }
-  delay(1000);
 
-  if (line > 0) {
-    scrollCredits(y - 15, line - 1);
+
+    if (delayTimer) {
+      arduboy.tunes.tone(100, delayTimer - 10);
+      delay(delayTimer);
+    }
+  }  
+
+
+  if (delayTimer) {
+      arduboy.tunes.tone(800, 15);
+      delay(15);
+      arduboy.tunes.tone(1200, 30);
+      delay(40);
   }
 }
+
+void creditsScreen() {
+  
+  arduboy.clear();
+
+  byte creditsDelay = 30;
+  drawChrs(0, 0, credits0,  creditsDelay);
+  drawChrs(0, 10, credits1, creditsDelay);
+  drawChrs(0, 19, credits2, creditsDelay);
+  drawChrs(0, 28, credits3, creditsDelay);
+  drawChrs(0, 37, credits4, creditsDelay);
+  drawChrs(0, 46, credits5, creditsDelay);
+  drawChrs(0, 55, credits6, creditsDelay);
+  arduboy.clear();
+
+  delay(2000);
+  
+  drawChrs(0, 0, credits0,  0);
+  drawChrs(0, 10, credits7, creditsDelay);
+  drawChrs(0, 19, credits8, creditsDelay);
+  drawChrs(0, 28, credits9, creditsDelay);
+  drawChrs(0, 37, credits10, creditsDelay);
+  drawChrs(0, 46, credits11, creditsDelay);
+
+  delay(2000);
+}
+
+
 
 void drawBoxAroundSoundSetting(byte color) {
    arduboy.drawRect(17, 22, 35, 13, color);
@@ -348,8 +360,6 @@ void settingsScreen() {
   printsoundOnOff();
   printText("RESET HIGHSCORE", 20, 37, 1);
   printText("EXIT", 20, 49, 1);
-//  arduboy.drawRect(17, 22, 35, 13, 1);
-//  arduboy.display();
 
   while (!exit_settings_menu) {
     unsigned long currentMilliseconds = millis();
@@ -409,7 +419,6 @@ void settingsScreen() {
 
           case SETTINGS_SOUND:
             soundOn = !soundOn;
-//            Serial.println(soundOn, BIN);
             printsoundOnOff();
             break;
 
@@ -430,78 +439,9 @@ void settingsScreen() {
   }
 }
 
-//byte settingMenuDownButton(byte selectedItem) {
-//  /**
-//     Handle clicks on the down button
-//     to navigate through settings menu
-//     items.
-//  */
-//  switch (selectedItem) {
-//
-//    case SETTINGS_SOUND:
-//      arduboy.drawRect(17, 22, 35, 13, 0);
-//      arduboy.drawRect(17, 34, 95, 13, 1);
-//      arduboy.display();
-//      return SETTINGS_RESET_HIGH_SCORE;
-//      break;
-//
-//    case SETTINGS_RESET_HIGH_SCORE:
-//      arduboy.drawRect(17, 34, 95, 13, 0);
-//      arduboy.drawRect(17, 46, 29, 13, 1);
-//      arduboy.display();
-//      return SETTINGS_EXIT;
-//      break;
-//
-//    default: break;
-//  }
-//
-//}
-
-//byte settingMenuUpButton(byte selectedItem) {
-//  /**
-//     Handle clicks on the up button
-//     to navigate through settings menu
-//     items.
-//  */
-//  if (selectedItem == SETTINGS_EXIT) {
-//      arduboy.drawRect(17, 46, 29, 13, 0);
-//      arduboy.drawRect(17, 34, 95, 13, 1);
-//      arduboy.display();
-//
-//      return SETTINGS_RESET_HIGH_SCORE;
-//  }
-//  else if (selectedItem == SETTINGS_RESET_HIGH_SCORE) {
-//      arduboy.drawRect(17, 34, 95, 13, 0);
-//      arduboy.drawRect(17, 22, 35, 13, 1);
-//      arduboy.display();
-//      return SETTINGS_SOUND;
-//  }
-//
-//// Somehow going to the above if statement saved 2 bytes.    ¯\_(ツ)_/¯
-////  switch (selectedItem) {
-////
-////    case SETTINGS_EXIT:
-////      arduboy.drawRect(17, 46, 29, 13, 0);
-////      arduboy.drawRect(17, 34, 95, 13, 1);
-////      arduboy.display();
-////      return SETTINGS_RESET_HIGH_SCORE;
-////      break;
-////
-////    case SETTINGS_RESET_HIGH_SCORE:
-////      arduboy.drawRect(17, 34, 95, 13, 0);
-////      arduboy.drawRect(17, 22, 35, 13, 1);
-////      arduboy.display();
-////      return SETTINGS_SOUND;
-////      break;
-////
-////    default: break;
-////  }
-//}
-
 void printsoundOnOff() {
   printText(soundOn ? "SOUND ON " : "SOUND OFF", 20, 25, 1);
   drawBoxAroundSoundSetting(1);
-//  arduboy.display();
 }
 
 void playGame() {
@@ -550,7 +490,7 @@ void playGame() {
     }
 
     if (!isBossAlive) {
-      if ((score >= 5000) && (spawnedBoss < 1)) {
+      if ((score >= 50) && (spawnedBoss < 1)) {
         if (!enemiesAlive) {
           boss.set(129, 28, 128);
           spawnedBoss = 1;
@@ -724,10 +664,9 @@ void drawPlayerShip() {
     
   } else {
     arduboy.drawCircle(playerX, playerY, playerDying , 1);
-    
-//    int tone = ;
+
+  
     playTone((playerDying % 2 == 0) ? (400 + playerDying * 2) : (600 - playerDying * 2), 10);
-//    arduboy.tunes.tone(tone, 10);
 
     if (playerDying < 65) {
       playerDying++;
@@ -742,12 +681,6 @@ void updateEnemies(boolean stopSpawningEnemies) {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
     enemies[i].update(stopSpawningEnemies);
   }
-//
-//    enemies[0].update();
-//    enemies[1].update();
-//    enemies[2].update();
-//   enemies[3].update();
-
 }
 
 void handleEnemyBullets() {
@@ -1038,6 +971,7 @@ boolean shouldPlayBButtonTone() {
   return (inGameBButtonLastPress > (inGameFrame - 50));
 }
 
+
 // Initialization runs once only
 void setup() {
   arduboy.beginNoLogo();
@@ -1065,6 +999,35 @@ void setup() {
   introScreen();
   resetPlayer();
   createStarFieldVals();
+
+  alphabet[0] = A;
+  alphabet[1] = B;
+  alphabet[2] = C;
+  alphabet[3] = D;
+  alphabet[4] = E;
+  alphabet[5] = F;
+  alphabet[6] = G;
+  alphabet[7] = H;
+  alphabet[8] = I;
+  alphabet[9] = J;
+  alphabet[10] = K;
+  alphabet[11] = L;
+  alphabet[12] = M;
+  alphabet[13] = N;
+  alphabet[14] = O;
+  alphabet[15] = P;
+  alphabet[16] = Q;
+  alphabet[17] = R;
+  alphabet[18] = S;
+  alphabet[19] = T;
+  alphabet[20] = U;
+  alphabet[21] = V;
+  alphabet[22] = W;
+  alphabet[23] = X;
+  alphabet[24] = Y;
+  alphabet[25] = Z;
+  alphabet[26] = colon;
+  alphabet[27] = period;
 }
 
 // Main program loop
