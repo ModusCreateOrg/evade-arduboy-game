@@ -26,7 +26,7 @@ void playTone(byte tone, byte duration) {
 #include <avr/pgmspace.h>
 
 #define DEBOUNCE_DELAY 100
-#define MAX_LIVES 1
+#define MAX_LIVES 4
 #define NUM_HIGH_SCORES 3
 #define NUM_STARS 15
 #define NOT_NEW_HI_SCORE 5
@@ -770,7 +770,7 @@ void gameOverScreen() {
   arduboy.tunes.stopScore();
   arduboy.clear();
   drawBitmap(0, 23, gameOver, 0);
-  arduboy.drawFastHLine(0, 63, 40, 1);
+  arduboy.drawFastHLine(0, 63, 36, 1);
   printText("GAME", 40, 0, 2);
   printText("OVER", 40, 40, 2);
 //  printText("dreams are lost!", 20, 50, 1);
