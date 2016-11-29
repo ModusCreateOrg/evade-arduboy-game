@@ -506,7 +506,7 @@ void playGame() {
     }
 
     drawGunTemp();
-    drawScore();
+    drawScore(currentIteration);
     drawPlayerShip();
 
     boolean enemiesAlive = false;
@@ -516,9 +516,9 @@ void playGame() {
         break;
       }
     }
-
+   
     if (!isBossAlive) {
-      if ((score >= 5000 + (currentIteration * 20000)) && (spawnedBoss < 1)) { // 5000
+      if ((score >= 5000ul + (currentIteration * 20000ul)) && (spawnedBoss < 1)) {
         if (!enemiesAlive) {
           boss.set(129, 28, 128);
           spawnedBoss = 1;
@@ -526,7 +526,7 @@ void playGame() {
         } else {
           stopSpawningEnemies = true;
         }
-      } else if ((score >= (12000 + (currentIteration * 20000))) && (spawnedBoss < 2)) { // 12000
+      } else if ((score >= (12000ul + (currentIteration * 20000ul))) && (spawnedBoss < 2)) {
         if (!enemiesAlive) {
           boss.set(129, 24, 129);
           spawnedBoss = 2;
@@ -534,7 +534,7 @@ void playGame() {
         } else {
           stopSpawningEnemies = true;
         }
-      } else if ((score >= (20000 + (currentIteration * 20000))) && (spawnedBoss < 3)) { // 20000
+      } else if ((score >= (20000ul + (currentIteration * 20000ul))) && (spawnedBoss < 3)) {
         if (!enemiesAlive) {
           boss.set(129, 10, 130);
           spawnedBoss = 3;
@@ -598,9 +598,11 @@ void drawGunTemp() {
   arduboy.fillRect(40, 1, (playerGunCharge >= MAX_GUN_CHARGE ? MAX_GUN_CHARGE : playerGunCharge), 5, 1);
 }
 
-void drawScore() {
+void drawScore(byte currentIteration) {
   sprintf(textBuf, "%06lu", score);
   printText(textBuf, 0, 0, 1);
+  sprintf(textBuf, "%d", currentIteration);
+  printText(textBuf, 0, 15, 1);
 }
 
 void drawStarLayer() {
