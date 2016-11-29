@@ -26,7 +26,7 @@ void playTone(byte tone, byte duration) {
 #include <avr/pgmspace.h>
 
 #define DEBOUNCE_DELAY 100
-#define MAX_LIVES 4
+#define MAX_LIVES 1
 #define NUM_HIGH_SCORES 3
 #define NUM_STARS 15
 #define NOT_NEW_HI_SCORE 5
@@ -90,9 +90,9 @@ void playMusic(byte song) {
     
     unsigned char *music;
     switch(song) {
-//      case 1 :
-//         music = introMusic;
-//      break;
+      case 1 :
+         music = introMusic;
+      break;
       case 2 :
 //          music = stage1MusicSingleTrack; // IF WE RUN OUT OF SPACE
         music = stage1MusicDoubleTrack;
@@ -125,12 +125,19 @@ void printText(char *message, byte x, byte y, byte textSize) {
 void introScreen() {
   arduboy.clear();
   drawBitmap(2, 8, modusLogo, 0);
+
+//  arduboy.fillRect(0,0, 128, 16,1);
+//  arduboy.fillRect(0,16, 10, 64,1);
+//  arduboy.fillRect(121,16, 10, 64,1);
+//  arduboy.fillRect(10,54, 128, 64,1);
+//
+//  drawBitmap(10, 16, moduslogo_graffiti_small, 0);
   arduboy.display();
 
   arduboy.initRandomSeed();
   
   delay(250);
-//  playMusic(1);
+  playMusic(1);
   delay(2750);
 }
 
@@ -490,7 +497,7 @@ void playGame() {
     }
 
     if (!isBossAlive) {
-      if ((score >= 50) && (spawnedBoss < 1)) {
+      if ((score >= 5000) && (spawnedBoss < 1)) {
         if (!enemiesAlive) {
           boss.set(129, 28, 128);
           spawnedBoss = 1;
@@ -585,12 +592,14 @@ void drawPlayerShip() {
     if (arduboy.pressed(LEFT_BUTTON) && (playerX > MIN_PLAYER_SHIP_X)) {
       playerX--;
     }
+
+    bool every9Frames = arduboy.everyXFrames(9);
   
     if (arduboy.pressed(UP_BUTTON)) {
       if (playerY > MIN_SHIP_Y) {
         playerY--;
       }
-      if (arduboy.everyXFrames(9)) {
+      if (every9Frames) {
         if (playerFrame > 0) {
           playerFrame--;
         }
@@ -601,7 +610,7 @@ void drawPlayerShip() {
       if (playerY < MAX_SHIP_Y)  {
         playerY++;
       }
-      if (arduboy.everyXFrames(9)) {
+      if (every9Frames) {
         playerFrame++;
       }
       if (playerFrame > 4) {
@@ -632,8 +641,9 @@ void drawPlayerShip() {
       if (inGameBButtonLastPress < (inGameFrame - 55)) {
         inGameBButtonLastPress = inGameFrame;
         // Fire B weapon (rapid fire)
+        bool isGreater = inGameBButtonLastPress > 80;
         for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
-          if (inGameBButtonLastPress > 80 && !playerBullets[i].isVisible()) {
+          if (isGreater && !playerBullets[i].isVisible()) {
             playerBullets[i].set(playerX, (playerY + 7), true, B_BULLET_DAMAGE, 3, false);
             break;
           }
@@ -665,7 +675,6 @@ void drawPlayerShip() {
   } else {
     arduboy.drawCircle(playerX, playerY, playerDying , 1);
 
-  
     playTone((playerDying % 2 == 0) ? (400 + playerDying * 2) : (600 - playerDying * 2), 10);
 
     if (playerDying < 65) {
@@ -760,7 +769,11 @@ void handlePlayerBullets() {
 void gameOverScreen() {
   arduboy.tunes.stopScore();
   arduboy.clear();
-  drawBitmap(0, 8, gameOver, 0);
+  drawBitmap(0, 23, gameOver, 0);
+  arduboy.drawFastHLine(0, 63, 40, 1);
+  printText("GAME", 40, 0, 2);
+  printText("OVER", 40, 40, 2);
+//  printText("dreams are lost!", 20, 50, 1);
   arduboy.display();
 
   playMusic(4); 
@@ -909,8 +922,7 @@ void resetPlayerBullets() {
 void setStarValuesForIndex(byte i) {
   starX[i] = random(250);
   starY[i] = random(75);
-  starWidth[i] = random(1, 4);
-  
+  starWidth[i] = random(1, 4);  
 
   if (starWidth[i] >= 3) {
 //    starSpeed[i] = random(75, 95) * 0.01f;
@@ -932,7 +944,6 @@ void updateStarFieldVals() {
       setStarValuesForIndex(i);
       starX[i] = 128 + random(20);
       starY[i] = random(10, 64);
-      
     }   
     else {
       starX[i] -= starSpeed[i];
