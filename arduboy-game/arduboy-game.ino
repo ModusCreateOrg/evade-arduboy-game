@@ -27,7 +27,7 @@ void playTone(byte tone, byte duration) {
 #include <EEPROM.h>
 
 #define DEBOUNCE_DELAY 100
-#define MAX_LIVES 5
+#define MAX_LIVES 4
 #define NUM_HIGH_SCORES 3
 #define NUM_STARS 15
 #define NOT_NEW_HI_SCORE 5
@@ -514,7 +514,7 @@ void playGame() {
     }
 
     if (!isBossAlive) {
-      if ((score >= 50) && (spawnedBoss < 1)) {
+      if ((score >= 5000) && (spawnedBoss < 1)) {
         if (!enemiesAlive) {
           boss.set(129, 28, 128);
           spawnedBoss = 1;
