@@ -414,7 +414,7 @@ void settingsScreen() {
             break;
 
           case SETTINGS_RESET_HIGH_SCORE: 
-            // TODO: Reset high score
+            resetHighScoreTable();
             exit_settings_menu = true;
             break;
         
@@ -946,13 +946,28 @@ void newHighScoreScreen(byte newHiPos) {
     highScoreTable[currPos + (9 * newHiPos)] = textBuf[currPos];
   }
 
-  persistHighScoreTable();
+  persistHighScoreTable(false);
 }
 
-void persistHighScoreTable() {
+void persistHighScoreTable(boolean firstTime) {  
   for (byte i = 0; i < 27; i++) {
     EEPROM.write(i + 2, highScoreTable[i]);
+    if (firstTime) {
+      // Also write to the reset location starting at 29
+      EEPROM.write(i + 29, highScoreTable[i]);
+    }
   }
+}
+
+void resetHighScoreTable() {
+  // Read it back into memory and overwrite what's in EEPROM
+  // with data frem reset location
+  
+  for (byte i = 0; i < 27; i++) {
+    highScoreTable[i] = EEPROM.read(i + 29);
+  }
+
+  persistHighScoreTable(false);
 }
 
 void createStarFieldVals() {
@@ -1027,6 +1042,12 @@ boolean shouldPlayBButtonTone() {
 void setup() {
   arduboy.beginNoLogo();
 
+  // Uncomment to test high score reset on device that
+  // previously tested EEPROM high scores before high 
+  // score reset code was added.  Then remove!
+  //EEPROM.write(0, 0);
+  //EEPROM.write(1, 0);
+  
   // Check for hi scores in EEPROM
   if (EEPROM.read(0) == 254 && EEPROM.read(1) == 253) {
     // Scores were in EEPROM
@@ -1034,7 +1055,7 @@ void setup() {
       highScoreTable[i] = EEPROM.read(i + 2);
     }
   } else {
-    persistHighScoreTable();
+    persistHighScoreTable(true);
 
     // And write initial signature
     EEPROM.write(0, 254);
