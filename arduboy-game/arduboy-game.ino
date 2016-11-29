@@ -1,5 +1,5 @@
-/*
-   arduboy-game, Modus Create 2016
+/*   
+ *    arduboy-game, Modus Create 2016
 */
 
 #include "Arduboy.h"
@@ -145,17 +145,21 @@ byte titleScreen() {
   byte selectedItem = TITLE_PLAY_GAME;
   unsigned long totalDelay = 0;
   long lastDebounceTime = millis();  // the last time the button was pressed
+
   
   arduboy.clear();
+//  arduboy.drawRect(0,0,128,64,1);
   //drawBitmap(4, 14, title, 0);
-  drawBitmap(4, 14, title_letter_e, 0);
-  drawBitmap(34, 14, title_letter_v, 0);
-  drawBitmap(44, 14, title_letter_a, 0);
-  drawBitmap(54, 14, title_letter_d, 0);
-  drawBitmap(64, 14, title_letter_e, 0);
+  drawBitmap(4, 16, title_letter_e, 0);
+  drawBitmap(20, 16, title_letter_v, 0);
+  drawBitmap(39, 16, title_letter_a, 0);
+  drawBitmap(59, 16, title_letter_d, 0);
+  drawBitmap(77, 16, title_letter_e, 0);
 
-  drawBitmap(80, 14, title_planet, 0);
+  drawBitmap(93, 14, title_planet, 0);
+  
 
+  // TODO: Repalce w/ drawChr();
   drawBitmap(4, 51, titleMenuOptions, 0);
   arduboy.drawRect(2, 48, 26, 12, 1);
   arduboy.display();
