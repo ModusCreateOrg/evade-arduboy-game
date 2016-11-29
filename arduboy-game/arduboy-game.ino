@@ -42,7 +42,7 @@ byte playerX,
      playerGunCharge;
 
 void resetPlayer() {
-    playerX = MIN_PLAYER_SHIP_X;
+    playerX = MIN_PLAYER_X;
     playerY = 32;
     playerFrame = 2;
     playerDying = 0;
@@ -602,18 +602,18 @@ void drawLives() {
 
 void drawPlayerShip() {
   if (playerDying == 0) {
-    if (arduboy.pressed(RIGHT_BUTTON) && (playerX < MAX_PLAYER_SHIP_X)) {
+    if (arduboy.pressed(RIGHT_BUTTON) && (playerX < MAX_PLAYER_X)) {
       playerX++;
     }
   
-    if (arduboy.pressed(LEFT_BUTTON) && (playerX > MIN_PLAYER_SHIP_X)) {
+    if (arduboy.pressed(LEFT_BUTTON) && (playerX > MIN_PLAYER_X)) {
       playerX--;
     }
 
     bool every9Frames = arduboy.everyXFrames(9);
   
     if (arduboy.pressed(UP_BUTTON)) {
-      if (playerY > MIN_SHIP_Y) {
+      if (playerY > MIN_PLAYER_Y) {
         playerY--;
       }
       if (every9Frames) {
@@ -624,7 +624,7 @@ void drawPlayerShip() {
     }
   
     if (arduboy.pressed(DOWN_BUTTON)) {
-      if (playerY < MAX_SHIP_Y)  {
+      if (playerY < MAX_PLAYER_Y)  {
         playerY++;
       }
       if (every9Frames) {
