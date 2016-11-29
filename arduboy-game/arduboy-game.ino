@@ -65,7 +65,6 @@ void resetPlayer() {
 //  }
 //};
 
-// TODO highScoreTable should be replaced with table in EEPROM
 char highScoreTable[27] = "AAA000300BBB000200CCC000100";
 
 unsigned long inGameAButtonLastPress, inGameBButtonLastPress, inGameLastDeath, score;
