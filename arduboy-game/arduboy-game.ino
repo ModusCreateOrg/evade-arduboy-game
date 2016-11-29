@@ -582,7 +582,7 @@ void drawGunTemp() {
 }
 
 void drawScore() {
-  sprintf(textBuf, "%06d", score);
+  sprintf(textBuf, "%06lu", score);
   printText(textBuf, 0, 0, 1);
 }
 
@@ -827,7 +827,7 @@ void newHighScoreScreen(byte newHiPos) {
   
   arduboy.clear();
   printText("NEW HI!", 24, 1, 2);
-  sprintf(textBuf, "%06d", score);
+  sprintf(textBuf, "%06lu", score);
   printText(textBuf, 28, 22, 2);
   sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
   printText(textBuf, 44, 45, 2);
@@ -898,7 +898,7 @@ void newHighScoreScreen(byte newHiPos) {
   }
 
   // Store the new high score, newHiPos == 0 is highest score
-  sprintf(textBuf, "%c%c%c%06d", currInitials[0], currInitials[1], currInitials[2], score);
+  sprintf(textBuf, "%c%c%c%06lu", currInitials[0], currInitials[1], currInitials[2], score);
 
   if (newHiPos < 2) {
     // shuffle existing results around
