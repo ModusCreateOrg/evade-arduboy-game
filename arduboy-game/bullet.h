@@ -6,7 +6,6 @@
 
 #include "globals.h"
 #include "bitmaps.h"
-#include "bullet.h"
 
 #define A_BULLET_DAMAGE 75
 #define B_BULLET_DAMAGE 40
@@ -54,15 +53,15 @@ struct Bullet {
         }
       } else {
         x -= speedX;
-        bool isLaser = isLaserBeam();        
-        if ((! isLaser) && (x <= 0)) {
-          hide();
-        } else if (isLaser && (x <= -30)) {
-          hide();
-        }
-//        if (x <= -30) {
+
+//        if ((! isLaserBeam()) && (x <= 0)) {
+//          hide();
+//        } else if (isLaserBeam() && (x <= -30)) {
 //          hide();
 //        }
+        if (x <= -30) {
+          hide();
+        }
       }
     
     }
