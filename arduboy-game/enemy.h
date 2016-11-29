@@ -64,7 +64,7 @@ struct Enemy {
 //      height = 16;
     } else if (type == 128) {
       difficulty = 4;
-//      bitmap = boss1;
+      bitmap = boss1;
       health = 1000;
       width = 32;
 //      height = 16;
