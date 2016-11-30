@@ -195,7 +195,7 @@ struct Enemy {
   }
 
   void fire(byte bulletIndex) {
-    if (isAlive()) {
+    if (isAlive() && inGameFrame > 120) {
       byte newY =  (y + (height / 2) - 1);
       
       if (type <= 9) {
