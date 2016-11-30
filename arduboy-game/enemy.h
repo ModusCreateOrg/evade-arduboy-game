@@ -70,7 +70,6 @@ struct Enemy {
       height = 53;
     }
 
-    health = 5;
     draw();
   }
 
