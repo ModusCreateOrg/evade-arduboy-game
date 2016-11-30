@@ -519,7 +519,7 @@ void playGame() {
 
     // This logic seems way too nested and can probably be simplified a little. :) -- JG
     if (!isBossAlive) {
-      if ((score >= 50) && (spawnedBoss < 1)) {
+      if ((score >= 5000) && (spawnedBoss < 1)) {
         
         if (!enemiesAlive) {
           boss.set(129, 28, 128);
@@ -530,7 +530,7 @@ void playGame() {
           stopSpawningEnemies = true;
         }
       } 
-      else if ((score >= 1200) && (spawnedBoss < 2)) {
+      else if ((score >= 12000) && (spawnedBoss < 2)) {
         if (!enemiesAlive) {
           boss.set(129, 24, 129);
           spawnedBoss = 2;
