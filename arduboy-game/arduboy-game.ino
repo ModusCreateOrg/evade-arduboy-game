@@ -175,7 +175,7 @@ byte titleScreen() {
 
     unsigned long currentMilliseconds = millis();
     bool isGreater = (currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY;
-//    byte buttonState = arduboy.buttonsState();
+
     /*
      * UP 128
      * DN 16
@@ -486,7 +486,8 @@ void playGame() {
   resetEnemies();
   resetBoss();
   resetPlayerBullets();
-  
+
+
   while (livesRemaining > 0) {
     boolean stopSpawningEnemies = false;
     
@@ -509,7 +510,7 @@ void playGame() {
 
     boolean enemiesAlive = false;
     for (byte i = 0; i < MAX_ENEMIES; i++) {
-      if ( enemies[i].isAlive() ) {
+      if (enemies[i].isAlive()) {
         enemiesAlive = true;
         break;
       }
@@ -517,27 +518,33 @@ void playGame() {
 
     if (!isBossAlive) {
       if ((score >= 5000) && (spawnedBoss < 1)) {
+        
         if (!enemiesAlive) {
           boss.set(129, 28, 128);
           spawnedBoss = 1;
           isBossAlive = true;
-        } else {
+        } 
+        else {
           stopSpawningEnemies = true;
         }
-      } else if ((score >= 12000) && (spawnedBoss < 2)) {
+      } 
+      else if ((score >= 12000) && (spawnedBoss < 2)) {
         if (!enemiesAlive) {
           boss.set(129, 24, 129);
           spawnedBoss = 2;
           isBossAlive = true;
-        } else {
+        } 
+        else {
           stopSpawningEnemies = true;
         }
-      } else if ((score >= 20000) && (spawnedBoss < 3)) {
+      } 
+      else if ((score >= 20000) && (spawnedBoss < 3)) {
         if (!enemiesAlive) {
           boss.set(129, 10, 130);
           spawnedBoss = 3;
           isBossAlive = true;
-        } else {
+        } 
+        else {
           stopSpawningEnemies = true;
         }
       }
@@ -545,8 +552,11 @@ void playGame() {
     
     if (isBossAlive) {
       boss.update(false);
-    } else {
-      updateEnemies(stopSpawningEnemies);
+      stopSpawningEnemies = !stopSpawningEnemies;
+    }
+    
+    for (byte i = 0; i < MAX_ENEMIES; i++) {
+       enemies[i].update(stopSpawningEnemies);
     }
 
     if(inGameAButtonLastPress > 80 || inGameBButtonLastPress > 60) {
@@ -709,11 +719,11 @@ void drawPlayerShip() {
   }
 }
 
-void updateEnemies(boolean stopSpawningEnemies) {
-  for (byte i = 0; i < MAX_ENEMIES; i++) {
-    enemies[i].update(stopSpawningEnemies);
-  }
-}
+//void updateEnemies(boolean stopSpawningEnemies) {
+//  for (byte i = 0; i < MAX_ENEMIES; i++) {
+//    enemies[i].update(stopSpawningEnemies);
+//  }
+//}
 
 void handleEnemyBullets() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
@@ -954,9 +964,9 @@ void resetEnemies() {
 
 void resetBoss() {
   boss.health = 0;
-  for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
-    boss.bullets[i].hide();
-  }
+//  for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
+//    boss.bullets[i].hide();
+//  }
 }
 
 void resetPlayerBullets() {
