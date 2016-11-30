@@ -213,7 +213,7 @@ byte titleScreen() {
   
     totalDelay ++;
   }
-  playMusic(99);
+//  playMusic(99);
 
   
   return (totalDelay >= ATTRACT_MODE_TIMEOUT ? TITLE_TIMEOUT : selectedItem);
@@ -847,7 +847,7 @@ boolean handlePlayerBullets() {
 }
 
 void playerWinsScreen() {
-  playMusic(99);
+//  playMusic(99);
   arduboy.clear();
 
   // Temp
