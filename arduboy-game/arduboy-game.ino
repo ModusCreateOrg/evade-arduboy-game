@@ -27,7 +27,7 @@ void playTone(byte tone, byte duration) {
 #include <EEPROM.h>
 
 #define DEBOUNCE_DELAY 100
-#define MAX_LIVES 0
+#define MAX_LIVES 4
 #define NUM_HIGH_SCORES 3
 #define NUM_STARS 15
 #define NOT_NEW_HI_SCORE 5
