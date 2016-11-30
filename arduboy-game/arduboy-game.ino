@@ -159,10 +159,6 @@ byte titleScreen() {
   drawBitmap(93, 14, title_planet, 0);
   
 
-  // TODO: Repalce w/ drawChr();
-//  drawBitmap(4, 51, titleMenuOptions, 0);
-
-
   drawChrs(4, 51, titleScreenText1, 30);
   drawChrs(34, 51, titleScreenText2, 30);
   drawChrs(79, 51, titleScreenText3, 30);
@@ -193,16 +189,17 @@ byte titleScreen() {
       } 
     
       if (arduboy.pressed(LEFT_BUTTON)) {
-        delay(40);
         selectedItem = titleMenuLeftButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
+        delay(250);
       }
     
 
       if (arduboy.pressed(RIGHT_BUTTON)) {
-        delay(40);
         selectedItem = titleMenuRightButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
+        delay(250);
+
       }
     }
   
