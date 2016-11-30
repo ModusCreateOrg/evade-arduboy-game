@@ -80,7 +80,6 @@ bool isBossAlive;
 char textBuf[23];
 
 void playMusic(byte song) {
-//  return; // SIMON
     if (! soundOn) {
       return;
     }
@@ -751,7 +750,7 @@ void drawPlayerShip() {
     if (playerDying < 65) {
       playerDying++;
     } else {
-      //livesRemaining--;  SIMON
+      livesRemaining--;
       resetPlayer();
     }
   }
@@ -847,18 +846,17 @@ boolean handlePlayerBullets() {
 }
 
 void playerWinsScreen() {
-//  playMusic(99);
   arduboy.clear();
 
-  // Temp
-  printText("YOU WIN", 20, 15, 2);
-
-  // TODO display stuff
+  playMusic(6);
+  
+  printText("YOU", 46, 6, 2);
+  printText("ESCAPED!", 20, 24, 2);
+  arduboy.display();
+  delay(2500);
+  printText("HOWEVER...", 5, 42, 2);
   arduboy.display();
   
-  // Play the you win music  
-  playMusic(6);
-
   delay(4500);
 }
 
