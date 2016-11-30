@@ -345,18 +345,17 @@ void drawChrs(byte cPos, byte yPos, const uint8_t *letters, unsigned long delayT
     
     arduboy.display();
 
-
     if (delayTimer) {
-      arduboy.tunes.tone(100, delayTimer - 10);
+      playTone(100, delayTimer - 10);
       delay(delayTimer);
     }
   }  
 
 
   if (delayTimer) {
-      arduboy.tunes.tone(800, 15);
+      playTone(800, 15);
       delay(15);
-      arduboy.tunes.tone(1200, 30);
+      playTone(1200, 30);
       delay(40);
   }
 }
