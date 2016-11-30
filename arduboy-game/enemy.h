@@ -70,6 +70,9 @@ struct Enemy {
       height = 53;
     }
 
+
+//    health = 5;
+
     draw();
   }
 
@@ -173,7 +176,8 @@ struct Enemy {
 //    arduboy.tunes.tone(200 + (dying * 4), 10);
     if (dying < 65) {
       dying++;
-      arduboy.drawCircle(x, y, dying, 1);
+      
+      arduboy.drawCircle(x + (width / 2), y + (height / 2), dying, 1);
 
     } else {
       // Fully dead, reset it so it can respawn
@@ -195,7 +199,7 @@ struct Enemy {
   }
 
   void fire(byte bulletIndex) {
-    if (isAlive()) {
+    if (isAlive() && inGameFrame > 120) {
       byte newY =  (y + (height / 2) - 1);
       
       if (type <= 9) {

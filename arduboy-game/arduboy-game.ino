@@ -163,10 +163,6 @@ byte titleScreen() {
   drawBitmap(93, 14, title_planet, 0);
   
 
-  // TODO: Repalce w/ drawChr();
-//  drawBitmap(4, 51, titleMenuOptions, 0);
-
-
   drawChrs(4, 51, titleScreenText1, 30);
   drawChrs(34, 51, titleScreenText2, 30);
   drawChrs(79, 51, titleScreenText3, 30);
@@ -197,16 +193,17 @@ byte titleScreen() {
       } 
     
       if (arduboy.pressed(LEFT_BUTTON)) {
-        delay(40);
         selectedItem = titleMenuLeftButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
+        delay(250);
       }
     
 
       if (arduboy.pressed(RIGHT_BUTTON)) {
-        delay(40);
         selectedItem = titleMenuRightButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
+        delay(250);
+
       }
     }
   
@@ -381,7 +378,8 @@ void drawBoxAroundSoundSetting(byte color) {
 void settingsScreen() {
   long lastDebounceTime = millis();  // the last time the button was pressed
   bool exit_settings_menu = false;
-  byte selectedItem;
+  bool isRealSoundChange = false;
+  byte selectedItem = SETTINGS_SOUND;
 
   arduboy.clear();
   printText("SETTINGS", 20, 2, 2);
@@ -393,8 +391,6 @@ void settingsScreen() {
     unsigned long currentMilliseconds = millis();
     bool isGreater = (currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY;
 
-    arduboy.display();
-  
     if (isGreater) {
       
       if (arduboy.pressed(DOWN_BUTTON)) {
@@ -412,10 +408,12 @@ void settingsScreen() {
             
             selectedItem = SETTINGS_EXIT;
             break;
-      
+
           default: break;
         }
-        
+                    
+        arduboy.display();
+        delay(250);
         lastDebounceTime = currentMilliseconds; //set the current time
       }
   
@@ -433,7 +431,9 @@ void settingsScreen() {
           
           selectedItem = SETTINGS_SOUND;
         }
-
+        
+        arduboy.display();
+        delay(250);
         lastDebounceTime = currentMilliseconds; //set the current time
       }
 
@@ -446,8 +446,12 @@ void settingsScreen() {
             break;
 
           case SETTINGS_SOUND:
-            soundOn = !soundOn;
-            printsoundOnOff();
+            if (isRealSoundChange) {
+              soundOn = !soundOn;
+              printsoundOnOff();
+            } else {
+              isRealSoundChange = true;
+            }
             break;
 
           case SETTINGS_RESET_HIGH_SCORE: 
@@ -457,10 +461,14 @@ void settingsScreen() {
         
           default: break;
         }  
+
+        arduboy.display();
+        delay(250);
         
         lastDebounceTime = currentMilliseconds; //set the current time
       }
-
+      
+//      arduboy.display();
       delay(15);
     }
      
@@ -554,7 +562,7 @@ void playGame() {
       stopSpawningEnemies = !stopSpawningEnemies;
     }
 
-
+    
     boss.update(! isBossAlive);
 
     for (byte i = 0; i < MAX_ENEMIES; i++) {
@@ -785,20 +793,16 @@ boolean handlePlayerBullets() {
           score += playerBullets[i].damage;
 
           boss.takeDamage();
-          
           if (boss.health <= 0) {
-            // Killed Boss
-            isBossAlive = false;
-            
-//            for (byte j = 0; j < MAX_BOSS_BULLETS; j++) {
-//              boss.bullets[j].hide();
-//            }
+            boss.dying = 1;
             score += 500;
 
             if (boss.type == 130) {
+              isBossAlive = false;
               return true;
             }
           }
+          
         }
       } else {
         for (byte j = 0; j < MAX_ENEMIES; j++) {
@@ -820,6 +824,10 @@ boolean handlePlayerBullets() {
         }
       }
     }
+  }
+
+  if (boss.dying > 1) {
+    isBossAlive = false;
   }
 
   return false;
