@@ -516,6 +516,8 @@ void playGame() {
       }
     }
 
+
+    // This logic seems way too nested and can probably be simplified a little. :) -- JG
     if (!isBossAlive) {
       if ((score >= 5000) && (spawnedBoss < 1)) {
         
@@ -551,10 +553,12 @@ void playGame() {
     }
     
     if (isBossAlive) {
-      boss.update(false);
       stopSpawningEnemies = !stopSpawningEnemies;
     }
-    
+
+
+    boss.update(! isBossAlive);
+
     for (byte i = 0; i < MAX_ENEMIES; i++) {
        enemies[i].update(stopSpawningEnemies);
     }
@@ -743,7 +747,7 @@ void handleEnemyBullets() {
 void handleBossBullets() {
   if (isBossAlive) {
     for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
-      if ((boss.bullets[i].isVisible()) && (boss.bullets[i].isHittingObject(playerX, playerY, PLAYER_SIZE, PLAYER_SIZE))) {
+      if (boss.bullets[i].isVisible() && boss.bullets[i].isHittingObject(playerX, playerY, PLAYER_SIZE, PLAYER_SIZE)) {
         // Hit Player
         boss.bullets[i].hide();
   
@@ -766,13 +770,16 @@ void handlePlayerBullets() {
           playerBullets[i].hide();
           boss.health -= playerBullets[i].damage;
           score += playerBullets[i].damage;
+
+          boss.takeDamage();
           
           if (boss.health <= 0) {
             // Killed Boss
             isBossAlive = false;
-            for (byte j = 0; j < MAX_BOSS_BULLETS; j++) {
-              boss.bullets[j].hide();
-            }
+            
+//            for (byte j = 0; j < MAX_BOSS_BULLETS; j++) {
+//              boss.bullets[j].hide();
+//            }
             score += 500;
           }
         }
