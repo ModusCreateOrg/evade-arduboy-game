@@ -391,7 +391,6 @@ void settingsScreen() {
     unsigned long currentMilliseconds = millis();
     bool isGreater = (currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY;
 
-    arduboy.display();
   
     if (isGreater) {
       
@@ -410,10 +409,12 @@ void settingsScreen() {
             
             selectedItem = SETTINGS_EXIT;
             break;
-      
+
           default: break;
         }
-        
+                    
+        arduboy.display();
+        delay(250);
         lastDebounceTime = currentMilliseconds; //set the current time
       }
   
@@ -431,7 +432,9 @@ void settingsScreen() {
           
           selectedItem = SETTINGS_SOUND;
         }
-
+        
+        arduboy.display();
+        delay(250);
         lastDebounceTime = currentMilliseconds; //set the current time
       }
 
@@ -455,10 +458,14 @@ void settingsScreen() {
         
           default: break;
         }  
+
+        arduboy.display();
+        delay(250);
         
         lastDebounceTime = currentMilliseconds; //set the current time
       }
-
+      
+//      arduboy.display();
       delay(15);
     }
      
