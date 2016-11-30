@@ -71,7 +71,7 @@ struct Enemy {
     }
 
 
-    health = 5;
+//    health = 5;
 
     draw();
   }
@@ -176,6 +176,7 @@ struct Enemy {
 //    arduboy.tunes.tone(200 + (dying * 4), 10);
     if (dying < 65) {
       dying++;
+      
       arduboy.drawCircle(x + (width / 2), y + (height / 2), dying, 1);
 
     } else {
