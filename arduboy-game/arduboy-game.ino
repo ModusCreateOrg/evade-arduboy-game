@@ -175,7 +175,7 @@ byte titleScreen() {
 
     unsigned long currentMilliseconds = millis();
     bool isGreater = (currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY;
-//    byte buttonState = arduboy.buttonsState();
+
     /*
      * UP 128
      * DN 16
@@ -271,8 +271,10 @@ void highScoreScreen() {
   char hiScore[7];
 
   arduboy.clear();
-  printText("HI SCORES", 8, 1, 2);
-
+  
+  printText("HIGH", 0, 1, 2);
+  printText("SCORES", 58, 1, 2);
+  
   for (byte i = 0; i < NUM_HIGH_SCORES; i++) {
     strncpy(hiInitials, highScoreTable + ((9 * i) * sizeof(char)), 3);
     hiInitials[3] = '\0';
@@ -484,7 +486,8 @@ void playGame() {
   resetEnemies();
   resetBoss();
   resetPlayerBullets();
-  
+
+
   while (livesRemaining > 0) {
     boolean stopSpawningEnemies = false;
     
@@ -507,44 +510,57 @@ void playGame() {
 
     boolean enemiesAlive = false;
     for (byte i = 0; i < MAX_ENEMIES; i++) {
-      if ( enemies[i].isAlive() ) {
+      if (enemies[i].isAlive()) {
         enemiesAlive = true;
         break;
       }
     }
 
+
+    // This logic seems way too nested and can probably be simplified a little. :) -- JG
     if (!isBossAlive) {
       if ((score >= 5000) && (spawnedBoss < 1)) {
+        
         if (!enemiesAlive) {
           boss.set(129, 28, 128);
           spawnedBoss = 1;
           isBossAlive = true;
-        } else {
+        } 
+        else {
           stopSpawningEnemies = true;
         }
-      } else if ((score >= 12000) && (spawnedBoss < 2)) {
+      } 
+      else if ((score >= 12000) && (spawnedBoss < 2)) {
         if (!enemiesAlive) {
           boss.set(129, 24, 129);
           spawnedBoss = 2;
           isBossAlive = true;
-        } else {
+        } 
+        else {
           stopSpawningEnemies = true;
         }
-      } else if ((score >= 20000) && (spawnedBoss < 3)) {
+      } 
+      else if ((score >= 20000) && (spawnedBoss < 3)) {
         if (!enemiesAlive) {
           boss.set(129, 10, 130);
           spawnedBoss = 3;
           isBossAlive = true;
-        } else {
+        } 
+        else {
           stopSpawningEnemies = true;
         }
       }
     }
     
     if (isBossAlive) {
-      boss.update(false);
-    } else {
-      updateEnemies(stopSpawningEnemies);
+      stopSpawningEnemies = !stopSpawningEnemies;
+    }
+
+
+    boss.update(! isBossAlive);
+
+    for (byte i = 0; i < MAX_ENEMIES; i++) {
+       enemies[i].update(stopSpawningEnemies);
     }
 
     if(inGameAButtonLastPress > 80 || inGameBButtonLastPress > 60) {
@@ -582,7 +598,7 @@ void drawGunTemp() {
 }
 
 void drawScore() {
-  sprintf(textBuf, "%06d", score);
+  sprintf(textBuf, "%06lu", score);
   printText(textBuf, 0, 0, 1);
 }
 
@@ -707,11 +723,11 @@ void drawPlayerShip() {
   }
 }
 
-void updateEnemies(boolean stopSpawningEnemies) {
-  for (byte i = 0; i < MAX_ENEMIES; i++) {
-    enemies[i].update(stopSpawningEnemies);
-  }
-}
+//void updateEnemies(boolean stopSpawningEnemies) {
+//  for (byte i = 0; i < MAX_ENEMIES; i++) {
+//    enemies[i].update(stopSpawningEnemies);
+//  }
+//}
 
 void handleEnemyBullets() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
@@ -731,7 +747,7 @@ void handleEnemyBullets() {
 void handleBossBullets() {
   if (isBossAlive) {
     for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
-      if ((boss.bullets[i].isVisible()) && (boss.bullets[i].isHittingObject(playerX, playerY, PLAYER_SIZE, PLAYER_SIZE))) {
+      if (boss.bullets[i].isVisible() && boss.bullets[i].isHittingObject(playerX, playerY, PLAYER_SIZE, PLAYER_SIZE)) {
         // Hit Player
         boss.bullets[i].hide();
   
@@ -754,13 +770,16 @@ void handlePlayerBullets() {
           playerBullets[i].hide();
           boss.health -= playerBullets[i].damage;
           score += playerBullets[i].damage;
+
+          boss.takeDamage();
           
           if (boss.health <= 0) {
             // Killed Boss
             isBossAlive = false;
-            for (byte j = 0; j < MAX_BOSS_BULLETS; j++) {
-              boss.bullets[j].hide();
-            }
+            
+//            for (byte j = 0; j < MAX_BOSS_BULLETS; j++) {
+//              boss.bullets[j].hide();
+//            }
             score += 500;
           }
         }
@@ -831,7 +850,7 @@ void newHighScoreScreen(byte newHiPos) {
   
   arduboy.clear();
   printText("NEW HI!", 24, 1, 2);
-  sprintf(textBuf, "%06d", score);
+  sprintf(textBuf, "%06lu", score);
   printText(textBuf, 28, 22, 2);
   sprintf(textBuf, "%c%c%c", currInitials[0], currInitials[1], currInitials[2]);
   printText(textBuf, 44, 45, 2);
@@ -902,7 +921,7 @@ void newHighScoreScreen(byte newHiPos) {
   }
 
   // Store the new high score, newHiPos == 0 is highest score
-  sprintf(textBuf, "%c%c%c%06d", currInitials[0], currInitials[1], currInitials[2], score);
+  sprintf(textBuf, "%c%c%c%06lu", currInitials[0], currInitials[1], currInitials[2], score);
 
   if (newHiPos < 2) {
     // shuffle existing results around
@@ -956,9 +975,9 @@ void resetEnemies() {
 
 void resetBoss() {
   boss.health = 0;
-  for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
-    boss.bullets[i].hide();
-  }
+//  for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
+//    boss.bullets[i].hide();
+//  }
 }
 
 void resetPlayerBullets() {
