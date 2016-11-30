@@ -48,34 +48,22 @@ struct Enemy {
       difficulty = 1;
       bitmap = enemy1;
       health = 25;
-//      width = 16;
-//      height = 16;
     } else if (type < 9) {
       difficulty = 2;
       bitmap = enemy2;
       health = 150;
-//      width = 16;
-//      height = 16;
     } else if (type == 9) {
-//      difficulty = 4;
       bitmap = enemy3;
       health = 500;
-//      width = 16;
-//      height = 16;
     } else if (type == 128) {
-      difficulty = 4;
-//      bitmap = boss1;
+      bitmap = boss1;
       health = 1000;
       width = 32;
-//      height = 16;
     } else if (type == 129) {
-      difficulty = 4;
       bitmap = boss2;
       health = 2000;
       width = 32;
-//      height = 16;
     } else if (type == 130) {
-//      difficulty = 4;
       bitmap = boss3;
       health = 3000;
       width = 59;
@@ -98,12 +86,9 @@ struct Enemy {
       if (!isTakingDamage()) {
         draw();
       }
-//    } else if (isDying()) {
     } else if (dying > 0) {
       updateDeathSequence();
-    } else if ((type <= 9)
-      && (!stopSpawningEnemies)
-      && (random(700) == 0)) {
+    } else if ((type <= 9) && (! stopSpawningEnemies) && (random(600) == 0)) {
       spawn();
     }
     
@@ -183,12 +168,13 @@ struct Enemy {
   }
 
   void updateDeathSequence() {
-    arduboy.drawCircle(x, y, dying, 1);
     
     playTone(dying * 4, 10);
 //    arduboy.tunes.tone(200 + (dying * 4), 10);
     if (dying < 65) {
       dying++;
+      arduboy.drawCircle(x, y, dying, 1);
+
     } else {
       // Fully dead, reset it so it can respawn
       dying = 0;
