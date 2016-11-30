@@ -815,15 +815,18 @@ void handlePlayerBullets() {
 void gameOverScreen() {
   arduboy.tunes.stopScore();
   arduboy.clear();
-  
-  drawBitmap(0, 23, gameOver, 0);
-  arduboy.drawFastHLine(0, 63, 128, 1);
-  
-  printText("GAME", 50, 5, 3);
-  printText("OVER", 50, 33, 3);
+//  drawBitmap(0, 23, gameOver, 0);
+  playMusic(4); 
+
+//  arduboy.drawFastHLine(0, 63, 36, 1);
+  printText("GAME", 40, 15, 2);
+  arduboy.display();
+  delay(1000);
+
+  printText("OVER", 40, 35, 2);
   arduboy.display();
 
-  playMusic(4); 
+//  playMusic(4); 
   delay(4500);
 }
 
