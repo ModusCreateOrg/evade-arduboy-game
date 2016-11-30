@@ -1022,7 +1022,7 @@ void createStarFieldVals() {
 
 void resetEnemies() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
-    enemies[i].health = 0;
+    enemies[i].health = 0; 
     enemies[i].bullets[0].hide();
   }
 }
@@ -1092,7 +1092,7 @@ void setup() {
   //EEPROM.write(1, 0);
   
   // Check for hi scores in EEPROM
-  if (EEPROM.read(0) == 254 && EEPROM.read(1) == 253) {
+  if (EEPROM.read(0) == 254) {
     // Scores were in EEPROM
     for (byte i = 0; i < 27; i++) {
       highScoreTable[i] = EEPROM.read(i + 2);
@@ -1102,7 +1102,6 @@ void setup() {
 
     // And write initial signature
     EEPROM.write(0, 254);
-    EEPROM.write(1, 253);
   }
  
   introScreen();
