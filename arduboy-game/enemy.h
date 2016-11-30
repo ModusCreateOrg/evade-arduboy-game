@@ -76,7 +76,7 @@ struct Enemy {
     draw();
   }
 
-  void update(boolean stopSpawningEnemies) {
+  void update(boolean stopSpawningEnemies, byte currentIteration) {
     if ((inGameFrame > (damageFrame + 4))
       && (isTakingDamage())
       && (inGameFrame % 4)) {
@@ -102,7 +102,7 @@ struct Enemy {
         
       for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
         if (!bullets[i].isVisible()) {
-          fire(i);
+          fire(i, currentIteration);
         } else {
           bullets[i].update();
         }
@@ -198,7 +198,7 @@ struct Enemy {
     }
   }
 
-  void fire(byte bulletIndex) {
+  void fire(byte bulletIndex, byte currentIteration) {
     if (isAlive() && inGameFrame > 120) {
       byte newY =  (y + (height / 2) - 1);
       
@@ -206,21 +206,29 @@ struct Enemy {
         if ((bulletIndex == 0)
           && (!bullets[bulletIndex].isVisible())
           && (random(1000 / difficulty) == 0)) {
-          bullets[bulletIndex].set(x, newY, false, 1, .7, false);
+          bullets[bulletIndex].set(x, newY, false, 1, getBulletSpeed(0.7, currentIteration), false);
         }
       } else if (type == 128) {
-        bullets[bulletIndex].set(x, newY, false, 1, 0.7, false);
+        bullets[bulletIndex].set(x, newY, false, 1, getBulletSpeed(0.7, currentIteration), false);
       } else if ((type == 129) && (inGameFrame % 50 == 0) && (random(2) == 0)) {
         if (random(4) == 0) {
-          bullets[bulletIndex].set((x - 10), newY, false, 1, 0.9, true);
+          bullets[bulletIndex].set((x - 10), newY, false, 1, getBulletSpeed(0.9, currentIteration), true);
         } else {
-          bullets[bulletIndex].set(x, newY, false, 1, 0.8, false);
+          bullets[bulletIndex].set(x, newY, false, 1, getBulletSpeed(0.8, currentIteration), false);
         }
       } else if (type == 130) {
-        bullets[bulletIndex].set(x, random(MIN_PLAYER_Y, (MAX_PLAYER_Y + 8)), false, 1, 0.6, false);
+        bullets[bulletIndex].set(x, random(MIN_PLAYER_Y, (MAX_PLAYER_Y + 8)), false, 1, getBulletSpeed(0.6, currentIteration), false);
       } 
     }
     
+  }
+
+  float getBulletSpeed(float initialSpeed, byte currentIteration) {
+    if (currentIteration > 0 && (initialSpeed + (0.1f * currentIteration) > 1)) {
+      return 1.0f;
+    }
+    
+    return (initialSpeed + (0.1f * (currentIteration - 1)));
   }
 
   void takeDamage() {

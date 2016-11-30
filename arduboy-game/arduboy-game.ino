@@ -515,7 +515,7 @@ void playGame() {
     }
 
     drawGunTemp();
-    drawScore(currentIteration);
+    drawScore();
     drawPlayerShip();
 
     boolean enemiesAlive = false;
@@ -563,10 +563,10 @@ void playGame() {
     }
 
     
-    boss.update(! isBossAlive);
+    boss.update(! isBossAlive, currentIteration);
 
     for (byte i = 0; i < MAX_ENEMIES; i++) {
-       enemies[i].update(stopSpawningEnemies);
+       enemies[i].update(stopSpawningEnemies, currentIteration);
     }
 
     if(inGameAButtonLastPress > 80 || inGameBButtonLastPress > 60) {
@@ -616,11 +616,9 @@ void drawGunTemp() {
   arduboy.fillRect(40, 1, (playerGunCharge >= MAX_GUN_CHARGE ? MAX_GUN_CHARGE : playerGunCharge), 5, 1);
 }
 
-void drawScore(byte currentIteration) {
+void drawScore() {
   sprintf(textBuf, "%06lu", score);
   printText(textBuf, 0, 0, 1);
-  sprintf(textBuf, "%d", currentIteration);
-  printText(textBuf, 0, 15, 1);
 }
 
 void drawStarLayer() {
