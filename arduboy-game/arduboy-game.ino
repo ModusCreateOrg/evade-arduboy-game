@@ -379,7 +379,8 @@ void drawBoxAroundSoundSetting(byte color) {
 void settingsScreen() {
   long lastDebounceTime = millis();  // the last time the button was pressed
   bool exit_settings_menu = false;
-  byte selectedItem;
+  bool isRealSoundChange = false;
+  byte selectedItem = SETTINGS_SOUND;
 
   arduboy.clear();
   printText("SETTINGS", 20, 2, 2);
@@ -391,7 +392,6 @@ void settingsScreen() {
     unsigned long currentMilliseconds = millis();
     bool isGreater = (currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY;
 
-  
     if (isGreater) {
       
       if (arduboy.pressed(DOWN_BUTTON)) {
@@ -447,8 +447,12 @@ void settingsScreen() {
             break;
 
           case SETTINGS_SOUND:
-            soundOn = !soundOn;
-            printsoundOnOff();
+            if (isRealSoundChange) {
+              soundOn = !soundOn;
+              printsoundOnOff();
+            } else {
+              isRealSoundChange = true;
+            }
             break;
 
           case SETTINGS_RESET_HIGH_SCORE: 
