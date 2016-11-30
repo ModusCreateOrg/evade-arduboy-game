@@ -189,7 +189,7 @@ byte titleScreen() {
      * A  8
      * B  4
      */
-    playMusic(5);
+    //playMusic(5);
 
     if (isGreater) {
 
