@@ -70,7 +70,6 @@ struct Enemy {
       height = 53;
     }
 
-    health = 5;
     draw();
   }
 
@@ -169,12 +168,13 @@ struct Enemy {
   }
 
   void updateDeathSequence() {
-    arduboy.drawCircle(x, y, dying, 1);
     
     playTone(dying * 4, 10);
 //    arduboy.tunes.tone(200 + (dying * 4), 10);
     if (dying < 65) {
       dying++;
+      arduboy.drawCircle(x, y, dying, 1);
+
     } else {
       // Fully dead, reset it so it can respawn
       dying = 0;
