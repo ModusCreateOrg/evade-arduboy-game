@@ -80,7 +80,7 @@ bool isBossAlive;
 char textBuf[23];
 
 void playMusic(byte song) {
-  return; // SIMON
+//  return; // SIMON
     if (! soundOn) {
       return;
     }
@@ -145,6 +145,10 @@ void introScreen() {
   delay(2750);
 }
 
+void drawRectAroundPlayMenuOption(byte color) {
+  arduboy.drawRect(2, 48, 28, 12, color);
+}
+
 byte titleScreen() {
   byte selectedItem = TITLE_PLAY_GAME;
   unsigned long totalDelay = 0;
@@ -154,7 +158,7 @@ byte titleScreen() {
   arduboy.clear();
 //  arduboy.drawRect(0,0,128,64,1);
   //drawBitmap(4, 14, title, 0);
-  drawBitmap(4, 16, title_letter_e, 0);
+  drawBitmap(4,  16, title_letter_e, 0);
   drawBitmap(20, 16, title_letter_v, 0);
   drawBitmap(39, 16, title_letter_a, 0);
   drawBitmap(59, 16, title_letter_d, 0);
@@ -166,7 +170,8 @@ byte titleScreen() {
   drawChrs(4, 51, titleScreenText1, 30);
   drawChrs(34, 51, titleScreenText2, 30);
   drawChrs(79, 51, titleScreenText3, 30);
-  arduboy.drawRect(2, 48, 28, 12, 1);
+//  arduboy.drawRect(2, 48, 28, 12, 1);
+  drawRectAroundPlayMenuOption(1);
   arduboy.display();
 
 //  playMusic(5);
@@ -203,17 +208,20 @@ byte titleScreen() {
         selectedItem = titleMenuRightButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
         delay(250);
-
       }
     }
   
     totalDelay ++;
-
   }
-  arduboy.tunes.stopScore();
+  playMusic(99);
 
   
   return (totalDelay >= ATTRACT_MODE_TIMEOUT ? TITLE_TIMEOUT : selectedItem);
+}
+
+
+void drawRectAroundSettingsMenuOption(byte color) {
+  arduboy.drawRect(32, 48, 42, 12, color);
 }
 
 byte titleMenuLeftButton(byte selectedItem) {
@@ -225,14 +233,18 @@ byte titleMenuLeftButton(byte selectedItem) {
   switch (selectedItem) {
     case TITLE_SETTINGS:
       arduboy.drawRect(77, 48, 50, 12, 0);
-      arduboy.drawRect(32, 48, 42, 12, 1);
+//      arduboy.drawRect(32, 48, 42, 12, 1);
+      drawRectAroundSettingsMenuOption(1);
       arduboy.display();
       return TITLE_CREDITS;
       break;
 
     case TITLE_CREDITS:
-      arduboy.drawRect(32, 48, 42, 12, 0);
-      arduboy.drawRect(2, 48, 28, 12, 1);
+      drawRectAroundSettingsMenuOption(0);
+//      arduboy.drawRect(32, 48, 42, 12, 0);
+//      arduboy.drawRect(2, 48, 28, 12, 1);
+      drawRectAroundPlayMenuOption(1);
+
       arduboy.display();
       return  TITLE_PLAY_GAME;
       break;
@@ -247,10 +259,14 @@ byte titleMenuRightButton(byte selectedItem) {
      to navigate through main menu
      items.
   */
+
   switch (selectedItem) {
     case TITLE_PLAY_GAME:
-      arduboy.drawRect(2, 48, 28, 12, 0);
-      arduboy.drawRect(32, 48, 42, 12, 1);
+//      arduboy.drawRect(2, 48, 28, 12, 0);
+      drawRectAroundPlayMenuOption(0);
+
+//      arduboy.drawRect(32, 48, 42, 12, 1);
+      drawRectAroundSettingsMenuOption(1);
       arduboy.display();
       return TITLE_CREDITS;
       break;
@@ -529,32 +545,32 @@ void playGame() {
     // This logic seems way too nested and can probably be simplified a little. :) -- JG
     if (!isBossAlive) {
       if ((score >= 5000ul + (currentIteration * 20000ul)) && (spawnedBoss < 1)) {        
-        if (!enemiesAlive) {
+        if (isBossAlive = stopSpawningEnemies = !enemiesAlive) {
           boss.set(129, 28, 128);
           spawnedBoss = 1;
-          isBossAlive = true;
+//          isBossAlive = true;
         } 
-        else {
-          stopSpawningEnemies = true;
-        }
+//        else {
+//          stopSpawningEnemies = true;
+//        }
       } else if ((score >= (12000ul + (currentIteration * 20000ul))) && (spawnedBoss < 2)) {
-        if (!enemiesAlive) {
+        if (isBossAlive = stopSpawningEnemies = !enemiesAlive) {
           boss.set(129, 24, 129);
           spawnedBoss = 2;
-          isBossAlive = true;
+//          isBossAlive = true;
         } 
-        else {
-          stopSpawningEnemies = true;
-        }
+//        else {
+//          stopSpawningEnemies = true;
+//        }
       } else if ((score >= (20000ul + (currentIteration * 20000ul))) && (spawnedBoss < 3)) {
-        if (!enemiesAlive) {
+        if (isBossAlive = stopSpawningEnemies =!enemiesAlive) {
           boss.set(129, 10, 130);
           spawnedBoss = 3;
-          isBossAlive = true;
+//          isBossAlive = true;
         } 
-        else {
-          stopSpawningEnemies = true;
-        }
+//        else {
+//          stopSpawningEnemies = true;
+//        }
       }
     }
     
@@ -613,7 +629,7 @@ void playGame() {
 
 void drawGunTemp() {
   arduboy.drawRect(40, 1, 40, 5, 1);
-  arduboy.fillRect(40, 1, (playerGunCharge >= MAX_GUN_CHARGE ? MAX_GUN_CHARGE : playerGunCharge), 5, 1);
+  arduboy.fillRect(40, 1, (playerGunCharge), 5, 1);
 }
 
 void drawScore() {
@@ -832,7 +848,7 @@ boolean handlePlayerBullets() {
 }
 
 void playerWinsScreen() {
-  arduboy.tunes.stopScore();
+  playMusic(99);
   arduboy.clear();
 
   // Temp
@@ -851,8 +867,8 @@ void gameOverScreen() {
   arduboy.tunes.stopScore();
   arduboy.clear();
   
-  drawBitmap(0, 23, gameOver, 0);
-  arduboy.drawFastHLine(0, 63, 128, 1);
+//  drawBitmap(0, 23, gameOver, 0);
+//  arduboy.drawFastHLine(0, 63, 128, 1);
   
   printText("GAME", 50, 5, 3);
   printText("OVER", 50, 33, 3);
