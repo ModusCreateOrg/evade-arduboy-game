@@ -85,7 +85,6 @@ console.log(endStr);
  */
 
 
-
 //YOU SURVIVED BUT
 PROGMEM const uint8_t playerWon0[] = {
 16,// Number characters
@@ -110,6 +109,24 @@ PROGMEM const uint8_t playerWon3[] = {
 15, 17, 4, 15, 0, 17, 4, 255, 5, 14, 17, 255, 1, 0, 19, 19, 11, 4, 28
 };
 
+
+//YOU
+//PROGMEM const uint8_t playerWon0[] = {
+//3,// Number characters
+//24, 14, 20
+//};
+
+//ESCAPED
+//PROGMEM const uint8_t playerWon1[] = {
+//7,// Number characters
+//4, 18, 2, 0, 15, 4, 3
+//};
+
+//HOWEVER...
+//PROGMEM const uint8_t playerWon2[] = {
+//10,// Number characters
+//7, 14, 22, 4, 21, 4, 17, 27, 27, 27
+//};  
 
 //CREDITS:
 PROGMEM const uint8_t credits0[] = {
