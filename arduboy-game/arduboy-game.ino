@@ -894,12 +894,15 @@ void gameOverScreen() {
   
 //  drawBitmap(0, 23, gameOver, 0);
 //  arduboy.drawFastHLine(0, 63, 128, 1);
+  playMusic(4);
   
-  printText("GAME", 50, 5, 3);
-  printText("OVER", 50, 33, 3);
+  printText("GAME", 40, 15, 2);
+  display();
+  delay(1000);
+
+  printText("OVER", 40, 35, 2);
   display();
 
-  playMusic(4); 
   delay(4500);
 }
 
