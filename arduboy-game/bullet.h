@@ -7,8 +7,8 @@
 #include "globals.h"
 #include "bitmaps.h"
 
-#define A_BULLET_DAMAGE 75
-#define B_BULLET_DAMAGE 40
+#define A_BULLET_DAMAGE 75 // First button, Fireball
+#define B_BULLET_DAMAGE 40 // Second button, small laser
 
 struct Bullet {
   public:
