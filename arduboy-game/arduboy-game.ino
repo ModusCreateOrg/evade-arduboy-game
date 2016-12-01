@@ -557,6 +557,7 @@ void playGame() {
   isBossAlive = false;
   byte spawnedBoss = 0;
   byte currentIteration = 0;
+  boolean iterationEnding = false;
 
   resetEnemies();
   resetBoss();
@@ -653,6 +654,13 @@ void playGame() {
     updateStarFieldVals();
 
     if (handlePlayerBullets()) {
+      iterationEnding = true;
+      stopSpawningEnemies = true;
+      stopMusic();
+    }
+
+    if (iterationEnding && boss.dying == 0) {
+      delay(100);
       playerWinsScreen();
 
       // Reset which boss spawns for next iteration
@@ -667,13 +675,16 @@ void playGame() {
       // Set them on the next iteration
       currentIteration = (currentIteration == 254 ? 0 : currentIteration + 1);
       currentKills = 0;
+      iterationEnding = false;
+      stopSpawningEnemies = false;
     }
     
     handleEnemyBullets();
     handleBossBullets();
-      
-    playMusic(isBossAlive ? 3 : 2);
 
+    if (! iterationEnding) {
+      playMusic(isBossAlive ? 3 : 2);
+    }
   }
 
   stopMusic();
