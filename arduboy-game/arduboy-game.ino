@@ -79,6 +79,11 @@ bool isBossAlive;
 // General purpose text buffer for string concatenation and read from progmem
 char textBuf[23];
 
+void display() {
+  arduboy.display();
+}
+
+
 void playMusic(byte song) {
     if (! soundOn) {
       return;
@@ -135,7 +140,7 @@ void introScreen() {
 //  arduboy.fillRect(10,54, 128, 64,1);
 //
 //  drawBitmap(10, 16, moduslogo_graffiti_small, 0);
-  arduboy.display();
+  display();
 
   arduboy.initRandomSeed();
   
@@ -147,6 +152,7 @@ void introScreen() {
 void drawRectAroundPlayMenuOption(byte color) {
   arduboy.drawRect(2, 48, 28, 12, color);
 }
+
 
 byte titleScreen() {
   byte selectedItem = TITLE_PLAY_GAME;
@@ -166,12 +172,12 @@ byte titleScreen() {
   drawBitmap(93, 14, title_planet, 0);
   
 
-  drawChrs(4, 51, titleScreenText1, 30);
+  drawChrs(4,  51, titleScreenText1, 30);
   drawChrs(34, 51, titleScreenText2, 30);
   drawChrs(79, 51, titleScreenText3, 30);
 //  arduboy.drawRect(2, 48, 28, 12, 1);
   drawRectAroundPlayMenuOption(1);
-  arduboy.display();
+  display();
 
 //  playMusic(5);
 
@@ -234,7 +240,7 @@ byte titleMenuLeftButton(byte selectedItem) {
       arduboy.drawRect(77, 48, 50, 12, 0);
 //      arduboy.drawRect(32, 48, 42, 12, 1);
       drawRectAroundSettingsMenuOption(1);
-      arduboy.display();
+      display();
       return TITLE_CREDITS;
       break;
 
@@ -244,7 +250,7 @@ byte titleMenuLeftButton(byte selectedItem) {
 //      arduboy.drawRect(2, 48, 28, 12, 1);
       drawRectAroundPlayMenuOption(1);
 
-      arduboy.display();
+      display();
       return  TITLE_PLAY_GAME;
       break;
 
@@ -266,14 +272,14 @@ byte titleMenuRightButton(byte selectedItem) {
 
 //      arduboy.drawRect(32, 48, 42, 12, 1);
       drawRectAroundSettingsMenuOption(1);
-      arduboy.display();
+      display();
       return TITLE_CREDITS;
       break;
 
     case TITLE_CREDITS:
       arduboy.drawRect(32, 48, 42, 12, 0);
       arduboy.drawRect(77, 48, 50, 12, 1);
-      arduboy.display();
+      display();
       return TITLE_SETTINGS;
       break;
 
@@ -300,7 +306,7 @@ void highScoreScreen() {
     printText(textBuf, 15, 26 + (12 * i), 1);
   }
 
-  arduboy.display();
+  display();
 
   unsigned long lastDebounceTime = millis();
 
@@ -342,7 +348,7 @@ void drawChrs(byte cPos, byte yPos, const uint8_t *letters, unsigned long delayT
         curs += pgm_read_byte(alphabet[letter]) + 1;
     }
     
-    arduboy.display();
+    display();
 
     if (delayTimer) {
       playTone(100, delayTimer - 10);
@@ -426,7 +432,7 @@ void settingsScreen() {
           default: break;
         }
                     
-        arduboy.display();
+        display();
         delay(250);
         lastDebounceTime = currentMilliseconds; //set the current time
       }
@@ -446,7 +452,7 @@ void settingsScreen() {
           selectedItem = SETTINGS_SOUND;
         }
         
-        arduboy.display();
+        display();
         delay(250);
         lastDebounceTime = currentMilliseconds; //set the current time
       }
@@ -476,13 +482,13 @@ void settingsScreen() {
           default: break;
         }  
 
-        arduboy.display();
+        display();
         delay(250);
         
         lastDebounceTime = currentMilliseconds; //set the current time
       }
       
-//      arduboy.display();
+//      display();
       delay(15);
     }
      
@@ -597,7 +603,7 @@ void playGame() {
     drawStarLayer();
     drawLives();
        
-    arduboy.display();
+    display();
 
     updateStarFieldVals();
 
@@ -871,7 +877,7 @@ void gameOverScreen() {
   
   printText("GAME", 50, 5, 3);
   printText("OVER", 50, 33, 3);
-  arduboy.display();
+  display();
 
   playMusic(4); 
   delay(4500);
@@ -909,7 +915,7 @@ void newHighScoreScreen(byte newHiPos) {
   printText(textBuf, 44, 45, 2);
   drawHighScoreEntryCursor(currPos);
 
-  arduboy.display();
+  display();
 
   while(! allDone) {
     unsigned long currentMilliseconds = millis();
@@ -968,7 +974,7 @@ void newHighScoreScreen(byte newHiPos) {
           printText(textBuf, 44, 45, 2);
           lastDebounceTime = currentMilliseconds;
        }    
-       arduboy.display();
+       display();
  
     }
   }
