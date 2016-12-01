@@ -52,7 +52,6 @@ void resetPlayer() {
 
 char *alphabet[28];
 
-
 char highScoreTable[27] = "AAA000300BBB000200CCC000100";
 
 unsigned long inGameAButtonLastPress, inGameBButtonLastPress, inGameLastDeath, score;
@@ -83,6 +82,9 @@ void display() {
   arduboy.display();
 }
 
+void stopMusic(){
+  arduboy.tunes.stopScore();
+}
 
 void playMusic(byte song) {
     if (! soundOn) {
@@ -90,14 +92,14 @@ void playMusic(byte song) {
     }
    
     if (currentSong != song) {
-      arduboy.tunes.stopScore();
+      stopMusic();
     }
     
     unsigned char *music;
     switch(song) {
-//      case 1 :
-//         music = introMusic;
-//      break;
+      case 1 :
+         music = introMusic;
+      break;
       case 2 :
 //          music = stage1MusicSingleTrack; // IF WE RUN OUT OF SPACE
         music = stage1MusicDoubleTrack;
@@ -164,7 +166,7 @@ void introScreen() {
   arduboy.initRandomSeed();
   
 //  delay(250);
-//  playMusic(1);
+  playMusic(1);
   delay(2750);
 }
 
@@ -520,7 +522,7 @@ void printsoundOnOff() {
 }
 
 void playGame() {
-  arduboy.tunes.stopScore();
+  stopMusic();
 
   inGameFrame = 0;
   inGameAButtonLastPress = 0;
@@ -647,7 +649,7 @@ void playGame() {
 
   }
 
-  arduboy.tunes.stopScore();
+  stopMusic();
 }
 
 void drawGunTemp() {
@@ -872,14 +874,15 @@ boolean handlePlayerBullets() {
 }
 
 void playerWinsScreen() {
-  byte creditsDelay = 30;
+  playMusic(6);
 
+  byte creditsDelay = 30;
+//  stopMusic();
   arduboy.clear();
 
   drawChrs(0, 10, playerWon0,  creditsDelay);
   drawChrs(0, 20, playerWon1, creditsDelay);
 
-  playMusic(6);
 
   delay(2500);
   drawChrs(0, 40, playerWon2, creditsDelay);
@@ -888,8 +891,9 @@ void playerWinsScreen() {
   delay(4500);
 }
 
+
 void gameOverScreen() {
-  arduboy.tunes.stopScore();
+  stopMusic();
   arduboy.clear();
   
 //  drawBitmap(0, 23, gameOver, 0);
