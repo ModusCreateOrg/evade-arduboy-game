@@ -50,7 +50,7 @@ void resetPlayer() {
     playerGunCharge = MAX_GUN_CHARGE; 
 }
 
-char *alphabet[28];
+char *alphabet[29];
 
 char highScoreTable[27] = "AAA000300BBB000200CCC000100";
 
@@ -77,6 +77,25 @@ bool isBossAlive;
 
 // General purpose text buffer for string concatenation and read from progmem
 char textBuf[23];
+
+void redAlert() {
+    arduboy.clear();
+
+    drawChrs(3, 30, playerWon2, 125);
+//  drawChrs(0, 50, playerWon3, creditsDelay);
+    delay(3000);
+    for (byte i = 1; i < 7; i++) {
+    byte color = i % 2;
+    arduboy.fillRect(0,0,128,64, color);
+    display();
+
+    for (byte z = 1; z < 150 ; z++) {
+//      arduboy.drawCircle(64,32, z, color);
+      playTone(z, 10);
+      delay(3);
+    } 
+  }
+}
 
 void display() {
   arduboy.display();
@@ -356,10 +375,9 @@ void drawChrs(byte cPos, byte yPos, const uint8_t *letters, unsigned long delayT
 
 //  Serial.println("\n-------------\n");
     byte letter; 
-
   for (byte i = 0; i <  strLen; i++) {
     letter = pgm_read_byte(++letters);
-    
+
     // Space chr
     if (letter == 255) {
        curs += 5;
@@ -384,6 +402,7 @@ void drawChrs(byte cPos, byte yPos, const uint8_t *letters, unsigned long delayT
       playTone(1200, 30);
       delay(40);
   }
+
 }
 
 void creditsScreen() {
@@ -539,7 +558,7 @@ void playGame() {
   resetBoss();
   resetPlayerBullets();
 
-
+  redAlert();
   while (livesRemaining > 0) {
     boolean stopSpawningEnemies = false;
     
@@ -552,6 +571,8 @@ void playGame() {
       if (playerGunCharge < MAX_GUN_CHARGE) {
         // Charge up the gun
         playerGunCharge++;
+//        playerGunCharge = MAX_GUN_CHARGE; // FOR DEBUG
+        
       }
     }
 
@@ -854,7 +875,7 @@ boolean handlePlayerBullets() {
             playerBullets[i].hide();
             score += playerBullets[i].damage;
             
-            if (playerBullets[i].damage > enemies[j].health) {
+            if (playerBullets[i].damage >= enemies[j].health) {
               enemies[j].health = 0;
               enemies[j].dying = 1;
               score += 100;
@@ -876,23 +897,22 @@ boolean handlePlayerBullets() {
 }
 
 void playerWinsScreen() {
-  playMusic(6);
+//  playMusic(6);
 
-  byte creditsDelay = 30;
+  byte creditsDelay = 40;
 //  stopMusic();
 //  resetBoss();
   resetEnemies();
   arduboy.clear();
 
-  drawChrs(0, 10, playerWon0,  creditsDelay);
-  drawChrs(0, 20, playerWon1, creditsDelay);
-
-
+  drawChrs(18, 25, playerWon0,  creditsDelay);
+  drawChrs(3, 40, playerWon1, creditsDelay);
+  playMusic(6);
   delay(2500);
-  drawChrs(0, 40, playerWon2, creditsDelay);
-  drawChrs(0, 50, playerWon3, creditsDelay);
-  
-  delay(4500);
+
+
+
+  redAlert();
 }
 
 
@@ -1173,12 +1193,13 @@ void setup() {
   alphabet[25] = Z;
   alphabet[26] = colon;
   alphabet[27] = period;
+  alphabet[28] = exclamation;
 }
 
 // Main program loop
 void loop() {
   byte result, newHiScorePos;
-
+//  playerWinsScreen(); // FOR DEBUG
   result = titleScreen();
 
   switch (result) {

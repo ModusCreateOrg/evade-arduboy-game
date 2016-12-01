@@ -43,7 +43,8 @@ struct Enemy {
     width = 16;
     height = 16;
     difficulty = 4;
-    
+
+//    type=7; // For debug
     if (type < 5) {
       difficulty = (currentIteration == 0 ? 1: 2);
       bitmap = enemy1;
