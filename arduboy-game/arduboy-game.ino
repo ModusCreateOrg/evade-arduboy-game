@@ -95,9 +95,9 @@ void playMusic(byte song) {
     
     unsigned char *music;
     switch(song) {
-      case 1 :
-         music = introMusic;
-      break;
+//      case 1 :
+//         music = introMusic;
+//      break;
       case 2 :
 //          music = stage1MusicSingleTrack; // IF WE RUN OUT OF SPACE
         music = stage1MusicDoubleTrack;
@@ -124,6 +124,25 @@ void playMusic(byte song) {
 }   
 
 
+void explode(byte x, byte y, byte dying) {
+  byte rnd = random(1, 15),
+       _dying = dying + rnd;
+       
+  playTone(_dying * 5, 10);
+  
+  if (inGameFrame % 2 == 0) {
+  
+  //        byte _x = random(x, x + width), //x + width/2,
+  //             _y = random(y, y + height), //y +  height/2,
+  //             randOp = dying / 4, //random(1, 10),
+  //             randSize = random(1, 5);
+         
+    arduboy.drawCircle(x, y, dying + rnd, 1);
+    arduboy.drawCircle(x, y, _dying - rnd, 1);
+    arduboy.drawCircle(x, y, _dying - rnd + 5, 1);
+  }
+}
+
 void printText(char *message, byte x, byte y, byte textSize) {
   arduboy.setCursor(x, y);
   arduboy.setTextSize(textSize);
@@ -144,8 +163,8 @@ void introScreen() {
 
   arduboy.initRandomSeed();
   
-  delay(250);
-  playMusic(1);
+//  delay(250);
+//  playMusic(1);
   delay(2750);
 }
 
@@ -749,11 +768,12 @@ void drawPlayerShip() {
 
     
   } else {
-    arduboy.drawCircle(playerX, playerY, playerDying , 1);
+//    playTone((playerDying % 2 == 0) ? (400 + playerDying * 2) : (600 - playerDying * 2), 10);
+    explode(playerX + 8, playerY + 8, playerDying);
+//    arduboy.drawCircle(playerX, playerY, playerDying , 1);
 
-    playTone((playerDying % 2 == 0) ? (400 + playerDying * 2) : (600 - playerDying * 2), 10);
 
-    if (playerDying < 65) {
+    if (playerDying < 50) {
       playerDying++;
     } else {
       livesRemaining--;

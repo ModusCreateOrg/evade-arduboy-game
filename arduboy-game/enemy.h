@@ -172,13 +172,17 @@ struct Enemy {
 
   void updateDeathSequence() {
     
-    playTone(dying * 4, 10);
-//    arduboy.tunes.tone(200 + (dying * 4), 10);
-    if (dying < 65) {
+//    playTone(dying * 4, 10);
+    if (dying < 30) {
       dying++;
       
-      arduboy.drawCircle(x + (width / 2), y + (height / 2), dying, 1);
-
+//      arduboy.drawCircle(x + (width / 2), y + (height / 2), dying, 1);
+      explode(x + width / 2,y + height / 2,dying);
+//        arduboy.drawCircle(_x - randOp , _y - randOp, random(3, 10), 1);
+//        arduboy.drawCircle(_x + randOp , _y - randOp, random(3, 10), 1);
+//        arduboy.drawCircle(_x - randOp , _y + randOp, random(3, 10), 1);
+//        arduboy.drawCircle(_x + randOp , _y + randOp, random(3, 10), 1);
+//      }
     } else {
       // Fully dead, reset it so it can respawn
       dying = 0;
@@ -200,7 +204,7 @@ struct Enemy {
 
   void fire(byte bulletIndex, byte currentIteration) {
     if (isAlive() && inGameFrame > 120) {
-      byte newY =  (y + (height / 2) - 1);
+      byte newY = (y + (height / 2) - 1);
       
       if (type <= 9) {
         if ((bulletIndex == 0)
@@ -227,7 +231,7 @@ struct Enemy {
     if (currentIteration > 0 && (initialSpeed + (0.1f * currentIteration) > 1)) {
       return 1.0f;
     }
-    
+
     return (initialSpeed + (0.1f * (currentIteration - 1)));
   }
 
