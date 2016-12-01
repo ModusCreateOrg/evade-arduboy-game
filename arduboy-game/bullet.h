@@ -46,33 +46,20 @@ struct Bullet {
     }
 
     void move() {
-      if (isMovingRight()) {
-        x += speedX;
-        if (x > 128) {
+      x += isMovingRight() ? speedX : -speedX;
+      if (x > 128) {
           hide();
-        }
-      } else {
-        x -= speedX;
-
-//        if ((! isLaserBeam()) && (x <= 0)) {
-//          hide();
-//        } else if (isLaserBeam() && (x <= -30)) {
-//          hide();
-//        }
-        if (x <= -30) {
-          hide();
-        }
       }
-    
+      if (x <= -30) {
+          hide();
+      }
     }
 
     void draw() {
   
         if (isMovingRight()) {
           const bool isBulletA = (damage == A_BULLET_DAMAGE);
-//          const int tone = ;
           playTone(isBulletA ? 600 - (x + 2) : 900 - (x * 2 + 3), 10);
-//          arduboy.tunes.tone(tone - x, 10);
           drawBitmap(x, y, (isBulletA ? playerBulletA : playerBulletB), 0);
         } else if (!isLaserBeam()) {
           drawBitmap(x, y, enemyBullet, 0);
