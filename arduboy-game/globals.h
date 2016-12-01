@@ -18,7 +18,7 @@
 
 #define BOSS1_SCORE 5000ul
 #define BOSS2_SCORE 12000ul
-#define BOSS3_SCORE 20000ul
+#define BOSS3_SCORE 2000ul
 
 // Time before title screen flips to high score screen
 #define ATTRACT_MODE_TIMEOUT 400000

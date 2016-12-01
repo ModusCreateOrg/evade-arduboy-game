@@ -892,7 +892,16 @@ void playerWinsScreen() {
   drawChrs(0, 40, playerWon2, creditsDelay);
   drawChrs(0, 50, playerWon3, creditsDelay);
   
-  delay(4500);
+  delay(4000);
+
+  for (byte i = 1; i < 7; i++) {
+    byte color = i % 2;
+    for (byte z = 1; z < 150 ; z++) {
+      arduboy.drawCircle(64,32, z, color);
+      playTone(z, 10);
+      display();
+    } 
+  }
 }
 
 
