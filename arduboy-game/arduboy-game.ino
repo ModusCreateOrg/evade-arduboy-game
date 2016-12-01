@@ -107,6 +107,9 @@ void playMusic(byte song) {
 //      case 5 : 
 //        music = titleMusic;
 //      break;
+      case 6 :
+        music = youWin;
+      break;
     }
     
     currentSong = song;
@@ -141,6 +144,10 @@ void introScreen() {
   delay(2750);
 }
 
+void drawRectAroundPlayMenuOption(byte color) {
+  arduboy.drawRect(2, 48, 28, 12, color);
+}
+
 byte titleScreen() {
   byte selectedItem = TITLE_PLAY_GAME;
   unsigned long totalDelay = 0;
@@ -150,7 +157,7 @@ byte titleScreen() {
   arduboy.clear();
 //  arduboy.drawRect(0,0,128,64,1);
   //drawBitmap(4, 14, title, 0);
-  drawBitmap(4, 16, title_letter_e, 0);
+  drawBitmap(4,  16, title_letter_e, 0);
   drawBitmap(20, 16, title_letter_v, 0);
   drawBitmap(39, 16, title_letter_a, 0);
   drawBitmap(59, 16, title_letter_d, 0);
@@ -162,7 +169,8 @@ byte titleScreen() {
   drawChrs(4, 51, titleScreenText1, 30);
   drawChrs(34, 51, titleScreenText2, 30);
   drawChrs(79, 51, titleScreenText3, 30);
-  arduboy.drawRect(2, 48, 28, 12, 1);
+//  arduboy.drawRect(2, 48, 28, 12, 1);
+  drawRectAroundPlayMenuOption(1);
   arduboy.display();
 
 //  playMusic(5);
@@ -180,7 +188,7 @@ byte titleScreen() {
      * A  8
      * B  4
      */
-    playMusic(5);
+    //playMusic(5);
 
     if (isGreater) {
 
@@ -199,17 +207,20 @@ byte titleScreen() {
         selectedItem = titleMenuRightButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
         delay(250);
-
       }
     }
   
     totalDelay ++;
-
   }
-  arduboy.tunes.stopScore();
+//  playMusic(99);
 
   
   return (totalDelay >= ATTRACT_MODE_TIMEOUT ? TITLE_TIMEOUT : selectedItem);
+}
+
+
+void drawRectAroundSettingsMenuOption(byte color) {
+  arduboy.drawRect(32, 48, 42, 12, color);
 }
 
 byte titleMenuLeftButton(byte selectedItem) {
@@ -221,14 +232,18 @@ byte titleMenuLeftButton(byte selectedItem) {
   switch (selectedItem) {
     case TITLE_SETTINGS:
       arduboy.drawRect(77, 48, 50, 12, 0);
-      arduboy.drawRect(32, 48, 42, 12, 1);
+//      arduboy.drawRect(32, 48, 42, 12, 1);
+      drawRectAroundSettingsMenuOption(1);
       arduboy.display();
       return TITLE_CREDITS;
       break;
 
     case TITLE_CREDITS:
-      arduboy.drawRect(32, 48, 42, 12, 0);
-      arduboy.drawRect(2, 48, 28, 12, 1);
+      drawRectAroundSettingsMenuOption(0);
+//      arduboy.drawRect(32, 48, 42, 12, 0);
+//      arduboy.drawRect(2, 48, 28, 12, 1);
+      drawRectAroundPlayMenuOption(1);
+
       arduboy.display();
       return  TITLE_PLAY_GAME;
       break;
@@ -243,10 +258,14 @@ byte titleMenuRightButton(byte selectedItem) {
      to navigate through main menu
      items.
   */
+
   switch (selectedItem) {
     case TITLE_PLAY_GAME:
-      arduboy.drawRect(2, 48, 28, 12, 0);
-      arduboy.drawRect(32, 48, 42, 12, 1);
+//      arduboy.drawRect(2, 48, 28, 12, 0);
+      drawRectAroundPlayMenuOption(0);
+
+//      arduboy.drawRect(32, 48, 42, 12, 1);
+      drawRectAroundSettingsMenuOption(1);
       arduboy.display();
       return TITLE_CREDITS;
       break;
@@ -325,18 +344,17 @@ void drawChrs(byte cPos, byte yPos, const uint8_t *letters, unsigned long delayT
     
     arduboy.display();
 
-
     if (delayTimer) {
-      arduboy.tunes.tone(100, delayTimer - 10);
+      playTone(100, delayTimer - 10);
       delay(delayTimer);
     }
   }  
 
 
   if (delayTimer) {
-      arduboy.tunes.tone(800, 15);
+      playTone(800, 15);
       delay(15);
-      arduboy.tunes.tone(1200, 30);
+      playTone(1200, 30);
       delay(40);
   }
 }
@@ -366,8 +384,6 @@ void creditsScreen() {
 
   delay(2000);
 }
-
-
 
 void drawBoxAroundSoundSetting(byte color) {
    arduboy.drawRect(17, 22, 35, 13, color);
@@ -490,6 +506,7 @@ void playGame() {
   resetPlayer();
   isBossAlive = false;
   byte spawnedBoss = 0;
+  byte currentIteration = 0;
 
   resetEnemies();
   resetBoss();
@@ -515,7 +532,6 @@ void playGame() {
     drawScore();
     drawPlayerShip();
 
-
     boolean enemiesAlive = false;
     for (byte i = 0; i < MAX_ENEMIES; i++) {
       if (enemies[i].isAlive()) {
@@ -524,38 +540,35 @@ void playGame() {
       }
     }
 
-
     // This logic seems way too nested and can probably be simplified a little. :) -- JG
     if (!isBossAlive) {
-      if ((score >= 5000) && (spawnedBoss < 1)) {
-        if (!enemiesAlive) {
-          boss.set(129, 28, 128);
+      if ((score >= 5000ul + (currentIteration * 20000ul)) && (spawnedBoss < 1)) {        
+        if (isBossAlive = stopSpawningEnemies = !enemiesAlive) {
+          boss.set(129, 28, 128, currentIteration);
           spawnedBoss = 1;
-          isBossAlive = true;
+//          isBossAlive = true;
         } 
-        else {
-          stopSpawningEnemies = true;
-        }
-      } 
-      else if ((score >= 12000) && (spawnedBoss < 2)) {
-        if (!enemiesAlive) {
-          boss.set(129, 24, 129);
+//        else {
+//          stopSpawningEnemies = true;
+//        }
+      } else if ((score >= (12000ul + (currentIteration * 20000ul))) && (spawnedBoss < 2)) {
+        if (isBossAlive = stopSpawningEnemies = !enemiesAlive) {
+          boss.set(129, 24, 129, currentIteration);
           spawnedBoss = 2;
-          isBossAlive = true;
+//          isBossAlive = true;
         } 
-        else {
-          stopSpawningEnemies = true;
-        }
-      } 
-      else if ((score >= 20000) && (spawnedBoss < 3)) {
-        if (!enemiesAlive) {
-          boss.set(129, 10, 130);
+//        else {
+//          stopSpawningEnemies = true;
+//        }
+      } else if ((score >= (20000ul + (currentIteration * 20000ul))) && (spawnedBoss < 3)) {
+        if (isBossAlive = stopSpawningEnemies =!enemiesAlive) {
+          boss.set(129, 10, 130, currentIteration);
           spawnedBoss = 3;
-          isBossAlive = true;
+//          isBossAlive = true;
         } 
-        else {
-          stopSpawningEnemies = true;
-        }
+//        else {
+//          stopSpawningEnemies = true;
+//        }
       }
     }
     
@@ -564,10 +577,10 @@ void playGame() {
     }
 
     
-    boss.update(! isBossAlive);
+    boss.update(! isBossAlive, currentIteration);
 
     for (byte i = 0; i < MAX_ENEMIES; i++) {
-       enemies[i].update(stopSpawningEnemies);
+       enemies[i].update(stopSpawningEnemies, currentIteration);
     }
 
     if(inGameAButtonLastPress > 80 || inGameBButtonLastPress > 60) {
@@ -588,11 +601,24 @@ void playGame() {
 
     updateStarFieldVals();
 
-    handlePlayerBullets();
+    if (handlePlayerBullets()) {
+      playerWinsScreen();
+
+      // Reset which boss spawns for next iteration
+      spawnedBoss = 0;
+
+      // Give the player their lives back, end any dying sequence etx
+      livesRemaining = MAX_LIVES;
+      resetPlayer();
+
+      // Set them on the next iteration
+      currentIteration = (currentIteration == 254 ? 0 : currentIteration + 1);
+    }
+    
     handleEnemyBullets();
     handleBossBullets();
       
-     playMusic(isBossAlive ? 3 : 2);
+    playMusic(isBossAlive ? 3 : 2);
 
   }
 
@@ -601,7 +627,7 @@ void playGame() {
 
 void drawGunTemp() {
   arduboy.drawRect(40, 1, 40, 5, 1);
-  arduboy.fillRect(40, 1, (playerGunCharge >= MAX_GUN_CHARGE ? MAX_GUN_CHARGE : playerGunCharge), 5, 1);
+  arduboy.fillRect(40, 1, (playerGunCharge), 5, 1);
 }
 
 void drawScore() {
@@ -768,7 +794,7 @@ void handleBossBullets() {
   }
 }
 
-void handlePlayerBullets() {
+boolean handlePlayerBullets() {
   for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
     if (playerBullets[i].isVisible()) {
       if (isBossAlive) {
@@ -782,6 +808,11 @@ void handlePlayerBullets() {
           if (boss.health <= 0) {
             boss.dying = 1;
             score += 500;
+
+            if (boss.type == 130) {
+              isBossAlive = false;
+              return true;
+            }
           }
           
         }
@@ -810,14 +841,33 @@ void handlePlayerBullets() {
   if (boss.dying > 1) {
     isBossAlive = false;
   }
+
+  return false;
+}
+
+void playerWinsScreen() {
+  byte creditsDelay = 30;
+
+  arduboy.clear();
+
+  drawChrs(0, 10, playerWon0,  creditsDelay);
+  drawChrs(0, 20, playerWon1, creditsDelay);
+
+  playMusic(6);
+
+  delay(2500);
+  drawChrs(0, 40, playerWon2, creditsDelay);
+  drawChrs(0, 50, playerWon3, creditsDelay);
+  
+  delay(4500);
 }
 
 void gameOverScreen() {
   arduboy.tunes.stopScore();
   arduboy.clear();
   
-  drawBitmap(0, 23, gameOver, 0);
-  arduboy.drawFastHLine(0, 63, 128, 1);
+//  drawBitmap(0, 23, gameOver, 0);
+//  arduboy.drawFastHLine(0, 63, 128, 1);
   
   printText("GAME", 50, 5, 3);
   printText("OVER", 50, 33, 3);
@@ -971,7 +1021,7 @@ void createStarFieldVals() {
 
 void resetEnemies() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
-    enemies[i].health = 0;
+    enemies[i].health = 0; 
     enemies[i].bullets[0].hide();
   }
 }
@@ -1041,7 +1091,7 @@ void setup() {
   //EEPROM.write(1, 0);
   
   // Check for hi scores in EEPROM
-  if (EEPROM.read(0) == 254 && EEPROM.read(1) == 253) {
+  if (EEPROM.read(0) == 254) {
     // Scores were in EEPROM
     for (byte i = 0; i < 27; i++) {
       highScoreTable[i] = EEPROM.read(i + 2);
@@ -1051,7 +1101,6 @@ void setup() {
 
     // And write initial signature
     EEPROM.write(0, 254);
-    EEPROM.write(1, 253);
   }
  
   introScreen();

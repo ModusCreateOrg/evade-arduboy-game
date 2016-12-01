@@ -21,7 +21,7 @@ struct Enemy {
   Bullet bullets[MAX_BOSS_BULLETS];
   int animFrame;
 
-  void set(byte _x, byte _y, byte _type) {
+  void set(byte _x, byte _y, byte _type, byte currentIteration) {
     x = _x;
     y = _y;
     type = _type;
@@ -45,27 +45,27 @@ struct Enemy {
     difficulty = 4;
     
     if (type < 5) {
-      difficulty = 1;
+      difficulty = (currentIteration == 0 ? 1: 2);
       bitmap = enemy1;
       health = 25;
     } else if (type < 9) {
       difficulty = 2;
       bitmap = enemy2;
-      health = 150;
+      health = 150 + (currentIteration * B_BULLET_DAMAGE);
     } else if (type == 9) {
       bitmap = enemy3;
-      health = 500;
+      health = 500 + (currentIteration * A_BULLET_DAMAGE);
     } else if (type == 128) {
       bitmap = boss1;
-      health = 1000;
+      health = 1000 + (currentIteration * 500);
       width = 32;
     } else if (type == 129) {
       bitmap = boss2;
-      health = 2000;
+      health = 2000 + (currentIteration * 1000);
       width = 32;
     } else if (type == 130) {
       bitmap = boss3;
-      health = 3000;
+      health = 3000 + (currentIteration * 3000);
       width = 59;
       height = 53;
     }
@@ -76,7 +76,7 @@ struct Enemy {
     draw();
   }
 
-  void update(boolean stopSpawningEnemies) {
+  void update(boolean stopSpawningEnemies, byte currentIteration) {
     if ((inGameFrame > (damageFrame + 4))
       && (isTakingDamage())
       && (inGameFrame % 4)) {
@@ -92,7 +92,7 @@ struct Enemy {
     } else if (dying > 0) {
       updateDeathSequence();
     } else if ((type <= 9) && (! stopSpawningEnemies) && (random(600) == 0)) {
-      spawn();
+      spawn(currentIteration);
     }
     
     if ((type <= 9)
@@ -102,7 +102,7 @@ struct Enemy {
         
       for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
         if (!bullets[i].isVisible()) {
-          fire(i);
+          fire(i, currentIteration);
         } else {
           bullets[i].update();
         }
@@ -110,10 +110,10 @@ struct Enemy {
     }
   }
 
-  void spawn() {
+  void spawn(byte currentIteration) {
     byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
     byte enemyY = random(MIN_PLAYER_Y, MAX_PLAYER_Y);
-    set(enemyX, enemyY, random(10));
+    set(enemyX, enemyY, random(10), currentIteration);
   }
 
   void move() {
@@ -198,7 +198,7 @@ struct Enemy {
     }
   }
 
-  void fire(byte bulletIndex) {
+  void fire(byte bulletIndex, byte currentIteration) {
     if (isAlive() && inGameFrame > 120) {
       byte newY =  (y + (height / 2) - 1);
       
@@ -206,21 +206,29 @@ struct Enemy {
         if ((bulletIndex == 0)
           && (!bullets[bulletIndex].isVisible())
           && (random(1000 / difficulty) == 0)) {
-          bullets[bulletIndex].set(x, newY, false, 1, .7, false);
+          bullets[bulletIndex].set(x, newY, false, 1, getBulletSpeed(0.7, currentIteration), false);
         }
       } else if (type == 128) {
-        bullets[bulletIndex].set(x, newY, false, 1, 0.7, false);
+        bullets[bulletIndex].set(x, newY, false, 1, getBulletSpeed(0.7, currentIteration), false);
       } else if ((type == 129) && (inGameFrame % 50 == 0) && (random(2) == 0)) {
         if (random(4) == 0) {
-          bullets[bulletIndex].set((x - 10), newY, false, 1, 0.9, true);
+          bullets[bulletIndex].set((x - 10), newY, false, 1, getBulletSpeed(0.9, currentIteration), true);
         } else {
-          bullets[bulletIndex].set(x, newY, false, 1, 0.8, false);
+          bullets[bulletIndex].set(x, newY, false, 1, getBulletSpeed(0.8, currentIteration), false);
         }
       } else if (type == 130) {
-        bullets[bulletIndex].set(x, random(MIN_PLAYER_Y, (MAX_PLAYER_Y + 8)), false, 1, 0.6, false);
+        bullets[bulletIndex].set(x, random(MIN_PLAYER_Y, (MAX_PLAYER_Y + 8)), false, 1, getBulletSpeed(0.6, currentIteration), false);
       } 
     }
     
+  }
+
+  float getBulletSpeed(float initialSpeed, byte currentIteration) {
+    if (currentIteration > 0 && (initialSpeed + (0.1f * currentIteration) > 1)) {
+      return 1.0f;
+    }
+    
+    return (initialSpeed + (0.1f * (currentIteration - 1)));
   }
 
   void takeDamage() {
