@@ -571,7 +571,7 @@ void playGame() {
 
     // This logic seems way too nested and can probably be simplified a little. :) -- JG
     if (!isBossAlive) {
-      if ((score >= 5000ul + (currentIteration * 20000ul)) && (spawnedBoss < 1)) {        
+      if ((score >= BOSS1_SCORE + (currentIteration * BOSS3_SCORE)) && (spawnedBoss < 1)) {        
         if (isBossAlive = stopSpawningEnemies = !enemiesAlive) {
           boss.set(129, 28, 128, currentIteration);
           spawnedBoss = 1;
@@ -580,7 +580,7 @@ void playGame() {
 //        else {
 //          stopSpawningEnemies = true;
 //        }
-      } else if ((score >= (12000ul + (currentIteration * 20000ul))) && (spawnedBoss < 2)) {
+      } else if ((score >= (BOSS2_SCORE + (currentIteration * BOSS3_SCORE))) && (spawnedBoss < 2)) {
         if (isBossAlive = stopSpawningEnemies = !enemiesAlive) {
           boss.set(129, 24, 129, currentIteration);
           spawnedBoss = 2;
@@ -589,7 +589,7 @@ void playGame() {
 //        else {
 //          stopSpawningEnemies = true;
 //        }
-      } else if ((score >= (20000ul + (currentIteration * 20000ul))) && (spawnedBoss < 3)) {
+      } else if ((score >= (BOSS3_SCORE + (currentIteration * BOSS3_SCORE))) && (spawnedBoss < 3)) {
         if (isBossAlive = stopSpawningEnemies =!enemiesAlive) {
           boss.set(129, 10, 130, currentIteration);
           spawnedBoss = 3;
@@ -639,6 +639,8 @@ void playGame() {
       // Give the player their lives back, end any dying sequence etx
       livesRemaining = MAX_LIVES;
       resetPlayer();
+      resetEnemies();
+      resetBoss();
 
       // Set them on the next iteration
       currentIteration = (currentIteration == 254 ? 0 : currentIteration + 1);
@@ -880,6 +882,8 @@ void playerWinsScreen() {
 
   byte creditsDelay = 30;
 //  stopMusic();
+//  resetBoss();
+  resetEnemies();
   arduboy.clear();
 
   drawChrs(0, 10, playerWon0,  creditsDelay);
@@ -1063,9 +1067,10 @@ void resetEnemies() {
 
 void resetBoss() {
   boss.health = 0;
-//  for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
-//    boss.bullets[i].hide();
-//  }
+  boss.dying = 0;
+  for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
+    boss.bullets[i].hide();
+  }
 }
 
 void resetPlayerBullets() {

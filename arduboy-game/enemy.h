@@ -54,7 +54,7 @@ struct Enemy {
       bitmap = enemy2;
       health = 150 + (currentIteration * B_BULLET_DAMAGE);
     } else if (type == 9) {
-      bitmap = enemy3;
+      bitmap = enemy3;  
       health = 500 + (currentIteration * A_BULLET_DAMAGE);
     } else if (type == 128) {
       bitmap = boss1;
