@@ -552,6 +552,8 @@ void playGame() {
       if (playerGunCharge < MAX_GUN_CHARGE) {
         // Charge up the gun
         playerGunCharge++;
+//        playerGunCharge = MAX_GUN_CHARGE; // FOR DEBUG
+        
       }
     }
 
@@ -854,7 +856,7 @@ boolean handlePlayerBullets() {
             playerBullets[i].hide();
             score += playerBullets[i].damage;
             
-            if (playerBullets[i].damage > enemies[j].health) {
+            if (playerBullets[i].damage >= enemies[j].health) {
               enemies[j].health = 0;
               enemies[j].dying = 1;
               score += 100;
