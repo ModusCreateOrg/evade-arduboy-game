@@ -56,6 +56,7 @@ char highScoreTable[27] = "AAA000300BBB000200CCC000100";
 
 unsigned long inGameAButtonLastPress, inGameBButtonLastPress, inGameLastDeath, score;
 byte livesRemaining = MAX_LIVES;
+byte currentKills = 0;
 
 float starX[NUM_STARS];
 float starSpeed[NUM_STARS];
@@ -569,7 +570,7 @@ void playGame() {
 
     // This logic seems way too nested and can probably be simplified a little. :) -- JG
     if (!isBossAlive) {
-      if ((score >= BOSS1_SCORE + (currentIteration * BOSS3_SCORE)) && (spawnedBoss < 1)) {        
+      if ((currentKills >= BOSS1_MIN_KILLS) && (spawnedBoss < 1)) {        
         if (isBossAlive = stopSpawningEnemies = !enemiesAlive) {
           boss.set(129, 28, 128, currentIteration);
           spawnedBoss = 1;
@@ -578,7 +579,7 @@ void playGame() {
 //        else {
 //          stopSpawningEnemies = true;
 //        }
-      } else if ((score >= (BOSS2_SCORE + (currentIteration * BOSS3_SCORE))) && (spawnedBoss < 2)) {
+      } else if ((currentKills >= (BOSS1_MIN_KILLS + BOSS2_MIN_KILLS)) && (spawnedBoss < 2)) {
         if (isBossAlive = stopSpawningEnemies = !enemiesAlive) {
           boss.set(129, 24, 129, currentIteration);
           spawnedBoss = 2;
@@ -587,7 +588,7 @@ void playGame() {
 //        else {
 //          stopSpawningEnemies = true;
 //        }
-      } else if ((score >= (BOSS3_SCORE + (currentIteration * BOSS3_SCORE))) && (spawnedBoss < 3)) {
+      } else if ((currentKills >= (BOSS1_MIN_KILLS + BOSS2_MIN_KILLS + BOSS3_MIN_KILLS)) && (spawnedBoss < 3)) {
         if (isBossAlive = stopSpawningEnemies =!enemiesAlive) {
           boss.set(129, 10, 130, currentIteration);
           spawnedBoss = 3;
@@ -642,6 +643,7 @@ void playGame() {
 
       // Set them on the next iteration
       currentIteration = (currentIteration == 254 ? 0 : currentIteration + 1);
+      currentKills = 0;
     }
     
     handleEnemyBullets();
@@ -857,6 +859,7 @@ boolean handlePlayerBullets() {
             if (playerBullets[i].damage > enemies[j].health) {
               enemies[j].health = 0;
               enemies[j].dying = 1;
+              currentKills++;
               score += 100;
             } else {
               enemies[j].health -= playerBullets[i].damage;

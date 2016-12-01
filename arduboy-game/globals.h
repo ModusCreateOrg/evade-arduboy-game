@@ -16,9 +16,9 @@
 #define MIN_ENEMY_SHIP_X 92
 #define MAX_ENEMY_SHIP_X 112
 
-#define BOSS1_SCORE 5000ul
-#define BOSS2_SCORE 12000ul
-#define BOSS3_SCORE 20000ul
+#define BOSS1_MIN_KILLS 20
+#define BOSS2_MIN_KILLS 25
+#define BOSS3_MIN_KILLS 30
 
 // Time before title screen flips to high score screen
 #define ATTRACT_MODE_TIMEOUT 400000
