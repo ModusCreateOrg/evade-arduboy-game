@@ -81,10 +81,6 @@ credits.forEach(function(creditStr, index) {
 })
 
 console.log(endStr);
-
-
-
-   
  
  */
 
@@ -128,7 +124,7 @@ PROGMEM const uint8_t playerWon3[] = {
 //PROGMEM const uint8_t playerWon2[] = {
 //10,// Number characters
 //7, 14, 22, 4, 21, 4, 17, 27, 27, 27
-//};
+//};  
 
 //CREDITS:
 PROGMEM const uint8_t credits0[] = {
