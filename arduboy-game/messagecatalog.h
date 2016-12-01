@@ -84,29 +84,31 @@ console.log(endStr);
  
  */
 
-//YOU ESCAPE THE EARTH
+
+//YOU SURVIVED BUT
 PROGMEM const uint8_t playerWon0[] = {
-20,// Number characters
-24, 14, 20, 255, 4, 18, 2, 0, 15, 4, 255, 19, 7, 4, 255, 4, 0, 17, 19, 7
+16,// Number characters
+24, 14, 20, 255, 18, 20, 17, 21, 8, 21, 4, 3, 255, 1, 20, 19
 };
 
-//ALONE BUT ALIVE.
+//THE MISSION CONTINUES.
 PROGMEM const uint8_t playerWon1[] = {
-16,// Number characters
-0, 11, 14, 13, 4, 255, 1, 20, 19, 255, 0, 11, 8, 21, 4, 27
+22,// Number characters
+19, 7, 4, 255, 12, 8, 18, 18, 8, 14, 13, 255, 2, 14, 13, 19, 8, 13, 20, 4, 18, 27
 };
 
-//ANOTHER SURVIVOR
+//ENEMIES APPROACHING!
 PROGMEM const uint8_t playerWon2[] = {
-16,// Number characters
-0, 13, 14, 19, 7, 4, 17, 255, 18, 20, 17, 21, 8, 21, 14, 17
+20,// Number characters
+4, 13, 4, 12, 8, 4, 18, 255, 0, 15, 15, 17, 14, 0, 2, 7, 8, 13, 6, 28
 };
 
-//SENDS A RADIO SIGNAL...
+//PREPARE FOR BATTLE!
 PROGMEM const uint8_t playerWon3[] = {
-23,// Number characters
-18, 4, 13, 3, 18, 255, 0, 255, 17, 0, 3, 8, 14, 255, 18, 8, 6, 13, 0, 11, 27, 27, 27
+19,// Number characters
+15, 17, 4, 15, 0, 17, 4, 255, 5, 14, 17, 255, 1, 0, 19, 19, 11, 4, 28
 };
+
 
 //YOU
 //PROGMEM const uint8_t playerWon0[] = {

@@ -250,8 +250,16 @@ PROGMEM const unsigned char Z[] = {
 // width, height
 6, 6,
 0x21, 0x31, 0x3D, 0x27, 0x23, 0x21
+};
 
+// exclamation.png
+// 1x6
+PROGMEM const unsigned char exclamation[] = {
+// width, height
+1, 6,
+0x2F
 };
 
 #endif
+
 
