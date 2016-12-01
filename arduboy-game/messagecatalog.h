@@ -88,6 +88,48 @@ console.log(endStr);
  
  */
 
+//YOU ESCAPE THE EARTH
+PROGMEM const uint8_t playerWon0[] = {
+20,// Number characters
+24, 14, 20, 255, 4, 18, 2, 0, 15, 4, 255, 19, 7, 4, 255, 4, 0, 17, 19, 7
+};
+
+//ALONE BUT ALIVE.
+PROGMEM const uint8_t playerWon1[] = {
+16,// Number characters
+0, 11, 14, 13, 4, 255, 1, 20, 19, 255, 0, 11, 8, 21, 4, 27
+};
+
+//ANOTHER SURVIVOR
+PROGMEM const uint8_t playerWon2[] = {
+16,// Number characters
+0, 13, 14, 19, 7, 4, 17, 255, 18, 20, 17, 21, 8, 21, 14, 17
+};
+
+//SENDS A RADIO SIGNAL...
+PROGMEM const uint8_t playerWon3[] = {
+23,// Number characters
+18, 4, 13, 3, 18, 255, 0, 255, 17, 0, 3, 8, 14, 255, 18, 8, 6, 13, 0, 11, 27, 27, 27
+};
+
+//YOU
+//PROGMEM const uint8_t playerWon0[] = {
+//3,// Number characters
+//24, 14, 20
+//};
+
+//ESCAPED
+//PROGMEM const uint8_t playerWon1[] = {
+//7,// Number characters
+//4, 18, 2, 0, 15, 4, 3
+//};
+
+//HOWEVER...
+//PROGMEM const uint8_t playerWon2[] = {
+//10,// Number characters
+//7, 14, 22, 4, 21, 4, 17, 27, 27, 27
+//};
+
 //CREDITS:
 PROGMEM const uint8_t credits0[] = {
 8,// Number characters

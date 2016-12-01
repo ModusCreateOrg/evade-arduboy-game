@@ -544,7 +544,7 @@ void playGame() {
     if (!isBossAlive) {
       if ((score >= 5000ul + (currentIteration * 20000ul)) && (spawnedBoss < 1)) {        
         if (isBossAlive = stopSpawningEnemies = !enemiesAlive) {
-          boss.set(129, 28, 128);
+          boss.set(129, 28, 128, currentIteration);
           spawnedBoss = 1;
 //          isBossAlive = true;
         } 
@@ -553,7 +553,7 @@ void playGame() {
 //        }
       } else if ((score >= (12000ul + (currentIteration * 20000ul))) && (spawnedBoss < 2)) {
         if (isBossAlive = stopSpawningEnemies = !enemiesAlive) {
-          boss.set(129, 24, 129);
+          boss.set(129, 24, 129, currentIteration);
           spawnedBoss = 2;
 //          isBossAlive = true;
         } 
@@ -562,7 +562,7 @@ void playGame() {
 //        }
       } else if ((score >= (20000ul + (currentIteration * 20000ul))) && (spawnedBoss < 3)) {
         if (isBossAlive = stopSpawningEnemies =!enemiesAlive) {
-          boss.set(129, 10, 130);
+          boss.set(129, 10, 130, currentIteration);
           spawnedBoss = 3;
 //          isBossAlive = true;
         } 
@@ -846,16 +846,18 @@ boolean handlePlayerBullets() {
 }
 
 void playerWinsScreen() {
+  byte creditsDelay = 30;
+
   arduboy.clear();
 
+  drawChrs(0, 10, playerWon0,  creditsDelay);
+  drawChrs(0, 20, playerWon1, creditsDelay);
+
   playMusic(6);
-  
-  printText("YOU", 46, 6, 2);
-  printText("ESCAPED!", 20, 24, 2);
-  arduboy.display();
+
   delay(2500);
-  printText("HOWEVER...", 5, 42, 2);
-  arduboy.display();
+  drawChrs(0, 40, playerWon2, creditsDelay);
+  drawChrs(0, 50, playerWon3, creditsDelay);
   
   delay(4500);
 }

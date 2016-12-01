@@ -21,7 +21,7 @@ struct Enemy {
   Bullet bullets[MAX_BOSS_BULLETS];
   int animFrame;
 
-  void set(byte _x, byte _y, byte _type) {
+  void set(byte _x, byte _y, byte _type, byte currentIteration) {
     x = _x;
     y = _y;
     type = _type;
@@ -45,27 +45,27 @@ struct Enemy {
     difficulty = 4;
     
     if (type < 5) {
-      difficulty = 1;
+      difficulty = (currentIteration == 0 ? 1: 2);
       bitmap = enemy1;
       health = 25;
     } else if (type < 9) {
       difficulty = 2;
       bitmap = enemy2;
-      health = 150;
+      health = 150 + (currentIteration * B_BULLET_DAMAGE);
     } else if (type == 9) {
       bitmap = enemy3;
-      health = 500;
+      health = 500 + (currentIteration * A_BULLET_DAMAGE);
     } else if (type == 128) {
       bitmap = boss1;
-      health = 1000;
+      health = 1000 + (currentIteration * 500);
       width = 32;
     } else if (type == 129) {
       bitmap = boss2;
-      health = 2000;
+      health = 2000 + (currentIteration * 1000);
       width = 32;
     } else if (type == 130) {
       bitmap = boss3;
-      health = 3000;
+      health = 3000 + (currentIteration * 3000);
       width = 59;
       height = 53;
     }
@@ -92,7 +92,7 @@ struct Enemy {
     } else if (dying > 0) {
       updateDeathSequence();
     } else if ((type <= 9) && (! stopSpawningEnemies) && (random(600) == 0)) {
-      spawn();
+      spawn(currentIteration);
     }
     
     if ((type <= 9)
@@ -110,10 +110,10 @@ struct Enemy {
     }
   }
 
-  void spawn() {
+  void spawn(byte currentIteration) {
     byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
     byte enemyY = random(MIN_PLAYER_Y, MAX_PLAYER_Y);
-    set(enemyX, enemyY, random(10));
+    set(enemyX, enemyY, random(10), currentIteration);
   }
 
   void move() {
