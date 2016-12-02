@@ -1,26 +1,23 @@
-# Arduboy Game
+# Evade - A Space Shooter Game for Arduboy by Modus Create
 
-Arduboy Game for Client Gifts, 2016 Holidays.
+This is an Arduboy game, written as a gift for [Modus Create](http://moduscreate.com) clients for the 2016 holiday season.
 
 ![Arduboy](arduboy.gif)
 
 ## Quick Start
 
-Arduino has it's own IDE based upon the Wiring and Processing IDE. A program in this
-environment is refered to as a Sketch. 
+You will need an Arduboy, which you can get from:
+
+* [Arduboy](https://www.arduboy.com/store/products/arduboy) (different case colors available)
+* [Adafruit] (https://www.adafruit.com/products/3264) (white case only)
+
+Ardubo is Arduino based.  A program for the Arduino is referred to as a "Sketch".  To install our game on your Arduboy, you will need to get the Arduino IDE.
 
 The IDE can be downloaded here:
 
 [Arduino IDE](https://www.arduino.cc/en/Main/Software)
 
-Once you have it installed follow the steps under Resources to install
-the Arduboy library.
-
-To add new files to a sketch you can use the drop-down in the top right.
-
-Select the option "New tab"
-
-Tabs can be renamed and deleted from this menu.
+Once you have it installed follow the steps under Resources to install the Arduboy library.
 
 When you plug a device into your USB port you need to set the *Port* from the
 *Tools* menu.
@@ -52,6 +49,10 @@ Further information on how to unbrick it [here](http://community.arduboy.com/t/h
 ## Image Conversion
 
 We used [this tool](https://github.com/yyyc514/img2ard) to convert images.  It has its own documentation.
+
+## JavaScript Tool for Converting Strings to Bitmap Font Representations
+
+We created a small JavaScript tool (`tools/text_generator.js` in this repo) to convert arrays of strings into arrays of integers representing the characters in the bitmap font that we use.  This can be run directly in [JS Fiddle](https://jsfiddle.net/).
 
 ## Resources
 
