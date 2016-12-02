@@ -4,15 +4,14 @@
 
 #include "Arduboy.h"
 #include "globals.h"
+#include "messagecatalog.h"
 
-bool soundOn = true;     
 void playTone(byte tone, byte duration) {
   if (soundOn) {
     arduboy.tunes.tone(200 + tone, duration);
   }
 }
 
-#include "messagecatalog.h"
 #include "bullet.h"
 #include "enemy.h"
 #include "bitmaps.h"
@@ -24,21 +23,12 @@ void playTone(byte tone, byte duration) {
 #include <avr/pgmspace.h>
 #include <EEPROM.h>
 
-#define DEBOUNCE_DELAY 100
-#define MAX_LIVES 4
-#define NUM_HIGH_SCORES 3
-#define NUM_STARS 15
-#define NOT_NEW_HI_SCORE 5
+// Bullet array
+Bullet playerBullets[MAX_PLAYER_BULLETS];
 
-#define PLAYER_SIZE 16
-#define MAX_GUN_CHARGE 40
-#define GUN_SHOT_COST 12
-
-byte playerX,
-     playerY,
-     playerFrame,
-     playerDying,
-     playerGunCharge;
+// Enemies array
+Enemy enemies[MAX_ENEMIES],
+      boss;
 
 void resetPlayer() {
     playerX = MIN_PLAYER_X;
@@ -47,31 +37,6 @@ void resetPlayer() {
     playerDying = 0;
     playerGunCharge = MAX_GUN_CHARGE; 
 }
-
-char *alphabet[29];
-char highScoreTable[27] = "AAA000300BBB000200CCC000100";
-unsigned long inGameAButtonLastPress, inGameBButtonLastPress, inGameLastDeath, score;
-byte livesRemaining = MAX_LIVES;
-byte currentKills = 0;
-float starX[NUM_STARS];
-float starSpeed[NUM_STARS];
-byte starY[NUM_STARS];
-byte starWidth[NUM_STARS];
-byte currentSong = 255;
-bool isInitialTitleScreen = true;
-bool isBossAlive;
-
-// Bullet array
-Bullet playerBullets[MAX_PLAYER_BULLETS];
-
-// Enemies array
-Enemy enemies[MAX_ENEMIES];
-
-// Boss
-Enemy boss;
-
-// General purpose text buffer for string concatenation and read from progmem
-char textBuf[23];
 
 void display() {
   arduboy.display();

@@ -4,11 +4,25 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+// Button debounce
+#define DEBOUNCE_DELAY 100
+
+#define MAX_LIVES 4
+
+#define NUM_HIGH_SCORES 3
+#define NOT_NEW_HI_SCORE 5
+
+// Starfield
+#define NUM_STARS 15
+
 // Define limits that player movement is bounded by
 #define MIN_PLAYER_Y 8
 #define MAX_PLAYER_Y 48
 #define MIN_PLAYER_X 0
 #define MAX_PLAYER_X 27 // allows 16 for ship width
+#define PLAYER_SIZE 16
+#define MAX_GUN_CHARGE 40
+#define GUN_SHOT_COST 12
 
 // Define limits that enemy ship movement is bounded by
 #define MIN_ENEMY_SHIP_X 92
@@ -42,5 +56,29 @@ Arduboy arduboy;
 
 // Used to count frames
 unsigned long inGameFrame;
+
+byte playerX,
+     playerY,
+     playerFrame,
+     playerDying,
+     playerGunCharge;
+
+char *alphabet[29];
+char highScoreTable[27] = "AAA000300BBB000200CCC000100";
+
+unsigned long inGameAButtonLastPress, inGameBButtonLastPress, inGameLastDeath, score;
+byte livesRemaining = MAX_LIVES;
+byte currentKills = 0;
+float starX[NUM_STARS];
+float starSpeed[NUM_STARS];
+byte starY[NUM_STARS];
+byte starWidth[NUM_STARS];
+byte currentSong = 255;
+bool isInitialTitleScreen = true;
+bool isBossAlive;
+bool soundOn = true;     
+
+// General purpose text buffer for string concatenation and read from progmem
+char textBuf[23];
 
 #endif
