@@ -1,6 +1,12 @@
 #ifndef LETTERS_H
 #define LETTERS_H
 
+/*
+ *  File: letters.h
+ *  Purpose: Bitmap font used in Evade game.
+ *  Author: Modus Create
+ */
+
 PROGMEM const unsigned char A[] = {
 // width, height
   7, 6,

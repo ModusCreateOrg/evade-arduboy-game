@@ -1,10 +1,16 @@
 ﻿#ifndef BITMAPS_H
 #define BITMAPS_H
 
+/*
+ *  File: bitmaps.h
+ *  Purpose: Stores bitmap images used in Evade game.
+ *  Author: Modus Create
+ */
+
 void drawBitmap(byte x, byte y, const uint8_t *bitmap, uint8_t frame) {
   unsigned int frame_offset;
-  uint8_t width = pgm_read_byte(bitmap);
-  uint8_t height = pgm_read_byte(++bitmap);
+  uint8_t width = pgm_read_byte(bitmap),
+          height = pgm_read_byte(++bitmap);
 
   bitmap++;
   if (frame > 0) {

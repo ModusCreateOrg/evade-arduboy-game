@@ -1,8 +1,11 @@
-/*
- * bullet
-*/
 #ifndef BULLET_H
 #define BULLET_H
+
+/*
+ *  File: bullet.h
+ *  Purpose: Deals with player and enemy bullet logic for Evade game.
+ *  Author: Modus Create
+ */
 
 #include "globals.h"
 #include "bitmaps.h"
@@ -12,12 +15,12 @@
 
 struct Bullet {
   public:
-    float x;
-    byte y;
-    byte damage;
-    float speedX;
-    // Visibility (0), Direction (1), Laser Beam (2)
-    byte options;
+    float x,
+          speedX;
+    byte y,
+         damage,
+         // Visibility (0), Direction (1), Laser Beam (2)
+         options;
     unsigned long inGameFireFrame;
     
     void set(byte _x, byte _y, bool firedByPlayer, byte _damage, float _speedX, bool isLaserBeam) {

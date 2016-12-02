@@ -1,25 +1,31 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
+/*
+ *  File: enemy.h
+ *  Purpose: Deals with regular and boss enemies for Evade game.
+ *  Author: Modus Create
+ */
+
 #include "globals.h"
 #include "bitmaps.h"
 #include "bullet.h"
 
 struct Enemy {
-  byte x;
-  byte y;
-  byte width;
-  byte height;
-  int health;
-  byte type;
-  byte difficulty;
-  byte dying;
-  // isMovingLeft (0), isMovingDown (1), tookDamage (2)
-  byte options;
+  byte x,
+       y,
+       width,
+       height,
+       type,
+       difficulty,
+       dying,
+       // isMovingLeft (0), isMovingDown (1), tookDamage (2)
+       options;
+  int health,
+      animFrame;
   const uint8_t *bitmap;
   unsigned long damageFrame;
   Bullet bullets[MAX_BOSS_BULLETS];
-  int animFrame;
 
   void set(byte _x, byte _y, byte _type, byte currentIteration) {
     x = _x;
@@ -107,8 +113,8 @@ struct Enemy {
   }
 
   void spawn(byte currentIteration) {
-    byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
-    byte enemyY = random(MIN_PLAYER_Y, MAX_PLAYER_Y);
+    byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X),
+         enemyY = random(MIN_PLAYER_Y, MAX_PLAYER_Y);
     set(enemyX, enemyY, random(10), currentIteration);
   }
 

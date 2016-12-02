@@ -1,5 +1,7 @@
-/*   
- *    Evade for Arduboy, Modus Create 2016
+/*
+ *  File: arduboy-game.ino
+ *  Purpose: Main sketch file for Evade, Modus Create 2016 holiday game.
+ *  Author: Modus Create
  */
 
 #include "Arduboy.h"
