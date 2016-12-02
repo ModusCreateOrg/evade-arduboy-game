@@ -130,7 +130,7 @@ void playMusic(byte song) {
 void redAlert() {
     arduboy.clear();
 
-    drawChrs(3, 30, playerWon2, 125);
+    drawChrs(5, 30, playerWon2, 125);
 //  drawChrs(0, 50, playerWon3, creditsDelay);
     delay(3000);
     for (byte i = 1; i < 7; i++) {
@@ -174,6 +174,7 @@ void printText(char *message, byte x, byte y, byte textSize) {
 }
 
 void introScreen() {
+
   arduboy.clear();
   drawBitmap(2, 8, modusLogo, 0);
 
@@ -197,31 +198,92 @@ void drawRectAroundPlayMenuOption(byte color) {
 }
 
 
+void delayAndDisplay() {
+  delay(250);
+  display();
+}
+
 byte titleScreen() {
+  /**
+   * PRE intro text
+   * 
+   */
+
+  arduboy.clear();
+
+  /* PRE-TITLE-ANIMATION: */
+//
+  byte textDelay = 40;
+  
+  drawChrs(0, 0, preIntro0,  textDelay);
+  delay(1000);
+  drawChrs(0, 15, preIntro1, textDelay);
+  drawChrs(0, 25, preIntro2,  textDelay);
+  delay(1000);
+  
+  drawChrs(0, 45, preIntro3, textDelay);
+  delay(2500);
+
+
   byte selectedItem = TITLE_PLAY_GAME;
   unsigned long totalDelay = 0;
   long lastDebounceTime = millis();  // the last time the button was pressed
 //  playerWinsScreen(); // FOR DEBUG
 
-  
-  arduboy.clear();
-//  arduboy.drawRect(0,0,128,64,1);
-  //drawBitmap(4, 14, title, 0);
+  byte shipTone = 100;
+  float earthY = 56;
+    
+  for (float y = 64; y > 16; y -= 0.2f) {
+    arduboy.clear();
+    drawBitmap(39, y, title_letter_a, 0);
+    drawBitmap(50, earthY += 0.035f, title_planet, 0);
+//    drawBitmap(93, 14, title_planet, 0);
+    display();
+
+    playTone(shipTone += 25, 5);
+    delay(10);
+//    delayAndDisplay();
+//    arduboy.clear();
+
+
+    // Can't animate due to space iissues.
+//    if (arduboy.everyXFrames(11)) {
+//      arduboy.fillRect(39, y+12, 10, 10, 0);
+//      display();
+//    }
+//    delayAndDisplay();
+  }
+
+
+
+
   drawBitmap(4,  16, title_letter_e, 0);
+//  delayAndDisplay();
   drawBitmap(20, 16, title_letter_v, 0);
-  drawBitmap(39, 16, title_letter_a, 0);
+//  delayAndDisplay();
+
+//  drawBitmap(39, 16, title_letter_a, 0);
+//  delayAndDisplay();
+
   drawBitmap(59, 16, title_letter_d, 0);
+//  delayAndDisplay();
+
   drawBitmap(77, 16, title_letter_e, 0);
+//  delayAndDisplay();
 
   drawBitmap(93, 14, title_planet, 0);
-  
+  delayAndDisplay();
+  delay(350);
 
-  drawChrs(4,  51, titleScreenText1, 30);
-  drawChrs(34, 51, titleScreenText2, 30);
-  drawChrs(79, 51, titleScreenText3, 30);
-//  arduboy.drawRect(2, 48, 28, 12, 1);
+
+  drawChrs(4,  51, titleScreenText1, 0);
   drawRectAroundPlayMenuOption(1);
-  display();
+
+  drawChrs(34, 51, titleScreenText2, 0);
+  drawChrs(79, 51, titleScreenText3, 0);
+//  arduboy.drawRect(2, 48, 28, 12, 1);
+//  drawRectAroundPlayMenuOption(1);
+//  display();
 
 //  playMusic(5);
 

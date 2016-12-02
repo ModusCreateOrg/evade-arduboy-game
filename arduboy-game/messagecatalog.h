@@ -99,8 +99,8 @@ PROGMEM const uint8_t playerWon1[] = {
 
 //ENEMIES APPROACHING!
 PROGMEM const uint8_t playerWon2[] = {
-20,// Number characters
-4, 13, 4, 12, 8, 4, 18, 255, 0, 15, 15, 17, 14, 0, 2, 7, 8, 13, 6, 28
+19,// Number characters
+4, 13, 4, 12, 8, 4, 18, 255, 0, 15, 15, 17, 14, 0, 2, 7, 8, 13, 6, //28
 };
 
 //PREPARE FOR BATTLE!
@@ -110,23 +110,33 @@ PROGMEM const uint8_t playerWon3[] = {
 };
 
 
-//YOU
-//PROGMEM const uint8_t playerWon0[] = {
-//3,// Number characters
-//24, 14, 20
-//};
 
-//ESCAPED
-//PROGMEM const uint8_t playerWon1[] = {
-//7,// Number characters
-//4, 18, 2, 0, 15, 4, 3
-//};
 
-//HOWEVER...
-//PROGMEM const uint8_t playerWon2[] = {
-//10,// Number characters
-//7, 14, 22, 4, 21, 4, 17, 27, 27, 27
-//};  
+
+//ALIENS HAVE INVADED.
+PROGMEM const uint8_t preIntro0[] = {
+20,// Number characters
+0, 11, 8, 4, 13, 18, 255, 7, 0, 21, 4, 255, 8, 13, 21, 0, 3, 4, 3, 27
+};
+
+//THEY ARE DESTROYING
+PROGMEM const uint8_t preIntro1[] = {
+19,// Number characters
+19, 7, 4, 24, 255, 0, 17, 4, 255, 3, 4, 18, 19, 17, 14, 24, 8, 13, 6
+};
+
+//EVERYTHING.
+PROGMEM const uint8_t preIntro2[] = {
+11,// Number characters
+4, 21, 4, 17, 24, 19, 7, 8, 13, 6, 27
+};
+
+//YOUR ONLY OPTION...
+PROGMEM const uint8_t preIntro3[] = {
+19,// Number characters
+24, 14, 20, 17, 255, 14, 13, 11, 24, 255, 14, 15, 19, 8, 14, 13, 27, 27, 27
+};
+
 
 //CREDITS:
 PROGMEM const uint8_t credits0[] = {
