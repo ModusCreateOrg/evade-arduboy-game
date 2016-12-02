@@ -625,7 +625,7 @@ void playGame() {
   
   byte spawnedBoss = 0;
   byte currentIteration = 0;
-  boolean iterationEnding = false;
+  bool iterationEnding = false;
 
   resetEnemies();
   resetBoss();
@@ -634,7 +634,7 @@ void playGame() {
   redAlert();
 
   while (livesRemaining > 0) {
-    boolean stopSpawningEnemies = false;
+    bool stopSpawningEnemies = false;
     
     arduboy.clear();
     inGameFrame++;
@@ -652,7 +652,7 @@ void playGame() {
     drawScore();
     drawPlayerShip();
 
-    boolean enemiesAlive = false;
+    bool enemiesAlive = false;
     for (byte i = 0; i < MAX_ENEMIES; i++) {
       if (enemies[i].isAlive()) {
         enemiesAlive = true;
@@ -890,7 +890,7 @@ void drawPlayerShip() {
   }
 }
 
-//void updateEnemies(boolean stopSpawningEnemies) {
+//void updateEnemies(bool stopSpawningEnemies) {
 //  for (byte i = 0; i < MAX_ENEMIES; i++) {
 //    enemies[i].update(stopSpawningEnemies);
 //  }
@@ -928,7 +928,7 @@ void handleBossBullets() {
   }
 }
 
-boolean handlePlayerBullets() {
+bool handlePlayerBullets() {
   for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
     if (playerBullets[i].isVisible()) {
       if (isBossAlive) {
@@ -1132,7 +1132,7 @@ void newHighScoreScreen(byte newHiPos) {
   persistHighScoreTable(false);
 }
 
-void persistHighScoreTable(boolean firstTime) {  
+void persistHighScoreTable(bool firstTime) {  
   for (byte i = 0; i < 27; i++) {
     EEPROM.write(i + 2, highScoreTable[i]);
     if (firstTime) {
@@ -1212,11 +1212,11 @@ void updateStarFieldVals() {
   }
 }
 
-boolean shouldPlayAButtonTone() {
+bool shouldPlayAButtonTone() {
   return (inGameAButtonLastPress > (inGameFrame - 20));
 }
 
-boolean shouldPlayBButtonTone() {
+bool shouldPlayBButtonTone() {
   return (inGameBButtonLastPress > (inGameFrame - 50));
 }
 

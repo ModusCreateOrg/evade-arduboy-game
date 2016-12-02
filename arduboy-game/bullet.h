@@ -20,7 +20,7 @@ struct Bullet {
     byte options;
     unsigned long inGameFireFrame;
     
-    void set(byte _x, byte _y, boolean firedByPlayer, byte _damage, float _speedX, boolean isLaserBeam) {
+    void set(byte _x, byte _y, bool firedByPlayer, byte _damage, float _speedX, bool isLaserBeam) {
       x = _x;
       y = _y;
       damage = _damage;
@@ -69,7 +69,7 @@ struct Bullet {
       
     }
 
-    boolean isHittingObject(byte objectX, byte objectY, byte objectWidth, byte objectHeight) {
+    bool isHittingObject(byte objectX, byte objectY, byte objectWidth, byte objectHeight) {
       if ((isVisible()) &&
         ((isLaserBeam() && (x >= (objectX - 30))) || (!isLaserBeam() && (x >= objectX))) &&
         (x <= (objectX + objectWidth)) &&
@@ -81,15 +81,15 @@ struct Bullet {
       }
     }
 
-    boolean isVisible() {
+    bool isVisible() {
       return (options & (1 << 0));
     }
 
-    boolean isMovingRight() {
+    bool isMovingRight() {
       return (options & (1 << 1));
     }
 
-    boolean isLaserBeam() {
+    bool isLaserBeam() {
       return (options & (1 << 2));
     }
 
