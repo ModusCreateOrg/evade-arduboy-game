@@ -44,7 +44,6 @@ struct Enemy {
     height = 16;
     difficulty = 4;
 
-//    type=7; // For debug
     if (type < 5) {
       difficulty = (currentIteration == 0 ? 1: 2);
       bitmap = enemy1;
@@ -71,9 +70,6 @@ struct Enemy {
       height = 53;
     }
 
-
-//    health = 5;
-
     draw();
   }
 
@@ -86,7 +82,6 @@ struct Enemy {
     
     if (isAlive()) {
       move();
-
       if (!isTakingDamage()) {
         draw();
       }
@@ -119,7 +114,6 @@ struct Enemy {
 
   void move() {
     if ((random(10 / difficulty) == 0) || (type > 9)) {
-        
       changeDirection();
 
       bool typeIs128 = (type == 128),
@@ -172,30 +166,22 @@ struct Enemy {
   }
 
   void updateDeathSequence() {
-    
-//    playTone(dying * 4, 10);
     if (dying < 30) {
       dying++;
       
-//      arduboy.drawCircle(x + (width / 2), y + (height / 2), dying, 1);
       explode(x + width / 2,y + height / 2,dying);
-//        arduboy.drawCircle(_x - randOp , _y - randOp, random(3, 10), 1);
-//        arduboy.drawCircle(_x + randOp , _y - randOp, random(3, 10), 1);
-//        arduboy.drawCircle(_x - randOp , _y + randOp, random(3, 10), 1);
-//        arduboy.drawCircle(_x + randOp , _y + randOp, random(3, 10), 1);
-//      }
     } else {
       // Fully dead, reset it so it can respawn
       dying = 0;
     }
   }
 
-  void changeDirection() {
-  
+  void changeDirection() { 
     if (((type <= 9) && (random(30) == 0))
       || ((type > 9) && (random(50) == 0))) {
       options ^= 1 << 0;
     }
+    
     if (((type <= 9) && (random(10) == 0))
       || ((type == 128) && (random(50) == 0))
       || ((type == 129) && (random(20) == 0))) {
@@ -225,7 +211,6 @@ struct Enemy {
         bullets[bulletIndex].set(x, random(MIN_PLAYER_Y, (MAX_PLAYER_Y + 8)), false, 1, getBulletSpeed(0.8, currentIteration), false);
       } 
     }
-    
   }
 
   float getBulletSpeed(float initialSpeed, byte currentIteration) {
@@ -244,10 +229,6 @@ struct Enemy {
   bool isAlive() {
     return ((health > 0) && (dying == 0));
   }
-
-//  bool isDying() {
-//    return (dying > 0);
-//  }
 
   bool isMovingLeft() {
     return (options & (1 << 0));
