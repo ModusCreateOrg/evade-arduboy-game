@@ -77,7 +77,7 @@ struct Enemy {
     draw();
   }
 
-  void update(boolean stopSpawningEnemies, byte currentIteration) {
+  void update(bool stopSpawningEnemies, byte currentIteration) {
     if ((inGameFrame > (damageFrame + 4))
       && (isTakingDamage())
       && (inGameFrame % 4)) {
@@ -241,23 +241,23 @@ struct Enemy {
     damageFrame = inGameFrame;
   }
 
-  boolean isAlive() {
+  bool isAlive() {
     return ((health > 0) && (dying == 0));
   }
 
-//  boolean isDying() {
+//  bool isDying() {
 //    return (dying > 0);
 //  }
 
-  boolean isMovingLeft() {
+  bool isMovingLeft() {
     return (options & (1 << 0));
   }
 
-  boolean isMovingDown() {
+  bool isMovingDown() {
     return (options & (1 << 1));
   }
 
-  boolean isTakingDamage() {
+  bool isTakingDamage() {
     return (options & (1 << 2));
   }
 };
