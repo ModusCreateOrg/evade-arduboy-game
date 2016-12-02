@@ -37,7 +37,7 @@ var map = {
 }
 
 var credits = [
-     "CREDITS:",
+     "CREDITS",
      "Jay Garcia",
      "Simon Prickett",
      "Stan Bershadskiy", 
@@ -144,46 +144,46 @@ PROGMEM const uint8_t credits0[] = {
 2, 17, 4, 3, 8, 19, 18, 26
 };
 
-//JAY GARCIA
+//J. GARCIA
 PROGMEM const uint8_t credits1[] = {
-10,// Number characters
-9, 0, 24, 255, 6, 0, 17, 2, 8, 0
-};
-
-//SIMON PRICKETT
-PROGMEM const uint8_t credits2[] = {
-14,// Number characters
-18, 8, 12, 14, 13, 255, 15, 17, 8, 2, 10, 4, 19, 19
-};
-
-//STAN BERSHADSKIY
-PROGMEM const uint8_t credits3[] = {
-16,// Number characters
-18, 19, 0, 13, 255, 1, 4, 17, 18, 7, 0, 3, 18, 10, 8, 24
-};
-
-//ANDREW OWEN
-PROGMEM const uint8_t credits4[] = {
-11,// Number characters
-0, 13, 3, 17, 4, 22, 255, 14, 22, 4, 13
-};
-
-//ANDY DENNIS
-PROGMEM const uint8_t credits5[] = {
-11,// Number characters
-0, 13, 3, 24, 255, 3, 4, 13, 13, 8, 18
-};
-
-//TIM EAGAN
-PROGMEM const uint8_t credits6[] = {
 9,// Number characters
-19, 8, 12, 255, 4, 0, 6, 0, 13
+9, 27, 255, 6, 0, 17, 2, 8, 0
 };
 
-//DREW GRIFFITH
+//S. PRICKETT
+PROGMEM const uint8_t credits2[] = {
+11,// Number characters
+18, 27, 255, 15, 17, 8, 2, 10, 4, 19, 19
+};
+
+//S. BERSHADSKIY
+PROGMEM const uint8_t credits3[] = {
+14,// Number characters
+18, 27, 255, 1, 4, 17, 18, 7, 0, 3, 18, 10, 8, 24
+};
+
+//A. OWEN
+PROGMEM const uint8_t credits4[] = {
+7,// Number characters
+0, 27, 255, 14, 22, 4, 13
+};
+
+//A. DENNIS
+PROGMEM const uint8_t credits5[] = {
+9,// Number characters
+0, 27, 255, 3, 4, 13, 13, 8, 18
+};
+
+//T. EAGAN
+PROGMEM const uint8_t credits6[] = {
+8,// Number characters
+19, 27, 255, 4, 0, 6, 0, 13
+};
+
+//D. GRIFFITH
 PROGMEM const uint8_t credits7[] = {
-13,// Number characters
-3, 17, 4, 22, 255, 6, 17, 8, 5, 5, 8, 19, 7
+11,// Number characters
+3, 27, 255, 6, 17, 8, 5, 5, 8, 19, 7
 };
 
 //JD JONES
@@ -192,22 +192,22 @@ PROGMEM const uint8_t credits8[] = {
 9, 3, 255, 9, 14, 13, 4, 18
 };
 
-//JON VAN DALEN
+//J. VAN DALEN
 PROGMEM const uint8_t credits9[] = {
-13,// Number characters
-9, 14, 13, 255, 21, 0, 13, 255, 3, 0, 11, 4, 13
-};
-
-//LUCAS STILL
-PROGMEM const uint8_t credits10[] = {
-11,// Number characters
-11, 20, 2, 0, 18, 255, 18, 19, 8, 11, 11
-};
-
-//MATT MCCANTS
-PROGMEM const uint8_t credits11[] = {
 12,// Number characters
-12, 0, 19, 19, 255, 12, 2, 2, 0, 13, 19, 18
+9, 27, 255, 21, 0, 13, 255, 3, 0, 11, 4, 13
+};
+
+//L. STILL
+PROGMEM const uint8_t credits10[] = {
+8,// Number characters
+11, 27, 255, 18, 19, 8, 11, 11
+};
+
+//M. MCCANTS
+PROGMEM const uint8_t credits11[] = {
+10,// Number characters
+12, 27, 255, 12, 2, 2, 0, 13, 19, 18
 };
 
 

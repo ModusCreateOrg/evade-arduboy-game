@@ -617,6 +617,8 @@ void playGame() {
   livesRemaining = MAX_LIVES;
   resetPlayer();
   isBossAlive = false;
+  currentKills = 0;
+  
   byte spawnedBoss = 0;
   byte currentIteration = 0;
   boolean iterationEnding = false;
