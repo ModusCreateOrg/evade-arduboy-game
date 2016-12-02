@@ -65,6 +65,8 @@ byte starWidth[NUM_STARS];
 
 byte currentSong = 255;
 
+bool isInitialTitleScreen = true;
+
 // Bullet array
 Bullet playerBullets[MAX_PLAYER_BULLETS];
 
@@ -211,19 +213,21 @@ byte titleScreen() {
 
   arduboy.clear();
 
-  /* PRE-TITLE-ANIMATION: */
-//
-  byte textDelay = 40;
-  
-  drawChrs(0, 0, preIntro0,  textDelay);
-  delay(1000);
-  drawChrs(0, 15, preIntro1, textDelay);
-  drawChrs(0, 25, preIntro2,  textDelay);
-  delay(1000);
-  
-  drawChrs(0, 45, preIntro3, textDelay);
-  delay(2500);
+  /* PRE-TITLE-ANIMATION: ONCE ONLY FOR TEXT PART */
 
+  if (isInitialTitleScreen) {
+    byte textDelay = 40;
+    
+    drawChrs(0, 0, preIntro0,  textDelay);
+    delay(1000);
+    drawChrs(0, 15, preIntro1, textDelay);
+    drawChrs(0, 25, preIntro2,  textDelay);
+    delay(1000);
+    
+    drawChrs(0, 45, preIntro3, textDelay);
+    delay(2500);
+    isInitialTitleScreen = false;
+  }
 
   byte selectedItem = TITLE_PLAY_GAME;
   unsigned long totalDelay = 0;
