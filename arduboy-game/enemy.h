@@ -211,26 +211,26 @@ struct Enemy {
         if ((bulletIndex == 0)
           && (!bullets[bulletIndex].isVisible())
           && (random(1000 / difficulty) == 0)) {
-          bullets[bulletIndex].set(x, newY, false, 1, getBulletSpeed(0.7, currentIteration), false);
+          bullets[bulletIndex].set(x, newY, false, 1, getBulletSpeed(0.8, currentIteration), false);
         }
       } else if (type == 128) {
         bullets[bulletIndex].set(x, newY, false, 1, getBulletSpeed(0.7, currentIteration), false);
       } else if ((type == 129) && (inGameFrame % 50 == 0) && (random(2) == 0)) {
         if (random(4) == 0) {
-          bullets[bulletIndex].set((x - 10), newY, false, 1, getBulletSpeed(0.9, currentIteration), true);
+          bullets[bulletIndex].set((x - 10), newY, false, 1, getBulletSpeed(1.0, currentIteration), true);
         } else {
-          bullets[bulletIndex].set(x, newY, false, 1, getBulletSpeed(0.8, currentIteration), false);
+          bullets[bulletIndex].set(x, newY, false, 1, getBulletSpeed(0.9, currentIteration), false);
         }
       } else if (type == 130) {
-        bullets[bulletIndex].set(x, random(MIN_PLAYER_Y, (MAX_PLAYER_Y + 8)), false, 1, getBulletSpeed(0.6, currentIteration), false);
+        bullets[bulletIndex].set(x, random(MIN_PLAYER_Y, (MAX_PLAYER_Y + 8)), false, 1, getBulletSpeed(0.8, currentIteration), false);
       } 
     }
     
   }
 
   float getBulletSpeed(float initialSpeed, byte currentIteration) {
-    if (currentIteration > 0 && (initialSpeed + (0.1f * currentIteration) > 1)) {
-      return 1.0f;
+    if (currentIteration > 0 && (initialSpeed + (0.1f * currentIteration) > 1.5)) {
+      return 1.5f;
     }
 
     return (initialSpeed + (0.1f * (currentIteration - 1)));
