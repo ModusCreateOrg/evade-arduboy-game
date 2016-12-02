@@ -42,11 +42,11 @@ var credits = [
      "Simon Prickett",
      "Stan Bershadskiy", 
      "Andrew Owen", 
-     "Andrew Dennis", 
-     "Timothy Eagan", 
+     "Andy Dennis", 
+     "Tim Eagan", 
      "Drew Griffith", 
      "JD Jones", 
-     "Jonathan Van Dalen", 
+     "Jon Van Dalen", 
      "Lucas Still", 
      "Matt McCants",
      "Play",
@@ -168,16 +168,16 @@ PROGMEM const uint8_t credits4[] = {
 0, 13, 3, 17, 4, 22, 255, 14, 22, 4, 13
 };
 
-//ANDREW DENNIS
+//ANDY DENNIS
 PROGMEM const uint8_t credits5[] = {
-13,// Number characters
-0, 13, 3, 17, 4, 22, 255, 3, 4, 13, 13, 8, 18
+11,// Number characters
+0, 13, 3, 24, 255, 3, 4, 13, 13, 8, 18
 };
 
-//TIMOTHY EAGAN
+//TIM EAGAN
 PROGMEM const uint8_t credits6[] = {
-13,// Number characters
-19, 8, 12, 14, 19, 7, 24, 255, 4, 0, 6, 0, 13
+9,// Number characters
+19, 8, 12, 255, 4, 0, 6, 0, 13
 };
 
 //DREW GRIFFITH
@@ -192,10 +192,10 @@ PROGMEM const uint8_t credits8[] = {
 9, 3, 255, 9, 14, 13, 4, 18
 };
 
-//JONATHAN VAN DALEN
+//JON VAN DALEN
 PROGMEM const uint8_t credits9[] = {
-18,// Number characters
-9, 14, 13, 0, 19, 7, 0, 13, 255, 21, 0, 13, 255, 3, 0, 11, 4, 13
+13,// Number characters
+9, 14, 13, 255, 21, 0, 13, 255, 3, 0, 11, 4, 13
 };
 
 //LUCAS STILL
