@@ -57,26 +57,37 @@ Arduboy arduboy;
 // Used to count frames
 unsigned long inGameFrame;
 
+// Current player attributes
 byte playerX,
      playerY,
      playerFrame,
      playerDying,
-     playerGunCharge;
+     playerGunCharge,
+     livesRemaining = MAX_LIVES,
+     currentKills = 0;
 
-char *alphabet[29];
+// Star field attributes
+float starX[NUM_STARS],
+      starSpeed[NUM_STARS];
+      
+byte starY[NUM_STARS],
+     starWidth[NUM_STARS];
+
+// Initial high score table contents
 char highScoreTable[27] = "AAA000300BBB000200CCC000100";
 
+// Used to print letters from bitmap font
+char *alphabet[29];
+
 unsigned long inGameAButtonLastPress, inGameBButtonLastPress, inGameLastDeath, score;
-byte livesRemaining = MAX_LIVES;
-byte currentKills = 0;
-float starX[NUM_STARS];
-float starSpeed[NUM_STARS];
-byte starY[NUM_STARS];
-byte starWidth[NUM_STARS];
+
+// Game state booleans
+bool isBossAlive,
+     isInitialTitleScreen = true,
+     soundOn = true;
+
+// Which tune is currently playing
 byte currentSong = 255;
-bool isInitialTitleScreen = true;
-bool isBossAlive;
-bool soundOn = true;     
 
 // General purpose text buffer for string concatenation and read from progmem
 char textBuf[23];

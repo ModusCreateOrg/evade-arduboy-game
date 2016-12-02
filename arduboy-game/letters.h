@@ -1,4 +1,4 @@
-#ifndef LETTERZ_H
+#ifndef LETTERS_H
 #define LETTERS_H
 
 PROGMEM const unsigned char A[] = {

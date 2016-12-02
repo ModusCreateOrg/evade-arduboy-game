@@ -5,6 +5,7 @@
 #include "Arduboy.h"
 #include "globals.h"
 #include "messagecatalog.h"
+#include "Music.h"
 
 void playTone(byte tone, byte duration) {
   if (soundOn) {
@@ -15,7 +16,6 @@ void playTone(byte tone, byte duration) {
 #include "bullet.h"
 #include "enemy.h"
 #include "bitmaps.h"
-#include "Music.h"
 #include "letters.h"
 #include <stddef.h>
 #include <inttypes.h>
@@ -81,11 +81,11 @@ void playMusic(byte song) {
 }   
 
 void redAlert() {
-    arduboy.clear();
+  arduboy.clear();
 
-    drawChrs(5, 30, playerWon2, 125);
-    delay(3000);
-    for (byte i = 1; i < 7; i++) {
+  drawChrs(5, 30, playerWon2, 125);
+  delay(3000);
+  for (byte i = 1; i < 7; i++) {
     byte color = i % 2;
     arduboy.fillRect(0,0,128,64, color);
     display();
@@ -95,7 +95,7 @@ void redAlert() {
       delay(3);
     } 
   }
-
+  
   delay(250);
 }
 
@@ -133,7 +133,6 @@ void introScreen() {
 void drawRectAroundPlayMenuOption(byte color) {
   arduboy.drawRect(2, 48, 28, 12, color);
 }
-
 
 void delayAndDisplay() {
   delay(250);
@@ -183,7 +182,6 @@ byte titleScreen() {
   delayAndDisplay();
   delay(350);
 
-
   drawChrs(4,  51, titleScreenText1, 0);
   drawRectAroundPlayMenuOption(1);
 
@@ -195,7 +193,6 @@ byte titleScreen() {
     bool isGreater = (currentMilliseconds - lastDebounceTime) > DEBOUNCE_DELAY;
 
     if (isGreater) {
-
       if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
         break;
       } 
@@ -206,7 +203,6 @@ byte titleScreen() {
         delay(250);
       }
     
-
       if (arduboy.pressed(RIGHT_BUTTON)) {
         selectedItem = titleMenuRightButton(selectedItem);
         lastDebounceTime = currentMilliseconds; //set the current time
@@ -227,8 +223,7 @@ void drawRectAroundSettingsMenuOption(byte color) {
 byte titleMenuLeftButton(byte selectedItem) {
   /**
      Handle clicks on the left button
-     to navigate through main menu
-     items.
+     to navigate through main menu items.
   */
   switch (selectedItem) {
     case TITLE_SETTINGS:
@@ -252,8 +247,7 @@ byte titleMenuLeftButton(byte selectedItem) {
 byte titleMenuRightButton(byte selectedItem) {
   /**
      Handle clicks on the right button
-     to navigate through main menu
-     items.
+     to navigate through main menu items.
   */
 
   switch (selectedItem) {
@@ -527,7 +521,6 @@ void playGame() {
       }
     }
 
-    // This logic seems way too nested and can probably be simplified a little. :) -- JG
     if (!isBossAlive) {
       if ((currentKills >= BOSS1_MIN_KILLS) && (spawnedBoss < 1)) {        
         if (isBossAlive = stopSpawningEnemies = !enemiesAlive) {
@@ -545,12 +538,10 @@ void playGame() {
           spawnedBoss = 3;
         } 
       }
-    }
-    
-    if (isBossAlive) {
+    } else {
       stopSpawningEnemies = !stopSpawningEnemies;
     }
-    
+           
     boss.update(! isBossAlive, currentIteration);
 
     for (byte i = 0; i < MAX_ENEMIES; i++) {
@@ -1095,11 +1086,9 @@ void setup() {
 
 // Main program loop
 void loop() {
-  byte result, newHiScorePos;
+  byte newHiScorePos;
 
-  result = titleScreen();
-
-  switch (result) {
+  switch (titleScreen()) {
     case TITLE_CREDITS:
       creditsScreen();
       break;
