@@ -1,6 +1,6 @@
 /*   
  *    Evade for Arduboy, Modus Create 2016
-*/
+ */
 
 #include "Arduboy.h"
 #include "globals.h"
@@ -57,26 +57,21 @@ void playMusic(byte song) {
     
     unsigned char *music;
     switch(song) {
-      case 1 :
-         music = introMusic;
-      break;
-      case 2 :
-//          music = stage1MusicSingleTrack; // IF WE RUN OUT OF SPACE
+      case 1:
+        music = introMusic;
+        break;
+      case 2:
         music = stage1MusicDoubleTrack;
-      break;
-      case 3 :
-          music = bossMusicSingleTrack; // IF WE RUN OUT OF SPACE
-//         music = bossMusicDoubleTrack;
-      break;
-      case 4 :
+        break;
+      case 3:
+        music = bossMusicSingleTrack;
+        break;
+      case 4:
         music = gameOverMusic;
-      break;
-//      case 5 : 
-//        music = titleMusic;
-//      break;
-      case 6 :
+        break;
+      case 5:
         music = youWin;
-      break;
+        break;
     }
     
     currentSong = song;
@@ -826,7 +821,7 @@ void playerWinsScreen() {
   arduboy.clear();
   drawChrs(16, 25, playerWon0,  creditsDelay);
   drawChrs(3, 40, playerWon1, creditsDelay);
-  playMusic(6);
+  playMusic(5);
   delay(2500);
 
   redAlert();
