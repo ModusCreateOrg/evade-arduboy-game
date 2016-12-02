@@ -34,7 +34,6 @@ struct Bullet {
       options |= isLaserBeam << 2;
 
       inGameFireFrame = inGameFrame;
-
       draw();
     }
 
@@ -56,7 +55,6 @@ struct Bullet {
     }
 
     void draw() {
-  
         if (isMovingRight()) {
           const bool isBulletA = (damage == A_BULLET_DAMAGE);
           playTone(isBulletA ? 600 - (x + 2) : 900 - (x * 2 + 3), 10);
@@ -65,8 +63,7 @@ struct Bullet {
           drawBitmap(x, y, enemyBullet, 0);
         } else {
           arduboy.fillRect(x, y, min((inGameFrame, inGameFireFrame), 30), 2, 1);
-        }
-      
+        }   
     }
 
     bool isHittingObject(byte objectX, byte objectY, byte objectWidth, byte objectHeight) {

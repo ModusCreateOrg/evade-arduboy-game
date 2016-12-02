@@ -4,18 +4,36 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-// Define limits that ship movement is bounded by
+// Button debounce
+#define DEBOUNCE_DELAY 100
+
+#define MAX_LIVES 4
+
+#define NUM_HIGH_SCORES 3
+#define NOT_NEW_HI_SCORE 5
+
+// Starfield
+#define NUM_STARS 15
+
+// Define limits that player movement is bounded by
 #define MIN_PLAYER_Y 8
 #define MAX_PLAYER_Y 48
-
-// Define limits that player ship movement is bounded by
 #define MIN_PLAYER_X 0
 #define MAX_PLAYER_X 27 // allows 16 for ship width
+#define PLAYER_SIZE 16
+#define MAX_GUN_CHARGE 40
+#define GUN_SHOT_COST 12
 
 // Define limits that enemy ship movement is bounded by
 #define MIN_ENEMY_SHIP_X 92
 #define MAX_ENEMY_SHIP_X 112
 
+// Max bullets and enemies allowed in play
+#define MAX_PLAYER_BULLETS 4
+#define MAX_BOSS_BULLETS 2
+#define MAX_ENEMIES 3
+
+// Minimum number of enemies kills needed to spawn next box
 #define BOSS1_MIN_KILLS 20
 #define BOSS2_MIN_KILLS 25
 #define BOSS3_MIN_KILLS 30
@@ -34,11 +52,44 @@
 #define SETTINGS_RESET_HIGH_SCORE 1
 #define SETTINGS_EXIT 2
 
-#define MAX_PLAYER_BULLETS 4
-#define MAX_BOSS_BULLETS 2
-#define MAX_ENEMIES 3
-
 Arduboy arduboy;
+
+// Used to count frames
 unsigned long inGameFrame;
+
+// Current player attributes
+byte playerX,
+     playerY,
+     playerFrame,
+     playerDying,
+     playerGunCharge,
+     livesRemaining = MAX_LIVES,
+     currentKills = 0;
+
+// Star field attributes
+float starX[NUM_STARS],
+      starSpeed[NUM_STARS];
+      
+byte starY[NUM_STARS],
+     starWidth[NUM_STARS];
+
+// Initial high score table contents
+char highScoreTable[27] = "AAA000300BBB000200CCC000100";
+
+// Used to print letters from bitmap font
+char *alphabet[29];
+
+unsigned long inGameAButtonLastPress, inGameBButtonLastPress, inGameLastDeath, score;
+
+// Game state booleans
+bool isBossAlive,
+     isInitialTitleScreen = true,
+     soundOn = true;
+
+// Which tune is currently playing
+byte currentSong = 255;
+
+// General purpose text buffer for string concatenation and read from progmem
+char textBuf[23];
 
 #endif
