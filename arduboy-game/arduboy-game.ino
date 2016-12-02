@@ -40,13 +40,9 @@ void resetPlayer() {
     playerGunCharge = MAX_GUN_CHARGE; 
 }
 
-void display() {
-  arduboy.display();
-}
-
-void stopMusic(){
-  arduboy.tunes.stopScore();
-}
+/*******************************************************************************
+ * MUSIC / SOUNDS                                                              *
+ *******************************************************************************/
 
 void playMusic(byte song) {
     if (! soundOn) {
@@ -80,7 +76,19 @@ void playMusic(byte song) {
     if (! arduboy.tunes.playing()) {
       arduboy.tunes.playScore(music);
     }
-}   
+}
+
+void stopMusic(){
+  arduboy.tunes.stopScore();
+}
+
+bool shouldPlayAButtonTone() {
+  return (inGameAButtonLastPress > (inGameFrame - 20));
+}
+
+bool shouldPlayBButtonTone() {
+  return (inGameBButtonLastPress > (inGameFrame - 50));
+}
 
 void redAlert() {
   arduboy.clear();
@@ -114,11 +122,58 @@ void explode(byte x, byte y, byte dying) {
   }
 }
 
+/*******************************************************************************
+ * UTILITY FUNCTIONS                                                           *
+ *******************************************************************************/
+
+void display() {
+  arduboy.display();
+}
+
 void printText(char *message, byte x, byte y, byte textSize) {
   arduboy.setCursor(x, y);
   arduboy.setTextSize(textSize);
   arduboy.print(message);
 }
+
+void delayAndDisplay() {
+  delay(250);
+  display();
+}
+
+void drawChrs(byte cPos, byte yPos, const uint8_t *letters, unsigned long delayTimer) {
+  byte curs = cPos,
+       strLen = pgm_read_byte(letters),
+       letter;
+
+  for (byte i = 0; i <  strLen; i++) {
+    letter = pgm_read_byte(++letters);
+    
+    // Space chr
+    if (letter == 255) {
+       curs += 5;
+    }
+    else {
+        drawBitmap(curs,yPos, alphabet[letter], 0);
+        curs += pgm_read_byte(alphabet[letter]) + 1;
+    }
+    
+    display();
+
+    if (delayTimer) {
+      playTone(100, delayTimer - 10);
+      delay(delayTimer);
+    }
+  }  
+
+  if (delayTimer) {
+      playTone(800, 15);
+      delay(15);
+      playTone(1200, 30);
+      delay(40);
+  }
+}
+
 
 void introScreen() {
   arduboy.clear();
@@ -136,10 +191,6 @@ void drawRectAroundPlayMenuOption(byte color) {
   arduboy.drawRect(2, 48, 28, 12, color);
 }
 
-void delayAndDisplay() {
-  delay(250);
-  display();
-}
 
 byte titleScreen() {
   arduboy.clear();
@@ -309,39 +360,6 @@ void highScoreScreen() {
       totalDelay += 15;
     }
   }  
-}
-
-void drawChrs(byte cPos, byte yPos, const uint8_t *letters, unsigned long delayTimer) {
-  byte curs = cPos,
-       strLen = pgm_read_byte(letters),
-       letter;
-
-  for (byte i = 0; i <  strLen; i++) {
-    letter = pgm_read_byte(++letters);
-    
-    // Space chr
-    if (letter == 255) {
-       curs += 5;
-    }
-    else {
-        drawBitmap(curs,yPos, alphabet[letter], 0);
-        curs += pgm_read_byte(alphabet[letter]) + 1;
-    }
-    
-    display();
-
-    if (delayTimer) {
-      playTone(100, delayTimer - 10);
-      delay(delayTimer);
-    }
-  }  
-
-  if (delayTimer) {
-      playTone(800, 15);
-      delay(15);
-      playTone(1200, 30);
-      delay(40);
-  }
 }
 
 void creditsScreen() {
@@ -1026,15 +1044,10 @@ void updateStarFieldVals() {
   }
 }
 
-bool shouldPlayAButtonTone() {
-  return (inGameAButtonLastPress > (inGameFrame - 20));
-}
+/*******************************************************************************
+ * ENTRY POINTS                                                                *
+ *******************************************************************************/
 
-bool shouldPlayBButtonTone() {
-  return (inGameBButtonLastPress > (inGameFrame - 50));
-}
-
-// Initialization runs once only
 void setup() {
   arduboy.beginNoLogo();
     
@@ -1086,7 +1099,6 @@ void setup() {
   alphabet[28] = exclamation;
 }
 
-// Main program loop
 void loop() {
   byte newHiScorePos;
 
