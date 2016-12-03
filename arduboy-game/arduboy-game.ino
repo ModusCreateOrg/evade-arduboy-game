@@ -1,5 +1,7 @@
-/*   
- *    Evade for Arduboy, Modus Create 2016
+/*
+ *  File: arduboy-game.ino
+ *  Purpose: Main sketch file for Evade, Modus Create 2016 holiday game.
+ *  Author: Modus Create
  */
 
 #include "Arduboy.h"
@@ -23,6 +25,10 @@ void playTone(byte tone, byte duration) {
 #include <avr/pgmspace.h>
 #include <EEPROM.h>
 
+/*******************************************************************************
+ * GLOBALS (OTHERS IN globals.h                                                *
+ *******************************************************************************/
+
 // Bullet array
 Bullet playerBullets[MAX_PLAYER_BULLETS];
 
@@ -30,22 +36,11 @@ Bullet playerBullets[MAX_PLAYER_BULLETS];
 Enemy enemies[MAX_ENEMIES],
       boss;
 
-void resetPlayer() {
-    playerX = MIN_PLAYER_X;
-    playerY = 32;
-    playerFrame = 2;
-    playerDying = 0;
-    playerGunCharge = MAX_GUN_CHARGE; 
-}
+/*******************************************************************************
+ * MUSIC / SOUND FUNCTIONS                                                     *
+ *******************************************************************************/
 
-void display() {
-  arduboy.display();
-}
-
-void stopMusic(){
-  arduboy.tunes.stopScore();
-}
-
+// Play the specified song.
 void playMusic(byte song) {
     if (! soundOn) {
       return;
@@ -78,46 +73,84 @@ void playMusic(byte song) {
     if (! arduboy.tunes.playing()) {
       arduboy.tunes.playScore(music);
     }
-}   
-
-void redAlert() {
-  arduboy.clear();
-
-  drawChrs(5, 30, playerWon2, 125);
-  delay(3000);
-  for (byte i = 1; i < 7; i++) {
-    byte color = i % 2;
-    arduboy.fillRect(0,0,128,64, color);
-    display();
-
-    for (byte z = 1; z < 150 ; z++) {
-      playTone(z, 10);
-      delay(3);
-    } 
-  }
-  
-  delay(250);
 }
 
-void explode(byte x, byte y, byte dying) {
-  byte rnd = random(1, 15),
-       _dying = dying + rnd;
-       
-  playTone(_dying * 5, 10);
-  
-  if (inGameFrame % 2 == 0) {  
-    arduboy.drawCircle(x, y, dying + rnd, 1);
-    arduboy.drawCircle(x, y, _dying - rnd, 1);
-    arduboy.drawCircle(x, y, _dying - rnd + 5, 1);
-  }
+// Stop any music that is currently playing.
+void stopMusic(){
+  arduboy.tunes.stopScore();
 }
 
+// Determine whether to play A button shoot tone.
+bool shouldPlayAButtonTone() {
+  return (inGameAButtonLastPress > (inGameFrame - 20));
+}
+
+// Determine whether to play B button shoot tone.
+bool shouldPlayBButtonTone() {
+  return (inGameBButtonLastPress > (inGameFrame - 50));
+}
+
+/*******************************************************************************
+ * UTILITY FUNCTIONS                                                           *
+ *******************************************************************************/
+
+// Redraw the screen.
+void display() {
+  arduboy.display();
+}
+
+// Display message at specified location in specified font size.
 void printText(char *message, byte x, byte y, byte textSize) {
   arduboy.setCursor(x, y);
   arduboy.setTextSize(textSize);
   arduboy.print(message);
 }
 
+// Redraw the screen after a short delay.
+void delayAndDisplay() {
+  delay(250);
+  display();
+}
+
+// Use a typewriter effect to display characters from the bitmap font.
+void drawChrs(byte cPos, byte yPos, const uint8_t *letters, unsigned long delayTimer) {
+  byte curs = cPos,
+       strLen = pgm_read_byte(letters),
+       letter;
+
+  for (byte i = 0; i <  strLen; i++) {
+    letter = pgm_read_byte(++letters);
+    
+    // Space chr
+    if (letter == 255) {
+       curs += 5;
+    }
+    else {
+        drawBitmap(curs,yPos, alphabet[letter], 0);
+        curs += pgm_read_byte(alphabet[letter]) + 1;
+    }
+    
+    display();
+
+    if (delayTimer) {
+      playTone(100, delayTimer - 10);
+      delay(delayTimer);
+    }
+  }  
+
+  if (delayTimer) {
+      playTone(800, 15);
+      delay(15);
+      playTone(1200, 30);
+      delay(40);
+  }
+}
+
+/*******************************************************************************
+ * PRE-GAME SCREENS AND SUPPORTING FUNCTIONS                                   *
+ *******************************************************************************/
+
+// Display the intro screen (Modus Logo) shown once on power on.
 void introScreen() {
   arduboy.clear();
   drawBitmap(2, 8, modusLogo, 0);
@@ -130,15 +163,7 @@ void introScreen() {
   delay(2750);
 }
 
-void drawRectAroundPlayMenuOption(byte color) {
-  arduboy.drawRect(2, 48, 28, 12, color);
-}
-
-void delayAndDisplay() {
-  delay(250);
-  display();
-}
-
+// Display the main title screen, time out if user doesn't choose an option
 byte titleScreen() {
   arduboy.clear();
 
@@ -158,10 +183,10 @@ byte titleScreen() {
     isInitialTitleScreen = false;
   }
 
-  byte selectedItem = TITLE_PLAY_GAME;
+  byte selectedItem = TITLE_PLAY_GAME,
+       shipTone = 100;
   unsigned long totalDelay = 0;
   long lastDebounceTime = millis();  // the last time the button was pressed
-  byte shipTone = 100;
   float earthY = 56;
     
   for (float y = 64; y > 16; y -= 0.2f) {
@@ -216,15 +241,18 @@ byte titleScreen() {
   return (totalDelay >= ATTRACT_MODE_TIMEOUT ? TITLE_TIMEOUT : selectedItem);
 }
 
+// Select (color = 1) / deselect (color = 0) title screen Play option.
+void drawRectAroundPlayMenuOption(byte color) {
+  arduboy.drawRect(2, 48, 28, 12, color);
+}
+
+// Select (color = 1) / deselect (color = 0) title screen Settings option.
 void drawRectAroundSettingsMenuOption(byte color) {
   arduboy.drawRect(32, 48, 42, 12, color);
 }
 
+// Handle clicks on left button to navigate title screen items.
 byte titleMenuLeftButton(byte selectedItem) {
-  /**
-     Handle clicks on the left button
-     to navigate through main menu items.
-  */
   switch (selectedItem) {
     case TITLE_SETTINGS:
       arduboy.drawRect(77, 48, 50, 12, 0);
@@ -244,12 +272,8 @@ byte titleMenuLeftButton(byte selectedItem) {
   }
 }
 
+// Handle clicks on right button to navigate title screen items.
 byte titleMenuRightButton(byte selectedItem) {
-  /**
-     Handle clicks on the right button
-     to navigate through main menu items.
-  */
-
   switch (selectedItem) {
     case TITLE_PLAY_GAME:
       drawRectAroundPlayMenuOption(0);
@@ -269,6 +293,7 @@ byte titleMenuRightButton(byte selectedItem) {
   }
 }
 
+// Display the high score screen (used in attract loop and after game over).
 void highScoreScreen() {
   unsigned short totalDelay = 0;
   char hiInitials[4];
@@ -309,39 +334,7 @@ void highScoreScreen() {
   }  
 }
 
-void drawChrs(byte cPos, byte yPos, const uint8_t *letters, unsigned long delayTimer) {
-  byte curs = cPos,
-       strLen = pgm_read_byte(letters),
-       letter;
-
-  for (byte i = 0; i <  strLen; i++) {
-    letter = pgm_read_byte(++letters);
-    
-    // Space chr
-    if (letter == 255) {
-       curs += 5;
-    }
-    else {
-        drawBitmap(curs,yPos, alphabet[letter], 0);
-        curs += pgm_read_byte(alphabet[letter]) + 1;
-    }
-    
-    display();
-
-    if (delayTimer) {
-      playTone(100, delayTimer - 10);
-      delay(delayTimer);
-    }
-  }  
-
-  if (delayTimer) {
-      playTone(800, 15);
-      delay(15);
-      playTone(1200, 30);
-      delay(40);
-  }
-}
-
+// Display the credits screen using typewriter / bitmap font effect.
 void creditsScreen() {
   byte creditsDelay = 30;
  
@@ -368,10 +361,7 @@ void creditsScreen() {
   delay(2000);
 }
 
-void drawBoxAroundSoundSetting(byte color) {
-   arduboy.drawRect(17, 22, 35, 13, color);
-}
-
+// Display the settings screen.
 void settingsScreen() {
   long lastDebounceTime = millis();  // the last time the button was pressed
   bool exit_settings_menu = false;
@@ -466,11 +456,22 @@ void settingsScreen() {
   }
 }
 
+// Select (color = 1) / deselect (color = 0)  the sound item for the settings screen.
+void drawBoxAroundSoundSetting(byte color) {
+   arduboy.drawRect(17, 22, 35, 13, color);
+}
+
+// Toggle the sound on / off message for the settings screen.
 void printsoundOnOff() {
   printText(soundOn ? "SOUND ON " : "SOUND OFF", 20, 25, 1);
   drawBoxAroundSoundSetting(1);
 }
 
+/*******************************************************************************
+ * IN GAME SCREENS AND SUPPORTING FUNCTIONS                                    *
+ *******************************************************************************/
+
+// Play the game!
 void playGame() {
   stopMusic();
 
@@ -484,8 +485,8 @@ void playGame() {
   isBossAlive = false;
   currentKills = 0;
   
-  byte spawnedBoss = 0;
-  byte currentIteration = 0;
+  byte spawnedBoss = 0,
+       currentIteration = 0;
   bool iterationEnding = false;
 
   resetEnemies();
@@ -600,22 +601,69 @@ void playGame() {
   stopMusic();
 }
 
+// Run initial red alert screen flash / sound effect.
+void redAlert() {
+  arduboy.clear();
+
+  drawChrs(5, 30, playerWon2, 125);
+  delay(3000);
+  for (byte i = 1; i < 7; i++) {
+    byte color = i % 2;
+    arduboy.fillRect(0,0,128,64, color);
+    display();
+
+    for (byte z = 1; z < 150 ; z++) {
+      playTone(z, 10);
+      delay(3);
+    } 
+  }
+  
+  delay(250);
+}
+
+// Reset the player to initial state after they lose a life.
+void resetPlayer() {
+    playerX = MIN_PLAYER_X;
+    playerY = 32;
+    playerFrame = 2;
+    playerDying = 0;
+    playerGunCharge = MAX_GUN_CHARGE; 
+}
+
+// Draw circles for explosion centered at x, y with radius determined by 'dying'.
+void explode(byte x, byte y, byte dying) {
+  byte rnd = random(1, 15),
+       _dying = dying + rnd;
+       
+  playTone(_dying * 5, 10);
+  
+  if (inGameFrame % 2 == 0) {  
+    arduboy.drawCircle(x, y, dying + rnd, 1);
+    arduboy.drawCircle(x, y, _dying - rnd, 1);
+    arduboy.drawCircle(x, y, _dying - rnd + 5, 1);
+  }
+}
+
+// Display the player's gun temperature as a bar.
 void drawGunTemp() {
   arduboy.drawRect(40, 1, 40, 5, 1);
   arduboy.fillRect(40, 1, (playerGunCharge), 5, 1);
 }
 
+// Display the current score with leading 0 padding.
 void drawScore() {
   sprintf(textBuf, "%06lu", score);
   printText(textBuf, 0, 0, 1);
 }
 
+// Display the starfield.
 void drawStarLayer() {
   for (byte i = 0; i < NUM_STARS; i++) {
     arduboy.drawFastHLine(starX[i], starY[i], starWidth[i], 1);
   }
 }
 
+// Display one icon per player life remaining.
 void drawLives() {
   for (byte i = 0; i < MAX_LIVES; i++) {
     if (i < livesRemaining) {
@@ -624,6 +672,7 @@ void drawLives() {
   }
 }
 
+// Display the player's ship and update its position.
 void drawPlayerShip() {
   if (playerDying == 0) {
     if (arduboy.pressed(RIGHT_BUTTON) && (playerX < MAX_PLAYER_X)) {
@@ -723,6 +772,7 @@ void drawPlayerShip() {
   }
 }
 
+// Perform calculations required for enemy bullets.
 void handleEnemyBullets() {
   for (byte i = 0; i < MAX_ENEMIES; i++) {
     if ((enemies[i].bullets[0].isVisible()) && (enemies[i].bullets[0].isHittingObject(playerX, playerY, PLAYER_SIZE, PLAYER_SIZE))) {
@@ -738,6 +788,7 @@ void handleEnemyBullets() {
   }
 }
 
+// Perform calculations required for boss bullets.
 void handleBossBullets() {
   if (isBossAlive) {
     for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
@@ -755,6 +806,8 @@ void handleBossBullets() {
   }
 }
 
+// Perform calculations required for player bullets.  Returns true if
+// player kills the 3rd boss to end the wave.
 bool handlePlayerBullets() {
   for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
     if (playerBullets[i].isVisible()) {
@@ -805,6 +858,69 @@ bool handlePlayerBullets() {
   return false;
 }
 
+// Reset the enemies to the initial state.
+void resetEnemies() {
+  for (byte i = 0; i < MAX_ENEMIES; i++) {
+    enemies[i].health = 0; 
+    enemies[i].bullets[0].hide();
+  }
+}
+
+// Reset the boss to the initial state.
+void resetBoss() {
+  boss.health = 0;
+  boss.dying = 0;
+  for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
+    boss.bullets[i].hide();
+  }
+}
+
+// Reset the player bullets to the initial state.
+void resetPlayerBullets() {
+  for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
+    playerBullets[i].hide();
+  }
+}
+
+// Set initial starfield values.
+void createStarFieldVals() {
+  for (byte i = 0; i < NUM_STARS; i++) {
+      setStarValuesForIndex(i);
+  } 
+}
+
+// Utility function for setting start field data.
+void setStarValuesForIndex(byte i) {
+  starX[i] = random(250);
+  starY[i] = random(11, 64);
+  starWidth[i] = random(1, 4);  
+
+  if (starWidth[i] >= 3) {
+    starSpeed[i] = random(30, 40) * 0.01f;
+  }
+  else if (starWidth[i] >= 2) {
+    starSpeed[i] = random(18, 25) * 0.01f;
+  }
+  else {
+    starSpeed[i] = random(7, 12) * 0.01f;
+  }
+}
+
+// Set the starfield values for the next frame.
+void updateStarFieldVals() {
+  for (byte i = 0; i < NUM_STARS; i++) {
+    if (starX[i] < -1) {
+      setStarValuesForIndex(i);
+      starX[i] = 128 + random(20);
+      starY[i] = random(11, 64);
+    }   
+    else {
+      starX[i] -= starSpeed[i];
+    }
+  }
+}
+
+// Player has completed a wave, show message and resume game.
 void playerWinsScreen() {
   byte creditsDelay = 40;
 
@@ -818,6 +934,11 @@ void playerWinsScreen() {
   redAlert();
 }
 
+/*******************************************************************************
+ * POST GAME SCREENS AND SUPPORTING FUNCTIONS                                  *
+ *******************************************************************************/
+
+// Game has ended.
 void gameOverScreen() {
   stopMusic();
   arduboy.clear();
@@ -833,12 +954,7 @@ void gameOverScreen() {
   delay(4500);
 }
 
-void drawHighScoreEntryCursor(byte pos) {
-  arduboy.fillRect(44, 62, 10, 2, (pos == 0 ? 1 : 0));
-  arduboy.fillRect(56, 62, 10, 2, (pos == 1 ? 1 : 0));
-  arduboy.fillRect(68, 62, 10, 2, (pos == 2 ? 1 : 0));
-}
-
+// Has the game ended with a top 3 high score?
 byte isNewHighScore() {
   char hiScore[7];
 
@@ -852,6 +968,7 @@ byte isNewHighScore() {
   return NOT_NEW_HI_SCORE;
 }
 
+// Display the new high score screen and let player enter initials.
 void newHighScoreScreen(byte newHiPos) {
   long lastDebounceTime = millis();
   bool allDone = false;
@@ -947,6 +1064,14 @@ void newHighScoreScreen(byte newHiPos) {
   persistHighScoreTable(false);
 }
 
+// Draw a cursor under currently selected high score letter.
+void drawHighScoreEntryCursor(byte pos) {
+  arduboy.fillRect(44, 62, 10, 2, (pos == 0 ? 1 : 0));
+  arduboy.fillRect(56, 62, 10, 2, (pos == 1 ? 1 : 0));
+  arduboy.fillRect(68, 62, 10, 2, (pos == 2 ? 1 : 0));
+}
+
+// Store the high score table in EEPROM, set initial data if none present.
 void persistHighScoreTable(bool firstTime) {  
   for (byte i = 0; i < 27; i++) {
     EEPROM.write(i + 2, highScoreTable[i]);
@@ -957,6 +1082,7 @@ void persistHighScoreTable(bool firstTime) {
   }
 }
 
+// Wipe the high score table from EEPROM, revert to initial data.
 void resetHighScoreTable() {
   // Read it back into memory and overwrite what's in EEPROM
   // with data frem reset location
@@ -968,71 +1094,11 @@ void resetHighScoreTable() {
   persistHighScoreTable(false);
 }
 
-void createStarFieldVals() {
-  for (byte i = 0; i < NUM_STARS; i++) {
-      setStarValuesForIndex(i);
-  } 
-}
+/*******************************************************************************
+ * ENTRY POINTS                                                                *
+ *******************************************************************************/
 
-void resetEnemies() {
-  for (byte i = 0; i < MAX_ENEMIES; i++) {
-    enemies[i].health = 0; 
-    enemies[i].bullets[0].hide();
-  }
-}
-
-void resetBoss() {
-  boss.health = 0;
-  boss.dying = 0;
-  for (byte i = 0; i < MAX_BOSS_BULLETS; i++) {
-    boss.bullets[i].hide();
-  }
-}
-
-void resetPlayerBullets() {
-  for (byte i = 0; i < MAX_PLAYER_BULLETS; i++) {
-    playerBullets[i].hide();
-  }
-}
-
-void setStarValuesForIndex(byte i) {
-  starX[i] = random(250);
-  starY[i] = random(11, 64);
-  starWidth[i] = random(1, 4);  
-
-  if (starWidth[i] >= 3) {
-    starSpeed[i] = random(30, 40) * 0.01f;
-  }
-  else if (starWidth[i] >= 2) {
-    starSpeed[i] = random(18, 25) * 0.01f;
-  }
-  else {
-    starSpeed[i] = random(7, 12) * 0.01f;
-  }
-}
-
-void updateStarFieldVals() {
-  for (byte i = 0; i < NUM_STARS; i++) {
-    if (starX[i] < -1) {
-      setStarValuesForIndex(i);
-      starX[i] = 128 + random(20);
-      starY[i] = random(11, 64);
-    }   
-    else {
-      starX[i] -= starSpeed[i];
-    }
-  }
-}
-
-bool shouldPlayAButtonTone() {
-  return (inGameAButtonLastPress > (inGameFrame - 20));
-}
-
-bool shouldPlayBButtonTone() {
-  return (inGameBButtonLastPress > (inGameFrame - 50));
-}
-
-// Initialization runs once only
+// Runs once, initialization.
 void setup() {
   arduboy.beginNoLogo();
     
@@ -1084,7 +1150,7 @@ void setup() {
   alphabet[28] = exclamation;
 }
 
-// Main program loop
+// Main program loop, runs attract loop
 void loop() {
   byte newHiScorePos;
 

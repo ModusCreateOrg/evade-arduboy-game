@@ -1,26 +1,34 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
+/*
+ *  File: enemy.h
+ *  Purpose: Deals with regular and boss enemies for Evade game.
+ *  Author: Modus Create
+ */
+
 #include "globals.h"
 #include "bitmaps.h"
 #include "bullet.h"
 
 struct Enemy {
-  byte x;
-  byte y;
-  byte width;
-  byte height;
-  int health;
-  byte type;
-  byte difficulty;
-  byte dying;
-  // isMovingLeft (0), isMovingDown (1), tookDamage (2)
-  byte options;
+  byte x,
+       y,
+       width,
+       height,
+       type,
+       difficulty,
+       dying,
+       // isMovingLeft (0), isMovingDown (1), tookDamage (2)
+       options;
+  int health,
+      animFrame;
   const uint8_t *bitmap;
   unsigned long damageFrame;
   Bullet bullets[MAX_BOSS_BULLETS];
-  int animFrame;
 
+  // Initialize the enemy, uses currentIteration to increase difficulty
+  // and make enemies stronger.
   void set(byte _x, byte _y, byte _type, byte currentIteration) {
     x = _x;
     y = _y;
@@ -73,6 +81,9 @@ struct Enemy {
     draw();
   }
 
+  // Update enemy determine if it is dying, or a new enemy needs to take
+  // its place unless we are in a phase where new enemies are not allowed 
+  // to spawn.
   void update(bool stopSpawningEnemies, byte currentIteration) {
     if ((inGameFrame > (damageFrame + 4))
       && (isTakingDamage())
@@ -106,12 +117,15 @@ struct Enemy {
     }
   }
 
+  // Spawn new enemy, uses currentIteration to determine enemy health
+  // and bullet speed.
   void spawn(byte currentIteration) {
-    byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X);
-    byte enemyY = random(MIN_PLAYER_Y, MAX_PLAYER_Y);
+    byte enemyX = random(MIN_ENEMY_SHIP_X, MAX_ENEMY_SHIP_X),
+         enemyY = random(MIN_PLAYER_Y, MAX_PLAYER_Y);
     set(enemyX, enemyY, random(10), currentIteration);
   }
 
+  // Update enemy position on screen.
   void move() {
     if ((random(10 / difficulty) == 0) || (type > 9)) {
       changeDirection();
@@ -151,6 +165,8 @@ struct Enemy {
     }
   }
 
+  // Render the enemy on the screen, uses different bitmaps depending
+  // on enemy type.
   void draw() {
     if (type != 129) {
       drawBitmap(x, y, bitmap, 0);  
@@ -165,6 +181,8 @@ struct Enemy {
     }
   }
 
+  // If the enemy is dying, update the dying effect for the current frame,
+  // reset when effect completed.
   void updateDeathSequence() {
     if (dying < 30) {
       dying++;
@@ -176,6 +194,7 @@ struct Enemy {
     }
   }
 
+  // Switch enemy movement direction somewhat randomly.
   void changeDirection() { 
     if (((type <= 9) && (random(30) == 0))
       || ((type > 9) && (random(50) == 0))) {
@@ -189,6 +208,8 @@ struct Enemy {
     }
   }
 
+  // Determine whether to fire enemy bullet, configures bullet
+  // based on type of enemy firing it.
   void fire(byte bulletIndex, byte currentIteration) {
     if (isAlive() && inGameFrame > 120) {
       byte newY = (y + (height / 2) - 1);
@@ -213,6 +234,8 @@ struct Enemy {
     }
   }
 
+  // Calculate the speed for a new bullet, gets harder as currentIteration 
+  // increases.
   float getBulletSpeed(float initialSpeed, byte currentIteration) {
     if (currentIteration > 0 && (initialSpeed + (0.1f * currentIteration) > 1.5)) {
       return 1.5f;
@@ -221,23 +244,28 @@ struct Enemy {
     return (initialSpeed + (0.1f * (currentIteration - 1)));
   }
 
+  // Work out if taking damage.
   void takeDamage() {
     options |= 1 << 2;
     damageFrame = inGameFrame;
   }
 
+  // Is the enemy alive (has health and is not in the dying sequence).
   bool isAlive() {
     return ((health > 0) && (dying == 0));
   }
 
+  // Is the enemy moving to the left?
   bool isMovingLeft() {
     return (options & (1 << 0));
   }
 
+  // Is the enemy moving to the bottom of the screen?
   bool isMovingDown() {
     return (options & (1 << 1));
   }
 
+  // Is the enemy able to take damage (not dying etc)?
   bool isTakingDamage() {
     return (options & (1 << 2));
   }

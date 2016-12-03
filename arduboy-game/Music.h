@@ -1,6 +1,12 @@
 #ifndef MUSIC_H
 #define MUSIC_H
 
+/*
+ *  File: Music.h
+ *  Purpose: Stores music scores for Evade game.
+ *  Author: Modus Create
+ */
+
 const unsigned char PROGMEM stage1MusicDoubleTrack[] = {
   // Transport
   0x90,60, 0,1, 0x91,36, 0,105, 0x81, 0,81, 0x91,48, 0,105, 0x81, 0,8, 0x80, 0,72, 0x90,60, 0,0, 0x91,36, 

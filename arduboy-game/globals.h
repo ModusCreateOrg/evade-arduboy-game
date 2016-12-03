@@ -1,18 +1,24 @@
-/*
- * globals
-*/
 #ifndef GLOBALS_H
 #define GLOBALS_H
+
+/*
+ *  File: globals.h
+ *  Purpose: Global artifacts for Evade game.
+ *  Author: Modus Create
+ */
 
 // Button debounce
 #define DEBOUNCE_DELAY 100
 
+// Number of lives the player starts with
 #define MAX_LIVES 4
 
+// How many entries in high score table, and fake position used
+// to determine player didn't get a new high score
 #define NUM_HIGH_SCORES 3
 #define NOT_NEW_HI_SCORE 5
 
-// Starfield
+// Number of stars comprising the starfield background
 #define NUM_STARS 15
 
 // Define limits that player movement is bounded by
@@ -52,6 +58,7 @@
 #define SETTINGS_RESET_HIGH_SCORE 1
 #define SETTINGS_EXIT 2
 
+// Arduboy library object
 Arduboy arduboy;
 
 // Used to count frames
@@ -64,7 +71,7 @@ byte playerX,
      playerDying,
      playerGunCharge,
      livesRemaining = MAX_LIVES,
-     currentKills = 0;
+     currentKills = 0;  // Used to determine when bosses appear
 
 // Star field attributes
 float starX[NUM_STARS],
@@ -79,7 +86,11 @@ char highScoreTable[27] = "AAA000300BBB000200CCC000100";
 // Used to print letters from bitmap font
 char *alphabet[29];
 
-unsigned long inGameAButtonLastPress, inGameBButtonLastPress, inGameLastDeath, score;
+// Track button presses for debounce, frame last death was in, player score
+unsigned long inGameAButtonLastPress, 
+              inGameBButtonLastPress, 
+              inGameLastDeath, 
+              score;
 
 // Game state booleans
 bool isBossAlive,

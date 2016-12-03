@@ -1,8 +1,11 @@
-/*
- * bullet
-*/
 #ifndef BULLET_H
 #define BULLET_H
+
+/*
+ *  File: bullet.h
+ *  Purpose: Deals with player and enemy bullet logic for Evade game.
+ *  Author: Modus Create
+ */
 
 #include "globals.h"
 #include "bitmaps.h"
@@ -12,14 +15,15 @@
 
 struct Bullet {
   public:
-    float x;
-    byte y;
-    byte damage;
-    float speedX;
-    // Visibility (0), Direction (1), Laser Beam (2)
-    byte options;
+    float x,
+          speedX;
+    byte y,
+         damage,
+         // Visibility (0), Direction (1), Laser Beam (2)
+         options;
     unsigned long inGameFireFrame;
-    
+
+    // Initialize a bullet in a given position.
     void set(byte _x, byte _y, bool firedByPlayer, byte _damage, float _speedX, bool isLaserBeam) {
       x = _x;
       y = _y;
@@ -37,6 +41,7 @@ struct Bullet {
       draw();
     }
 
+    // Update bullet, if still visible.
     void update() {
       if (isVisible()) {
         move();
@@ -44,6 +49,7 @@ struct Bullet {
       }
     }
 
+    // Move the bullet across the screen.
     void move() {
       x += isMovingRight() ? speedX : -speedX;
       if (x > 128) {
@@ -54,6 +60,7 @@ struct Bullet {
       }
     }
 
+    // Draw bullet on the screen.
     void draw() {
         if (isMovingRight()) {
           const bool isBulletA = (damage == A_BULLET_DAMAGE);
@@ -66,6 +73,7 @@ struct Bullet {
         }   
     }
 
+    // Determine whether or not the bullet is hitting something.
     bool isHittingObject(byte objectX, byte objectY, byte objectWidth, byte objectHeight) {
       if ((isVisible()) &&
         ((isLaserBeam() && (x >= (objectX - 30))) || (!isLaserBeam() && (x >= objectX))) &&
@@ -78,18 +86,22 @@ struct Bullet {
       }
     }
 
+    // Is the bullet visible right now?
     bool isVisible() {
       return (options & (1 << 0));
     }
 
+    // Is the bullet moving to the right (player) or left (enemy)?
     bool isMovingRight() {
       return (options & (1 << 1));
     }
 
+    // Is the bullet a laser beam?
     bool isLaserBeam() {
       return (options & (1 << 2));
     }
 
+    // Hide the bullet.
     void hide() {
       if (isVisible()) {
         options ^= 1 << 0;
