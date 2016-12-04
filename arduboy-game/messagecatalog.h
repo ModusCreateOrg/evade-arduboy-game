@@ -25,29 +25,40 @@ PROGMEM const uint8_t playerWon2[] = {
   4, 13, 4, 12, 8, 4, 18, 255, 0, 15, 15, 17, 14, 0, 2, 7, 8, 13, 6, //28
 };
 
-//ALIENS HAVE INVADED.
+
+
+
+//ALIENS INVADED OUR 
 PROGMEM const uint8_t preIntro0[] = {
-  20,
-  0, 11, 8, 4, 13, 18, 255, 7, 0, 21, 4, 255, 8, 13, 21, 0, 3, 4, 3, 27
+19,// Number characters
+0, 11, 8, 4, 13, 18, 255, 8, 13, 21, 0, 3, 4, 3, 255, 14, 20, 17, 255
 };
 
-//THEY ARE DESTROYING
+//COLONY AND KILLED 
 PROGMEM const uint8_t preIntro1[] = {
-  19,
-  19, 7, 4, 24, 255, 0, 17, 4, 255, 3, 4, 18, 19, 17, 14, 24, 8, 13, 6
+18,// Number characters
+2, 14, 11, 14, 13, 24, 255, 0, 13, 3, 255, 10, 8, 11, 11, 4, 3, 255
 };
 
-//EVERYTHING.
+//EVERYONE!
 PROGMEM const uint8_t preIntro2[] = {
-  11,
-  4, 21, 4, 17, 24, 19, 7, 8, 13, 6, 27
+9,// Number characters
+4, 21, 4, 17, 24, 14, 13, 4, 27
 };
 
-//YOUR ONLY OPTION...
+//YOUR NEW MISSION:
 PROGMEM const uint8_t preIntro3[] = {
-  19,
-  24, 14, 20, 17, 255, 14, 13, 11, 24, 255, 14, 15, 19, 8, 14, 13, 27, 27, 27
+17,// Number characters
+24, 14, 20, 17, 255, 13, 4, 22, 255, 12, 8, 18, 18, 8, 14, 13, 26
 };
+
+//ESCAPE AND...
+PROGMEM const uint8_t preIntro4[] = {
+13,// Number characters
+4, 18, 2, 0, 15, 4, 255, 0, 13, 3, 27, 27, 27
+};
+
+
 
 //CREDITS:
 PROGMEM const uint8_t credits0[] = {
