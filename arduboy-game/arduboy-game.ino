@@ -25,6 +25,7 @@ void playTone(byte tone, byte duration) {
 #include <avr/pgmspace.h>
 #include <EEPROM.h>
 
+
 /*******************************************************************************
  * GLOBALS (OTHERS IN globals.h                                                *
  *******************************************************************************/
@@ -93,6 +94,11 @@ bool shouldPlayBButtonTone() {
 /*******************************************************************************
  * UTILITY FUNCTIONS                                                           *
  *******************************************************************************/
+
+// Clear the screen.
+void clr() {
+  arduboy.clear();
+}
 
 // Redraw the screen.
 void display() {
@@ -170,15 +176,17 @@ byte titleScreen() {
   // PRE-TITLE-ANIMATION: ONCE ONLY FOR TEXT PART
 
   if (isInitialTitleScreen) {
-    byte textDelay = 40;
-    
+    byte textDelay = 60;
+
     drawChrs(0, 0, preIntro0,  textDelay);
+    drawChrs(0, 10, preIntro1, textDelay);
+    drawChrs(0, 20, preIntro2,  textDelay);
+//    drawChrs(0, 30, preIntro3,  textDelay);
     delay(1000);
-    drawChrs(0, 15, preIntro1, textDelay);
-    drawChrs(0, 25, preIntro2,  textDelay);
+
+    drawChrs(0, 40, preIntro3, textDelay);
     delay(1000);
-    
-    drawChrs(0, 45, preIntro3, textDelay);
+    drawChrs(0, 50, preIntro4, 180);
     delay(2500);
     isInitialTitleScreen = false;
   }
@@ -205,7 +213,7 @@ byte titleScreen() {
   drawBitmap(77, 16, title_letter_e, 0);
   drawBitmap(93, 14, title_planet, 0);
   delayAndDisplay();
-  delay(350);
+//  delay(350);
 
   drawChrs(4,  51, titleScreenText1, 0);
   drawRectAroundPlayMenuOption(1);
@@ -534,7 +542,7 @@ void playGame() {
           spawnedBoss = 2;
         } 
       } else if ((currentKills >= (BOSS1_MIN_KILLS + BOSS2_MIN_KILLS + BOSS3_MIN_KILLS)) && (spawnedBoss < 3)) {
-        if (isBossAlive = stopSpawningEnemies =!enemiesAlive) {
+        if (isBossAlive = stopSpawningEnemies = !enemiesAlive) {
           boss.set(129, 10, 130, currentIteration);
           spawnedBoss = 3;
         } 
