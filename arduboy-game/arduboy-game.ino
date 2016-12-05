@@ -25,9 +25,6 @@ void playTone(byte tone, byte duration) {
 #include <avr/pgmspace.h>
 #include <EEPROM.h>
 
-void clr() {
-  arduboy.clear();
-}
 
 /*******************************************************************************
  * GLOBALS (OTHERS IN globals.h                                                *
@@ -97,6 +94,11 @@ bool shouldPlayBButtonTone() {
 /*******************************************************************************
  * UTILITY FUNCTIONS                                                           *
  *******************************************************************************/
+
+// Clear the screen.
+void clr() {
+  arduboy.clear();
+}
 
 // Redraw the screen.
 void display() {
