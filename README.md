@@ -11,18 +11,26 @@ You will need an Arduboy, which you can get from:
 * [Arduboy](https://www.arduboy.com/store/products/arduboy) (different case colors available)
 * [Adafruit] (https://www.adafruit.com/products/3264) (white case only)
 
-Ardubo is Arduino based.  A program for the Arduino is referred to as a "Sketch".  To install our game on your Arduboy, you will need to get the Arduino IDE.
+Arduboy is Arduino based. A program for the Arduino is referred to as a "Sketch".  To install our game on your Arduboy, you will need to get the [Arduino IDE](https://www.arduino.cc/en/Main/Software).
 
-The IDE can be downloaded here:
+Follow these steps to be able to compile the code:
 
-[Arduino IDE](https://www.arduino.cc/en/Main/Software)
+1. Download the [Arduino IDE](https://www.arduino.cc/en/Main/Software) and install it
+2. Start the Arduino IDE
+3. Load the `arduboy-game.ino` sketch from the `arduboy/` subdirectory of this project
+4. In the Arduino IDE menu, go to "Sketch...Include Library...Manage Libraries" and add the Arduboy library version 1.1.1.
+5. In the Arduino IDE menu, go to "Tools...Board" and select either `Arduino Leonardo` or `Arduboy`
+6. In the Arduino IDE menu, select to "Sketch...Verify/Compile"
 
-Once you have it installed follow the steps under Resources to install the Arduboy library.
+This should compile and verify the Arduino sketch. You should see output in the lower window similar to this:
+
+    Done compiling.
+
+    Sketch uses 28,668 bytes (99%) of program storage space. Maximum is 28,672 bytes.
+    Global variables use 1,898 bytes (74%) of dynamic memory, leaving 662 bytes for local variables. Maximum is 2,560 bytes.
 
 When you plug a device into your USB port you need to set the *Port* from the
 *Tools* menu.
-
-In addition to the above you also need to select the *Board* as Arduboy (explained in the Arduboy library guide).  If you don't see Arduboy, use Arduino Leonardo instead.
 
 The *Tick* icon can be used to verify the code prior to uploading. The *Arrow* button uploads the sketch to
 the device.  
@@ -31,16 +39,16 @@ the device.
 
 If the Arduboy doesn't upload your sketch, try the following procedure:
 
-* Turn off device. 
-* Press upload, on ide.  
-* Then hold reset. 
+* Turn off device.
+* Press upload, on ide.
+* Then hold reset.
 * While holding reset press power, then let go of reset.  It will work.
 
 Alternatively:
 
 * Press and -hold- reset button (paperclip)
 * Hit upload
-* Wait for the “Sketch uses xxx bytes” message 
+* Wait for the “Sketch uses xxx bytes” message
 * Count to 4
 * Release reset button
 
@@ -63,3 +71,9 @@ We created a small JavaScript tool (`tools/text_generator.js` in this repo) to c
 * [Reset Procedure if you brick device](https://www.youtube.com/watch?v=l1ifTSq0VK4)
 * [Information about Memory](https://www.arduino.cc/en/Tutorial/Memory) we are space constrained and need to pay attention to this
 * [Information on use of PROGMEM](https://www.arduino.cc/en/Reference/PROGMEM)
+
+## Legal
+
+Copyright (C) 2016 Modus Create Inc.
+
+This code is [MIT Licensed](LICENSE.txt).
