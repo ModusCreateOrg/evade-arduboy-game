@@ -81,10 +81,10 @@ byte starY[NUM_STARS],
      starWidth[NUM_STARS];
 
 // Initial high score table contents
-char highScoreTable[27] = "AAA000300BBB000200CCC000100";
+char highScoreTable[] = "AAA000300BBB000200CCC000100";
 
 // Used to print letters from bitmap font
-char *alphabet[29];
+const unsigned char *alphabet[29];
 
 // Track button presses for debounce, frame last death was in, player score
 unsigned long inGameAButtonLastPress, 
