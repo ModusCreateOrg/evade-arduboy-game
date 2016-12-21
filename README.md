@@ -2,7 +2,7 @@
 
 This is an Arduboy game, written as a gift for [Modus Create](http://moduscreate.com) clients for the 2016 holiday season.
 
-![Arduboy](arduboy.gif)
+![Evade](evade_prod.jpg)
 
 ## Quick Start
 
