@@ -4,6 +4,12 @@ This is an Arduboy game, written as a gift for [Modus Create](http://moduscreate
 
 ![Evade](evade_prod.jpg)
 
+Watch the cinematic trailer that we produced for the game on Vimeo:
+
+[![Evade Cinematic Trailer](evade_video_still_play_icon.png)](https://vimeo.com/195974902)
+
+You can also listen to the music for the first stage of the game on [SoundCloud](https://soundcloud.com/djliquidice/modus-create-arduboy-game-stage1-track).
+
 ## Quick Start
 
 You will need an Arduboy, which you can get from:
