@@ -2,7 +2,13 @@
 
 This is an Arduboy game, written as a gift for [Modus Create](http://moduscreate.com) clients for the 2016 holiday season.
 
-![Arduboy](arduboy.gif)
+![Evade](evade_prod.jpg)
+
+Watch the cinematic trailer that we produced for the game on Vimeo:
+
+[![Evade Cinematic Trailer](evade_video_still_play_icon.png)](https://vimeo.com/195974902)
+
+You can also listen to the music for the first stage of the game on [SoundCloud](https://soundcloud.com/djliquidice/modus-create-arduboy-game-stage1-track).
 
 ## Quick Start
 
@@ -53,6 +59,16 @@ Alternatively:
 * Release reset button
 
 Further information on how to unbrick it [here](http://community.arduboy.com/t/how-to-reset-arduboy-if-its-bricked/807).
+
+## Viewing Compiler Output in Arduino IDE
+
+By default the Arduino IDE does not show the output of the compiler as it compiles your code.  If you want to see this:
+
+* Open up Arduino IDE Preferences dialog
+* Find the "Show verboase output during" options
+* Check the "compilation" check box
+* Select "Default" from the "Compiler warnings" drop down
+* Click "OK" to save your changes
 
 ## Image Conversion
 
