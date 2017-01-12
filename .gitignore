@@ -29,3 +29,10 @@
 *.app
 *.hex
 .DS_Store
+
+# Log Files
+*.log
+
+# Other 
+*.tmp
+*.bak
