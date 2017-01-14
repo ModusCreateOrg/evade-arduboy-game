@@ -1,0 +1,38 @@
+{
+  "title": "Evade",
+  "description": "TODO",
+  "version": "1.00",
+  "genre": "Shooter, Arcade, Space, Retro",
+  "device": "Arduboy",
+  "date": "2016-12-23",
+  "url": "http://www.moduscreate.com",
+  "companion": "http://www.moduscreate.com",
+  "sourceUrl": "https://github.com/ModusCreateOrg/evade-arduboy-game",
+  "email": "contact@moduscreate.com",
+  "banner": "TODO",
+  "publisher": "Modus Create",
+  "screenshots": [
+    "TODO.png",
+    "TODO.png",
+    "TODO.png"
+  ],
+  "hexes": [
+    {
+      "title": "Evade",
+      "hex": "TODO.hex"
+    }
+  ],
+  "author": "Modus Create",
+  "code": "Modus Create",
+  "idea": "Modus Create",
+  "art": "Modus Create",
+  "sound": "Modus Create",
+  "buttons": {
+    "buttonUp": "Move Up",
+    "buttonDown": "Move Down",
+    "buttonLeft": "Move Left",
+    "buttonRight": "Move Right",
+    "buttonA": "Fire TODO",
+    "buttonB": "Fire TODO"
+  }
+}
