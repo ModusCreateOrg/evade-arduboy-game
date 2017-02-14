@@ -9,7 +9,7 @@
   "companion": "http://www.moduscreate.com",
   "sourceUrl": "https://github.com/ModusCreateOrg/evade-arduboy-game",
   "email": "contact@moduscreate.com",
-  "banner": "TODO",
+  "banner": "evade_banner.png",
   "publisher": "Modus Create",
   "screenshots": [
     "evade_title.png",
