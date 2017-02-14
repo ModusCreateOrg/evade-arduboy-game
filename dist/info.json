@@ -32,7 +32,12 @@
     "buttonDown": "Move Down",
     "buttonLeft": "Move Left",
     "buttonRight": "Move Right",
-    "buttonA": "Fire TODO",
-    "buttonB": "Fire TODO"
+    "buttonA": "Fire Pew Pew",
+    "buttonB": "Fire Hadouken"
+  },
+  "eeprom": {
+    "variable": false,
+    "start": TODO,
+    "end": TODO
   }
 }
