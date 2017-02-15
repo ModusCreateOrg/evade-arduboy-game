@@ -43,6 +43,14 @@ When you plug a device into your USB port you need to set the *Port* from the
 The *Tick* icon can be used to verify the code prior to uploading. The *Arrow* button uploads the sketch to
 the device.  
 
+## .arduboy Distribution
+
+We have also put together a .arduboy distribution for use with game loader tools such as [Arduboy Manager](http://www.crait.net/arduboy/) (Windows only).  
+
+These allow you to load games onto the Arduboy without having to compile them yourself.
+
+The .arduboy archive for Evade is in the `dist` folder in this repo.
+
 ## Troubleshooting
 
 If the Arduboy doesn't upload your sketch, try the following procedure:
