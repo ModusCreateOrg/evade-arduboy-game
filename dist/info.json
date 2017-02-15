@@ -1,8 +1,8 @@
 {
   "title": "Evade",
-  "description": "TODO",
+  "description": "You are the sole survivor from a space colony who had been decimated by an alien invasion. Your only mission was to escape and evade (the enemy).  Evade is a side scrolling infinite shooter game, featuring two types of player weapon and three different boss levels.  Beat them all, and try again... it gets harder and faster!",
   "version": "1.00",
-  "genre": "Shooter, Arcade, Space, Retro",
+  "genre": "Shooter",
   "device": "Arduboy",
   "date": "2016-12-23",
   "url": "http://www.moduscreate.com",
