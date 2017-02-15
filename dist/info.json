@@ -37,7 +37,7 @@
   },
   "eeprom": {
     "variable": false,
-    "start": TODO,
-    "end": TODO
+    "start": 16,
+    "end": 71
   }
 }
