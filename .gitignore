@@ -27,7 +27,7 @@
 *.exe
 *.out
 *.app
-*.hex
+
 .DS_Store
 
 # Log Files

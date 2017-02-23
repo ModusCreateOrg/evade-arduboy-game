@@ -43,6 +43,14 @@ When you plug a device into your USB port you need to set the *Port* from the
 The *Tick* icon can be used to verify the code prior to uploading. The *Arrow* button uploads the sketch to
 the device.  
 
+## .arduboy Distribution
+
+We have also put together a .arduboy distribution for use with game loader tools such as [Arduboy Manager](http://www.crait.net/arduboy/) (Windows only).  
+
+These allow you to load games onto the Arduboy without having to compile them yourself.
+
+The .arduboy archive for Evade is in the `dist` folder in this repo.
+
 ## Troubleshooting
 
 If the Arduboy doesn't upload your sketch, try the following procedure:
@@ -89,6 +97,7 @@ We created a small JavaScript tool (`tools/text_generator.js` in this repo) to c
 * [Reset Procedure if you brick device](https://www.youtube.com/watch?v=l1ifTSq0VK4)
 * [Information about Memory](https://www.arduino.cc/en/Tutorial/Memory) we are space constrained and need to pay attention to this
 * [Information on use of PROGMEM](https://www.arduino.cc/en/Reference/PROGMEM)
+* [Taking Screen Shots of your Arduboy Game](http://community.arduboy.com/t/screen-mirroring-guide-how-to-screenshot-your-game/2800) (requires small code change)
 
 ## Legal
 
