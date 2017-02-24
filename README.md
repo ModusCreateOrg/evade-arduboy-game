@@ -10,7 +10,7 @@ Watch the cinematic trailer that we produced for the game on Vimeo:
 
 You can also listen to the music for the first stage of the game on [SoundCloud](https://soundcloud.com/djliquidice/modus-create-arduboy-game-stage1-track).
 
-We also wrote a [blog post](http://moduscreate.com/announcing-evade-our-first-arduboy-game/) announcing the release of the game.
+We also wrote an initial [blog post](http://moduscreate.com/announcing-evade-our-first-arduboy-game/) announcing the release of the game.  More recently, we followed that up with a second post covering some more implementation details.  You can read that [here](http://moduscreate.com/creating-evade-a-side-scrolling-shooter-game-for-arduboy/).
 
 ## Quick Start
 
