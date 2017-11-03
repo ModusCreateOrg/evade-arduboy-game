@@ -145,21 +145,6 @@ void drawChrs(byte cPos, byte yPos, const uint8_t *letters, unsigned long delayT
   }  
 
   if (delayTimer) {
-      // There is still an overflow here that needs to be dealt with:
-      //     /Users/richard/Documents/arduboy-game/arduboy-game/arduboy-game.ino: In function 'void drawChrs(byte, byte, const uint8_t*, long unsigned int)':
-      //     /Users/richard/Documents/arduboy-game/arduboy-game/arduboy-game.ino:150:23: warning: large integer implicitly truncated to unsigned type [-Woverflow]
-      //       playTone(800, 15);
-      //                       ^
-      ///Users/richard/Documents/arduboy-game/arduboy-game/arduboy-game.ino:152:24: warning: large integer implicitly truncated to unsigned type [-Woverflow]
-      //       playTone(1200, 30);
-      //                        ^
-      //
-      // Changing the signature of playTone to playTone(unsigned long, byte) would resolve it but we don't
-      // have space for that.
-      // The behavior currently is undefined.
-      // 
-      // We should probably pick 2 values that are in the range 0-255 for the first parameter
-      // of these functions if we can't squeeze 
       playTone(800, 15);
       delay(15);
       playTone(1200, 30);
